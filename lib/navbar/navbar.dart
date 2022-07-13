@@ -44,7 +44,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                "assets/homepage.png",
+                "assets/images/homepage.png",
                 scale: 20,
                 color: themeData ? Colors.white : Colors.black,
               ),
@@ -58,7 +58,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                "assets/pos.png",
+                "assets/images/pos.png",
                 scale: 20,
                 color: themeData ? Colors.white : Colors.black,
               ),
@@ -72,7 +72,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                "assets/funds.png",
+                "assets/images/funds.png",
                 scale: 20,
                 color: themeData ? Colors.white : Colors.black,
               ),

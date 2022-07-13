@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kudidemo/pages/homepage.dart';
 import 'package:kudidemo/navbar/navbar.dart';
+import 'package:kudidemo/pages/splash_screen.dart';
 import 'package:kudidemo/theme/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -25,15 +26,13 @@ class MyApp extends StatelessWidget {
         create: (_) => ThemeProvider(),
         child: Consumer<ThemeProvider>(
             builder: (context, ThemeProvider notifier, child) {
-             
           return MaterialApp(
-            
             title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
             theme: notifier.darkTheme
                 ? lightThemeData(context)
                 : darkThemeData(context),
-            home:  BottomNavBar(),
+            home: SplashScreen(),
           );
         }));
   }

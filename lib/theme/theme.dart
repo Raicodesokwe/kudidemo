@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class ThemeProvider extends ChangeNotifier {
- final String key = "theme";
- late SharedPreferences _prefs;
- late bool _darkTheme;
+  final String key = "theme";
+  late SharedPreferences _prefs;
+  late bool _darkTheme;
 
-  bool get  darkTheme => _darkTheme;
-  
+  bool get darkTheme => _darkTheme;
+
   ThemeProvider() {
     _darkTheme = true;
     _loadFromPrefs();
@@ -23,7 +22,7 @@ class ThemeProvider extends ChangeNotifier {
 
   _initPrefs() async {
     // if(_prefs == null)
-      _prefs = await SharedPreferences.getInstance();
+    _prefs = await SharedPreferences.getInstance();
   }
 
   _loadFromPrefs() async {
@@ -32,7 +31,7 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  _saveToPrefs()async {
+  _saveToPrefs() async {
     await _initPrefs();
     _prefs.setBool(key, _darkTheme);
   }
@@ -43,19 +42,21 @@ ThemeData lightThemeData(BuildContext context) {
       visualDensity: VisualDensity.adaptivePlatformDensity,
       scaffoldBackgroundColor: Colors.grey[300],
       appBarTheme: appBarTheme,
-      iconTheme:const IconThemeData(color: Colors.black),
-    
-      textTheme: Theme.of(context).textTheme.apply(bodyColor: Colors.black));
+      iconTheme: const IconThemeData(color: Colors.black),
+      textTheme: Theme.of(context)
+          .textTheme
+          .apply(bodyColor: Colors.black, fontFamily: 'grifterbold'));
 }
 
 ThemeData darkThemeData(BuildContext context) {
   return ThemeData.dark().copyWith(
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      scaffoldBackgroundColor:Colors.grey[900],
+      scaffoldBackgroundColor: Colors.grey[900],
       appBarTheme: appBarTheme,
-      iconTheme:const IconThemeData(color: Colors.white),
-    
-      textTheme: Theme.of(context).textTheme.apply(bodyColor: Colors.white));
+      iconTheme: const IconThemeData(color: Colors.white),
+      textTheme: Theme.of(context)
+          .textTheme
+          .apply(bodyColor: Colors.white, fontFamily: 'grifterbold'));
 }
 
 const appBarTheme = AppBarTheme(centerTitle: false, elevation: 0);

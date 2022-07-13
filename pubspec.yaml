@@ -32,6 +32,9 @@ dependencies:
   provider:
   shared_preferences:
   google_fonts: 2.2.0
+  animated_splash_screen:
+  intl:
+  jiffy:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -39,7 +42,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -60,23 +62,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/pic.jpg
-    - assets/naira.png
-    - assets/aro.png
-    - assets/helpline.png
-    - assets/withdraw.png
-    - assets/promotion.png
-    - assets/postwo.png
-    - assets/alert.png
-    - assets/transfer.png
-    - assets/phone.png
-    - assets/money.png
-    - assets/faucet.png
-    - assets/invoice.png
-    - assets/rent.png
-    - assets/homepage.png
-    - assets/funds.png
-    - assets/pos.png
+    - assets/images/
+   
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -90,10 +77,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: grifterbold
+      fonts:
+        - asset: assets/fonts/grifterbold.otf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
