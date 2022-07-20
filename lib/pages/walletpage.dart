@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/theme/seconddecoration.dart';
-import 'package:kudidemo/theme/theme.dart';
+import 'package:kudidemo/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../theme/concavedecoration.dart';
@@ -227,7 +227,8 @@ class _WalletPageState extends State<WalletPage> {
                   ActionChip(
                     label: Text(
                       'N1000',
-                      style: GoogleFonts.openSans(fontSize: 20,color: Colors.black),
+                      style: GoogleFonts.openSans(
+                          fontSize: 20, color: Colors.black),
                     ),
                     backgroundColor: Colors.greenAccent,
                     onPressed: () {
@@ -239,7 +240,8 @@ class _WalletPageState extends State<WalletPage> {
                   ActionChip(
                     label: Text(
                       'N2000',
-                      style: GoogleFonts.openSans(fontSize: 20,color: Colors.black),
+                      style: GoogleFonts.openSans(
+                          fontSize: 20, color: Colors.black),
                     ),
                     backgroundColor: Colors.greenAccent,
                     onPressed: () {
@@ -251,7 +253,8 @@ class _WalletPageState extends State<WalletPage> {
                   ActionChip(
                     label: Text(
                       'N5000',
-                      style: GoogleFonts.openSans(fontSize: 20,color: Colors.black),
+                      style: GoogleFonts.openSans(
+                          fontSize: 20, color: Colors.black),
                     ),
                     backgroundColor: Colors.greenAccent,
                     onPressed: () {

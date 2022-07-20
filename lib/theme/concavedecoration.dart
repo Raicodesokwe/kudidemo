@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:kudidemo/theme/theme.dart';
+import 'package:kudidemo/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class ConcaveDecoration extends Decoration {

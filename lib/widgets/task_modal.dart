@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kudidemo/widgets/task_view.dart';
+import 'package:kudidemo/pages/task_view.dart';
 
 class TaskModal extends StatelessWidget {
   const TaskModal({

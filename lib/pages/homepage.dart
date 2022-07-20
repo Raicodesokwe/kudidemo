@@ -3,9 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import 'package:kudidemo/theme/changethemebtn.dart';
-import 'package:kudidemo/theme/theme.dart';
+import 'package:kudidemo/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/date_container.dart';
 import '../widgets/scroll_widget.dart';
 import '../widgets/task_modal.dart';
 
@@ -275,40 +276,22 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   children: [
-                    Container(
-                      decoration: decorator.copyWith(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
-                          borderRadius: BorderRadius.circular(10.0)),
-                      height: 60,
-                      width: 50,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${DateFormat("EEEE").format(now.subtract(Duration(days: 2))).substring(0, 3)}',
-                          ),
-                          Text((now.day - 2).toString())
-                        ],
-                      ),
+                    DateContainer(
+                      decorator: decorator,
+                      themeData: themeData,
+                      date:
+                          '${DateFormat("EEEE").format(now.subtract(Duration(days: 2))).substring(0, 3)}',
+                      day:
+                          '${DateFormat("dd").format(now.subtract(Duration(days: 2)))}',
                     ),
                     Spacer(),
-                    Container(
-                      decoration: decorator.copyWith(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
-                          borderRadius: BorderRadius.circular(10.0)),
-                      height: 60,
-                      width: 50,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${DateFormat("EEEE").format(now.subtract(Duration(days: 1))).substring(0, 3)}',
-                          ),
-                          Text((now.day - 1).toString())
-                        ],
-                      ),
+                    DateContainer(
+                      decorator: decorator,
+                      themeData: themeData,
+                      date:
+                          '${DateFormat("EEEE").format(now.subtract(Duration(days: 1))).substring(0, 3)}',
+                      day:
+                          '${DateFormat("dd").format(now.subtract(Duration(days: 1)))}',
                     ),
                     Spacer(),
                     Container(
@@ -332,38 +315,22 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Spacer(),
-                    Container(
-                      decoration: decorator.copyWith(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
-                          borderRadius: BorderRadius.circular(10.0)),
-                      height: 60,
-                      width: 50,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                              '${DateFormat("EEEE").format(now.add(Duration(days: 1))).substring(0, 3)}'),
-                          Text((now.day + 1).toString())
-                        ],
-                      ),
+                    DateContainer(
+                      decorator: decorator,
+                      themeData: themeData,
+                      date:
+                          '${DateFormat("EEEE").format(now.add(Duration(days: 1))).substring(0, 3)}',
+                      day:
+                          '${DateFormat("dd").format(now.add(Duration(days: 1)))}',
                     ),
                     Spacer(),
-                    Container(
-                      decoration: decorator.copyWith(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
-                          borderRadius: BorderRadius.circular(10.0)),
-                      height: 60,
-                      width: 50,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                              '${DateFormat("EEEE").format(now.add(Duration(days: 2))).substring(0, 3)}'),
-                          Text((now.day + 2).toString())
-                        ],
-                      ),
+                    DateContainer(
+                      decorator: decorator,
+                      themeData: themeData,
+                      date:
+                          '${DateFormat("EEEE").format(now.add(Duration(days: 2))).substring(0, 3)}',
+                      day:
+                          '${DateFormat("dd").format(now.add(Duration(days: 2)))}',
                     ),
                   ],
                 ),
@@ -420,10 +387,11 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.all(25),
                           width: size.width * 0.65,
                           child: Text('None at the moment'),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color:
-                                  themeData ? Colors.white38 : Colors.white38),
+                          decoration: decorator.copyWith(
+                              color: themeData
+                                  ? Colors.grey[300]
+                                  : Colors.grey[900],
+                              borderRadius: BorderRadius.circular(10.0)),
                         )
                       ],
                     )

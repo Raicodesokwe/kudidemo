@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kudidemo/theme/theme.dart';
+import 'package:kudidemo/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class PosPage extends StatelessWidget {

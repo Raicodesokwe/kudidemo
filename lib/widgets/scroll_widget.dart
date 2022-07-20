@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/widgets/task_widget.dart';
 
 class ScrollWidget extends StatelessWidget {
   const ScrollWidget({
@@ -20,103 +21,42 @@ class ScrollWidget extends StatelessWidget {
           SizedBox(
             width: size.width * 0.02,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30),
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: 100,
-                    child: Image.asset(
-                      "assets/images/tasks.png",
-                    ),
-                  ),
-                  SizedBox(
-                    height: size.height * 0.03,
-                  ),
-                  Text('Tasks',
-                      style: GoogleFonts.prompt(
-                          fontSize: 20, fontWeight: FontWeight.w700))
-                ],
-              ),
-              decoration: decorator.copyWith(
-                  color: Colors.pink,
-                  borderRadius: BorderRadius.circular(10.0)),
-            ),
+          TaskWidget(
+            size: size,
+            decorator: decorator,
+            color: Colors.pink,
+            task: 'Task',
+            image: "assets/images/tasks.png",
           ),
           SizedBox(
             width: size.width * 0.04,
           ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 100,
-                  child: Image.asset(
-                    "assets/images/habits.png",
-                  ),
-                ),
-                SizedBox(
-                  height: size.height * 0.03,
-                ),
-                Text('Habits',
-                    style: GoogleFonts.prompt(
-                        fontSize: 20, fontWeight: FontWeight.w700))
-              ],
-            ),
-            decoration: decorator.copyWith(
-                color: Colors.blue, borderRadius: BorderRadius.circular(10.0)),
+          TaskWidget(
+            size: size,
+            decorator: decorator,
+            color: Colors.blue,
+            task: 'Habits',
+            image: "assets/images/habits.png",
           ),
           SizedBox(
             width: size.width * 0.06,
           ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 100,
-                  child: Image.asset(
-                    "assets/images/finances.png",
-                  ),
-                ),
-                SizedBox(
-                  height: size.height * 0.03,
-                ),
-                Text('Finances',
-                    style: GoogleFonts.prompt(
-                        fontSize: 20, fontWeight: FontWeight.w700))
-              ],
-            ),
-            decoration: decorator.copyWith(
-                color: Colors.green, borderRadius: BorderRadius.circular(10.0)),
+          TaskWidget(
+            size: size,
+            decorator: decorator,
+            color: Colors.green,
+            task: 'Finances',
+            image: "assets/images/finances.png",
           ),
           SizedBox(
             width: size.width * 0.06,
           ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 100,
-                  child: Image.asset(
-                    "assets/images/journal.png",
-                  ),
-                ),
-                SizedBox(
-                  height: size.height * 0.03,
-                ),
-                Text('Journal',
-                    style: GoogleFonts.prompt(
-                        fontSize: 20, fontWeight: FontWeight.w700))
-              ],
-            ),
-            decoration: decorator.copyWith(
-                color: Colors.orangeAccent,
-                borderRadius: BorderRadius.circular(10.0)),
+          TaskWidget(
+            size: size,
+            decorator: decorator,
+            color: Colors.orangeAccent,
+            task: 'Journal',
+            image: "assets/images/journal.png",
           ),
           SizedBox(
             width: size.width * 0.06,
@@ -144,27 +84,12 @@ class ScrollWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.0)),
           ),
           SizedBox(width: size.width * 0.06),
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 100,
-                  child: Image.asset(
-                    "assets/images/chat.png",
-                  ),
-                ),
-                SizedBox(
-                  height: size.height * 0.03,
-                ),
-                Text('Chat',
-                    style: GoogleFonts.prompt(
-                        fontSize: 20, fontWeight: FontWeight.w700))
-              ],
-            ),
-            decoration: decorator.copyWith(
-                color: Colors.redAccent,
-                borderRadius: BorderRadius.circular(10.0)),
+          TaskWidget(
+            size: size,
+            decorator: decorator,
+            color: Colors.redAccent,
+            task: 'Chat',
+            image: "assets/images/chat.png",
           ),
           SizedBox(width: size.width * 0.06),
         ],
