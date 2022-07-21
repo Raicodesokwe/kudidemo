@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -151,9 +152,10 @@ class TaskView extends StatelessWidget {
                     decoration: decorator.copyWith(
                         color: themeData ? Colors.grey[300] : Colors.grey[900],
                         shape: BoxShape.circle),
-                    child: Image.asset(
-                      "assets/images/arrow.png",
-                      color: themeData ? Colors.black54 : Colors.white54,
+                    child: Icon(
+                      FontAwesomeIcons.codeBranch,
+                      color: themeData ? Colors.black54 : Colors.white60,
+                      size: 15,
                     ),
                   ),
                   Container(

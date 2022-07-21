@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
 
-class HabitsPage extends StatelessWidget {
-  HabitsPage({Key? key}) : super(key: key);
+class FinancesPage extends StatelessWidget {
+  FinancesPage({Key? key}) : super(key: key);
 
   late String habitsName;
 
   TextEditingController habitsNameController = TextEditingController();
-  final _habitsForm = GlobalKey<FormState>();
+  final _financesForm = GlobalKey<FormState>();
   checkFields() {
-    final form = _habitsForm.currentState;
+    final form = _financesForm.currentState;
     if (form!.validate()) {
       form.save();
       return true;
@@ -58,7 +59,7 @@ class HabitsPage extends StatelessWidget {
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       body: Form(
-        key: _habitsForm,
+        key: _financesForm,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -66,13 +67,13 @@ class HabitsPage extends StatelessWidget {
               Center(
                 child: SizedBox(
                     width: size.width * 0.4,
-                    child: Lottie.asset('assets/images/habit.json')),
+                    child: Lottie.asset('assets/images/finances.json')),
               ),
             SizedBox(
               height: size.height * 0.03,
             ),
             if (!isKeyboard)
-              Text('Habits',
+              Text('Finances',
                   style: TextStyle(
                       color: themeData ? Colors.grey[300] : Colors.grey[900],
                       fontSize: 50,
@@ -100,12 +101,12 @@ class HabitsPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10.0)),
                 child: TextFormField(
                   validator: (value) =>
-                      value!.isEmpty ? 'habit name is required' : null,
+                      value!.isEmpty ? 'currency is required' : null,
                   keyboardType: TextInputType.text,
                   onChanged: (value) {},
                   cursorColor: Colors.black45,
                   decoration: InputDecoration(
-                      hintText: 'Habit name',
+                      hintText: 'Currency name',
                       hintStyle: GoogleFonts.prompt(),
                       border: InputBorder.none),
                 )),
@@ -118,51 +119,21 @@ class HabitsPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                      padding: const EdgeInsets.all(7),
-                      child: Center(
-                          child: Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 92, 202, 96),
-                            shape: BoxShape.circle),
-                      )),
-                      decoration: decorator.copyWith(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
-                          borderRadius: BorderRadius.circular(30))),
-                  Container(
-                      padding: const EdgeInsets.all(15),
-                      child: Center(
-                        child: Text(
-                          'Daily goal',
-                          style: TextStyle(
-                              color:
-                                  themeData ? Colors.black45 : Colors.white54,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w300),
-                        ),
-                      ),
-                      decoration: decorator.copyWith(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
-                          borderRadius: BorderRadius.circular(30))),
-                  Container(
                       padding: const EdgeInsets.all(15),
                       child: Center(
                         child: Row(
                           children: [
                             Icon(
-                              Icons.repeat_on_sharp,
+                              Icons.money_outlined,
                               color:
                                   themeData ? Colors.black54 : Colors.white54,
-                              size: 12,
+                              size: 15,
                             ),
                             SizedBox(
                               width: 5,
                             ),
                             Text(
-                              'Repeat',
+                              'Expenses',
                               style: TextStyle(
                                   color: themeData
                                       ? Colors.black45
@@ -180,13 +151,57 @@ class HabitsPage extends StatelessWidget {
                   Container(
                       padding: const EdgeInsets.all(15),
                       child: Center(
-                        child: Text(
-                          'Routine',
-                          style: TextStyle(
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.currency_exchange_sharp,
                               color:
-                                  themeData ? Colors.black45 : Colors.white54,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w300),
+                                  themeData ? Colors.black54 : Colors.white54,
+                              size: 15,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              'Income',
+                              style: TextStyle(
+                                  color: themeData
+                                      ? Colors.black45
+                                      : Colors.white54,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          ],
+                        ),
+                      ),
+                      decoration: decorator.copyWith(
+                          color:
+                              themeData ? Colors.grey[300] : Colors.grey[900],
+                          borderRadius: BorderRadius.circular(30))),
+                  Container(
+                      padding: const EdgeInsets.all(15),
+                      child: Center(
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.chartLine,
+                              color:
+                                  themeData ? Colors.black54 : Colors.white54,
+                              size: 15,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              'Trend',
+                              style: TextStyle(
+                                  color: themeData
+                                      ? Colors.black45
+                                      : Colors.white54,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          ],
                         ),
                       ),
                       decoration: decorator.copyWith(
@@ -197,7 +212,69 @@ class HabitsPage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: size.height * 0.2,
+              height: size.height * 0.05,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                    padding: const EdgeInsets.all(15),
+                    child: Center(
+                      child: Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.piggyBank,
+                            color: themeData ? Colors.black54 : Colors.white54,
+                            size: 15,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Savings',
+                            style: TextStyle(
+                                color:
+                                    themeData ? Colors.black45 : Colors.white54,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w300),
+                          ),
+                        ],
+                      ),
+                    ),
+                    decoration: decorator.copyWith(
+                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        borderRadius: BorderRadius.circular(30))),
+                Container(
+                    padding: const EdgeInsets.all(15),
+                    child: Center(
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/budget.png',
+                            scale: 6,
+                            color: themeData ? Colors.black54 : Colors.white54,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Budget',
+                            style: TextStyle(
+                                color:
+                                    themeData ? Colors.black45 : Colors.white54,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w300),
+                          ),
+                        ],
+                      ),
+                    ),
+                    decoration: decorator.copyWith(
+                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        borderRadius: BorderRadius.circular(30))),
+              ],
+            ),
+            SizedBox(
+              height: size.height * 0.15,
             ),
             Container(
               child: Center(
