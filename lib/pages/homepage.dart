@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:kudidemo/pages/calendar_widget.dart';
 
 import 'package:kudidemo/theme/changethemebtn.dart';
 import 'package:kudidemo/providers/theme_provider.dart';
@@ -247,26 +248,32 @@ class _HomePageState extends State<HomePage> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    Icon(Icons.arrow_back),
-                    Text(
-                      '${previousMonth}',
-                      style: GoogleFonts.prompt(),
-                    ),
-                    Spacer(),
-                    Text(
-                      '${month}',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    Icon(Icons.keyboard_arrow_down),
-                    Spacer(),
-                    Text(
-                      '${nextMonth}',
-                      style: GoogleFonts.prompt(),
-                    ),
-                    Icon(Icons.arrow_forward),
-                  ],
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CalendarWidget()));
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.arrow_back),
+                      Text(
+                        '${previousMonth}',
+                        style: GoogleFonts.prompt(),
+                      ),
+                      Spacer(),
+                      Text(
+                        '${month}',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Icon(Icons.keyboard_arrow_down),
+                      Spacer(),
+                      Text(
+                        '${nextMonth}',
+                        style: GoogleFonts.prompt(),
+                      ),
+                      Icon(Icons.arrow_forward),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -274,65 +281,71 @@ class _HomePageState extends State<HomePage> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    DateContainer(
-                      decorator: decorator,
-                      themeData: themeData,
-                      date:
-                          '${DateFormat("EEEE").format(now.subtract(Duration(days: 2))).substring(0, 3)}',
-                      day:
-                          '${DateFormat("dd").format(now.subtract(Duration(days: 2)))}',
-                    ),
-                    Spacer(),
-                    DateContainer(
-                      decorator: decorator,
-                      themeData: themeData,
-                      date:
-                          '${DateFormat("EEEE").format(now.subtract(Duration(days: 1))).substring(0, 3)}',
-                      day:
-                          '${DateFormat("dd").format(now.subtract(Duration(days: 1)))}',
-                    ),
-                    Spacer(),
-                    Container(
-                      decoration: decorator.copyWith(
-                          color: Colors.greenAccent,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      height: 60,
-                      width: 50,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${DateFormat("EEEE").format(now).substring(0, 3)}',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          Text(
-                            (now.day).toString(),
-                            style: TextStyle(color: Colors.black),
-                          )
-                        ],
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CalendarWidget()));
+                  },
+                  child: Row(
+                    children: [
+                      DateContainer(
+                        decorator: decorator,
+                        themeData: themeData,
+                        date:
+                            '${DateFormat("EEEE").format(now.subtract(Duration(days: 2))).substring(0, 3)}',
+                        day:
+                            '${DateFormat("dd").format(now.subtract(Duration(days: 2)))}',
                       ),
-                    ),
-                    Spacer(),
-                    DateContainer(
-                      decorator: decorator,
-                      themeData: themeData,
-                      date:
-                          '${DateFormat("EEEE").format(now.add(Duration(days: 1))).substring(0, 3)}',
-                      day:
-                          '${DateFormat("dd").format(now.add(Duration(days: 1)))}',
-                    ),
-                    Spacer(),
-                    DateContainer(
-                      decorator: decorator,
-                      themeData: themeData,
-                      date:
-                          '${DateFormat("EEEE").format(now.add(Duration(days: 2))).substring(0, 3)}',
-                      day:
-                          '${DateFormat("dd").format(now.add(Duration(days: 2)))}',
-                    ),
-                  ],
+                      Spacer(),
+                      DateContainer(
+                        decorator: decorator,
+                        themeData: themeData,
+                        date:
+                            '${DateFormat("EEEE").format(now.subtract(Duration(days: 1))).substring(0, 3)}',
+                        day:
+                            '${DateFormat("dd").format(now.subtract(Duration(days: 1)))}',
+                      ),
+                      Spacer(),
+                      Container(
+                        decoration: decorator.copyWith(
+                            color: Colors.greenAccent,
+                            borderRadius: BorderRadius.circular(10.0)),
+                        height: 60,
+                        width: 50,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${DateFormat("EEEE").format(now).substring(0, 3)}',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            Text(
+                              (now.day).toString(),
+                              style: TextStyle(color: Colors.black),
+                            )
+                          ],
+                        ),
+                      ),
+                      Spacer(),
+                      DateContainer(
+                        decorator: decorator,
+                        themeData: themeData,
+                        date:
+                            '${DateFormat("EEEE").format(now.add(Duration(days: 1))).substring(0, 3)}',
+                        day:
+                            '${DateFormat("dd").format(now.add(Duration(days: 1)))}',
+                      ),
+                      Spacer(),
+                      DateContainer(
+                        decorator: decorator,
+                        themeData: themeData,
+                        date:
+                            '${DateFormat("EEEE").format(now.add(Duration(days: 2))).substring(0, 3)}',
+                        day:
+                            '${DateFormat("dd").format(now.add(Duration(days: 2)))}',
+                      ),
+                    ],
+                  ),
                 ),
               ),
               ScrollWidget(size: size, decorator: decorator),

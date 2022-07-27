@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kudidemo/pages/finances_page.dart';
+import 'package:kudidemo/pages/group_task.dart';
 import 'package:kudidemo/pages/habits_page.dart';
 import 'package:kudidemo/pages/journal_page.dart';
 import 'package:kudidemo/pages/task_view.dart';
@@ -74,32 +75,18 @@ class TaskModal extends StatelessWidget {
             ),
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => HabitsPage()));
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: ImageModal(
-              themeData: themeData,
-              image: "assets/images/group.png",
-              task: 'Group tasks',
-            ),
-          ),
-        ),
         Padding(
           padding:
               const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 10),
           child: GestureDetector(
             onTap: () {
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => HabitsPage()));
+                  .push(MaterialPageRoute(builder: (context) => GroupTask()));
             },
             child: ImageModal(
               themeData: themeData,
-              image: "assets/images/chat.png",
-              task: 'Chat',
+              image: "assets/images/group.png",
+              task: 'Group tasks',
             ),
           ),
         ),

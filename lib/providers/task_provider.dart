@@ -7,7 +7,7 @@ class TaskProvider with ChangeNotifier {
     return [..._tasks];
   }
 
-  void add(TaskModel task) {
+  void addTask(TaskModel task) {
     _tasks.add(task);
     notifyListeners();
   }
