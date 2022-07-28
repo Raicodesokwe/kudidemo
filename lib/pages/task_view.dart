@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/models/task_model.dart';
 import 'package:kudidemo/providers/task_provider.dart';
+import 'package:kudidemo/widgets/notes_overlay.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,7 @@ class TaskView extends StatefulWidget {
 }
 
 class _TaskViewState extends State<TaskView> {
-  late String taskName;
+  late String notes = '';
   final DateTime now = DateTime.now();
   late DateTime fromDate;
 
@@ -92,17 +93,23 @@ class _TaskViewState extends State<TaskView> {
       );
     }
 
+    Future createNotesDialog(BuildContext context) {
+      return showDialog(
+        context: context,
+        builder: (_) => NotesOverlay(),
+      );
+    }
+
     Future saveForm() async {
       final isValid = _taskForm.currentState!.validate();
       if (isValid) {
         final task = TaskModel(
-            name: taskNameController.text,
-            from: fromDate,
-            to: toDate,
-            notes: 'notes',
-            category: 'food',
-            isRepeatable: true);
-        final taskProvider = Provider.of<TaskProvider>(context);
+          name: taskNameController.text,
+          from: fromDate,
+          to: toDate,
+          notes: notes,
+        );
+        final taskProvider = Provider.of<TaskProvider>(context, listen: false);
         taskProvider.addTask(task);
         Navigator.of(context).pop();
       }
@@ -171,22 +178,6 @@ class _TaskViewState extends State<TaskView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                      padding: const EdgeInsets.all(15),
-                      child: Center(
-                        child: Text(
-                          'No category',
-                          style: TextStyle(
-                              color:
-                                  themeData ? Colors.black45 : Colors.white54,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w300),
-                        ),
-                      ),
-                      decoration: decorator.copyWith(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
-                          borderRadius: BorderRadius.circular(30))),
                   GestureDetector(
                     onTap: () {
                       FocusScope.of(context).unfocus();
@@ -222,17 +213,27 @@ class _TaskViewState extends State<TaskView> {
                       size: 15,
                     ),
                   ),
-                  Container(
-                    height: 35,
-                    width: 35,
-                    child: Center(
-                        child: Icon(
-                      Icons.note_alt,
-                      color: themeData ? Colors.black54 : Colors.white54,
-                    )),
-                    decoration: decorator.copyWith(
-                        color: themeData ? Colors.grey[300] : Colors.grey[900],
-                        borderRadius: BorderRadius.circular(5)),
+                  GestureDetector(
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      createNotesDialog(context).then((value) {
+                        notes = value;
+                        setState(() {});
+                      });
+                    },
+                    child: Container(
+                      height: 35,
+                      width: 35,
+                      child: Center(
+                          child: Icon(
+                        Icons.note_alt,
+                        color: themeData ? Colors.black54 : Colors.white54,
+                      )),
+                      decoration: decorator.copyWith(
+                          color:
+                              themeData ? Colors.grey[300] : Colors.grey[900],
+                          borderRadius: BorderRadius.circular(5)),
+                    ),
                   ),
                 ],
               ),
@@ -242,40 +243,66 @@ class _TaskViewState extends State<TaskView> {
             ),
             GestureDetector(
               onTap: () => saveForm(),
-              child: Container(
-                child: Center(
-                  child: RotatedBox(
-                    quarterTurns: 3,
-                    child: Center(
-                      child: taskNameController.text.isNotEmpty
-                          ? Icon(
-                              Icons.send,
-                              color: Colors.green,
-                              size: 50,
-                            )
-                          : Icon(
+              child: taskNameController.text.isNotEmpty
+                  ? Container(
+                      height: 100,
+                      width: 100,
+                      child: Center(
+                        child: RotatedBox(
+                          quarterTurns: 3,
+                          child: Center(
+                            child: Icon(
                               Icons.send,
                               color:
                                   themeData ? Colors.black54 : Colors.white54,
                               size: 50,
                             ),
-                    ),
-                  ),
-                ),
-                height: 100,
-                width: 100,
-                decoration: taskNameController.text.isNotEmpty
-                    ? decorator.copyWith(
-                        color: themeData ? Colors.grey[300] : Colors.grey[900],
-                        border: Border.all(width: 10, color: Colors.green),
-                        shape: BoxShape.circle)
-                    : decorator.copyWith(
-                        color: themeData ? Colors.grey[300] : Colors.grey[900],
-                        border: Border.all(
+                          ),
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.green.withAlpha(225),
+                                blurRadius: 45,
+                                spreadRadius: 15,
+                                offset: Offset(0, 0))
+                          ],
+                          gradient: LinearGradient(
+                              colors: [Colors.green, Colors.greenAccent],
+                              begin: Alignment.centerRight,
+                              end: Alignment.centerLeft),
+                          border: Border.all(
                             width: 10,
-                            color: themeData ? Colors.black54 : Colors.white54),
-                        shape: BoxShape.circle),
-              ),
+                            color: themeData ? Colors.black54 : Colors.white54,
+                          ),
+                          shape: BoxShape.circle),
+                    )
+                  : Container(
+                      child: Center(
+                        child: RotatedBox(
+                          quarterTurns: 3,
+                          child: Center(
+                            child: Icon(
+                              Icons.send,
+                              color:
+                                  themeData ? Colors.black54 : Colors.white54,
+                              size: 50,
+                            ),
+                          ),
+                        ),
+                      ),
+                      height: 100,
+                      width: 100,
+                      decoration: decorator.copyWith(
+                          color:
+                              themeData ? Colors.grey[300] : Colors.grey[900],
+                          border: Border.all(
+                              width: 10,
+                              color:
+                                  themeData ? Colors.black54 : Colors.white54),
+                          shape: BoxShape.circle),
+                    ),
             )
           ],
         ),

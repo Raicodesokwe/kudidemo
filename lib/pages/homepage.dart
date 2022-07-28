@@ -1,12 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:kudidemo/pages/calendar_widget.dart';
 
 import 'package:kudidemo/theme/changethemebtn.dart';
 import 'package:kudidemo/providers/theme_provider.dart';
+import 'package:kudidemo/utils/utils.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../providers/task_provider.dart';
 import '../widgets/date_container.dart';
 import '../widgets/scroll_widget.dart';
 import '../widgets/task_modal.dart';
@@ -154,6 +160,7 @@ class _HomePageState extends State<HomePage> {
           });
     }
 
+    final tasks = Provider.of<TaskProvider>(context).tasks;
     final themeData = Provider.of<ThemeProvider>(context).darkTheme;
     final BoxDecoration decorator = BoxDecoration(
       boxShadow: themeData
@@ -185,6 +192,41 @@ class _HomePageState extends State<HomePage> {
             ],
     );
     Size size = MediaQuery.of(context).size;
+
+    openWhatsapp() async {
+      var whatsapp = '+254745347246';
+      var whatsappURL_android = Uri.parse("whatsapp://send?phone=" +
+          whatsapp +
+          "&text=Hello, I need some assistance");
+      var whatsappURL_ios = Uri.parse(
+          "https://wa.me/$whatsapp?text=Hello, I need some assistance");
+      if (Platform.isAndroid) {
+        launchUrl(whatsappURL_android);
+      } else {
+        launchUrl(whatsappURL_ios);
+      }
+    }
+
+    openEmail() async {
+      String? encodeQueryParameters(Map<String, String> params) {
+        return params.entries
+            .map((MapEntry<String, String> e) =>
+                '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+            .join('&');
+      }
+
+// ···
+      final Uri emailLaunchUri = Uri(
+        scheme: 'mailto',
+        path: 'muraierick254@gmail.com',
+        query: encodeQueryParameters(<String, String>{
+          'subject': 'Inquiry',
+          'body': 'Hello, I need some assistance'
+        }),
+      );
+
+      launchUrl(emailLaunchUri);
+    }
 
     return SafeArea(
       child: Scaffold(
@@ -380,34 +422,90 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: size.height * 0.03,
                     ),
-                    Row(
-                      children: [
-                        RotatedBox(
-                          quarterTurns: 3,
-                          child: Text(
-                            '${DateFormat('Hm').format(now)}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                color: themeData
-                                    ? Colors.black38
-                                    : Colors.white38),
-                          ),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.07,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(25),
-                          width: size.width * 0.65,
-                          child: Text('None at the moment'),
-                          decoration: decorator.copyWith(
-                              color: themeData
-                                  ? Colors.grey[300]
-                                  : Colors.grey[900],
-                              borderRadius: BorderRadius.circular(10.0)),
-                        )
-                      ],
-                    )
+                    tasks.isEmpty
+                        ? Row(
+                            children: [
+                              RotatedBox(
+                                quarterTurns: 3,
+                                child: Text(
+                                  '${DateFormat('Hm').format(now)}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w300,
+                                      color: themeData
+                                          ? Colors.black38
+                                          : Colors.white38),
+                                ),
+                              ),
+                              SizedBox(
+                                width: size.width * 0.07,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(25),
+                                width: size.width * 0.65,
+                                child: Text('None at the moment'),
+                                decoration: decorator.copyWith(
+                                    color: themeData
+                                        ? Colors.grey[300]
+                                        : Colors.grey[900],
+                                    borderRadius: BorderRadius.circular(10.0)),
+                              )
+                            ],
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: tasks.length,
+                            itemBuilder: (ctx, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 15),
+                                child: Container(
+                                  padding: const EdgeInsets.all(15),
+                                  width: double.infinity,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.watch,
+                                            color: Colors.black54,
+                                          ),
+                                          Text(
+                                            Utils.toTime(tasks[index].from!),
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.black54),
+                                          ),
+                                          Text('-'),
+                                          Text(
+                                            Utils.toTime(tasks[index].to!),
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.black54),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        tasks[index].name!,
+                                        style: TextStyle(fontSize: 19),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        tasks[index].notes!,
+                                      ),
+                                    ],
+                                  ),
+                                  decoration: decorator.copyWith(
+                                      color: themeData
+                                          ? Colors.grey[300]
+                                          : Colors.grey[900],
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
+                                ),
+                              );
+                            })
                   ],
                 ),
               ),
@@ -417,8 +515,19 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+        floatingActionButton: SpeedDial(
+          children: [
+            SpeedDialChild(
+                onTap: () => openWhatsapp(),
+                child: Icon(Icons.phone_android),
+                label: 'Whatsapp',
+                backgroundColor: Colors.red),
+            SpeedDialChild(
+                onTap: () => openEmail(),
+                child: Icon(Icons.mail),
+                label: 'Mail',
+                backgroundColor: Colors.pink),
+          ],
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),

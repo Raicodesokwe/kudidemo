@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kudidemo/providers/task_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -7,9 +8,11 @@ import '../providers/theme_provider.dart';
 class CalendarWidget extends StatelessWidget {
   CalendarWidget({Key? key}) : super(key: key);
   final DateTime now = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final tasks = Provider.of<TaskProvider>(context).tasks;
     final themeData = Provider.of<ThemeProvider>(context).darkTheme;
     final BoxDecoration decorator = BoxDecoration(
       boxShadow: themeData

@@ -118,7 +118,7 @@ class FunkyOverlayState extends State<FunkyOverlay>
         child: ScaleTransition(
           scale: scaleAnimation,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 60),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Container(
               decoration: ShapeDecoration(
                   color: themeData ? Colors.grey[300] : Colors.grey[900],
@@ -126,118 +126,110 @@ class FunkyOverlayState extends State<FunkyOverlay>
                       borderRadius: BorderRadius.circular(15.0))),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Form(
-                  key: _overlayForm,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                        'From',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 18),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: decorator.copyWith(
-                                borderRadius: BorderRadius.circular(15.0),
-                                color: themeData
-                                    ? Colors.grey[300]
-                                    : Colors.grey[900],
-                              ),
-                              child: ListTile(
-                                onTap: () => pickFromDateTime(pickDate: true),
-                                title: Text(
-                                  Utils.toDate(widget.fromDate!),
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                                trailing: Icon(Icons.arrow_drop_down),
-                              ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'From',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: decorator.copyWith(
+                              borderRadius: BorderRadius.circular(15.0),
+                              color: themeData
+                                  ? Colors.grey[300]
+                                  : Colors.grey[900],
                             ),
-                          ),
-                          Expanded(
                             child: ListTile(
-                              onTap: () => pickFromDateTime(pickDate: false),
+                              onTap: () => pickFromDateTime(pickDate: true),
                               title: Text(
-                                Utils.toTime(widget.fromDate!),
-                                style: TextStyle(fontSize: 10),
+                                Utils.toDate(widget.fromDate!),
+                                style: TextStyle(fontSize: 12),
                               ),
                               trailing: Icon(Icons.arrow_drop_down),
                             ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: size.height * 0.03,
-                      ),
-                      Text(
-                        'To',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 18),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: decorator.copyWith(
-                                borderRadius: BorderRadius.circular(15.0),
-                                color: themeData
-                                    ? Colors.grey[300]
-                                    : Colors.grey[900],
-                              ),
-                              child: ListTile(
-                                onTap: () => pickToDateTime(pickDate: true),
-                                title: Text(
-                                  Utils.toDate(widget.toDateString!),
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                                trailing: Icon(Icons.arrow_drop_down),
-                              ),
-                            ),
                           ),
-                          Expanded(
+                        ),
+                        Expanded(
+                          child: ListTile(
+                            onTap: () => pickFromDateTime(pickDate: false),
+                            title: Text(
+                              Utils.toTime(widget.fromDate!),
+                              style: TextStyle(fontSize: 10),
+                            ),
+                            trailing: Icon(Icons.arrow_drop_down),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: size.height * 0.03,
+                    ),
+                    Text(
+                      'To',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: decorator.copyWith(
+                              borderRadius: BorderRadius.circular(15.0),
+                              color: themeData
+                                  ? Colors.grey[300]
+                                  : Colors.grey[900],
+                            ),
                             child: ListTile(
                               onTap: () => pickToDateTime(pickDate: true),
                               title: Text(
-                                Utils.toTime(widget.toDateString!),
-                                style: TextStyle(fontSize: 10),
+                                Utils.toDate(widget.toDateString!),
+                                style: TextStyle(fontSize: 12),
                               ),
                               trailing: Icon(Icons.arrow_drop_down),
                             ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: size.height * 0.05,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: (() {
-                              Navigator.of(context).pop({
-                                "from": widget.fromDate,
-                                "to": widget.toDateString
-                              });
-                            }),
-                            child: Container(
-                              child: Center(
-                                child: Text('Cancel'),
-                              ),
-                              height: 50,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  color: Color.fromARGB(255, 212, 212, 212)),
-                            ),
                           ),
-                          Container(
+                        ),
+                        Expanded(
+                          child: ListTile(
+                            onTap: () => pickToDateTime(pickDate: false),
+                            title: Text(
+                              Utils.toTime(widget.toDateString!),
+                              style: TextStyle(fontSize: 10),
+                            ),
+                            trailing: Icon(Icons.arrow_drop_down),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: size.height * 0.05,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Cancel')),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop({
+                              "from": widget.fromDate,
+                              "to": widget.toDateString
+                            });
+                          },
+                          child: Container(
                             child: Center(
                               child: Text(
                                 'Confirm',
@@ -246,14 +238,14 @@ class FunkyOverlayState extends State<FunkyOverlay>
                             ),
                             height: 50,
                             width: 120,
-                            decoration: BoxDecoration(
+                            decoration: decorator.copyWith(
                                 borderRadius: BorderRadius.circular(7),
                                 color: Color.fromARGB(255, 12, 99, 212)),
                           ),
-                        ],
-                      )
-                    ],
-                  ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ),
             ),
