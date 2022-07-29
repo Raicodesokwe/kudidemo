@@ -7,11 +7,12 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
+import '../widgets/text_field.dart';
 
 class JournalPage extends StatelessWidget {
   JournalPage({Key? key}) : super(key: key);
   final now = DateTime.now();
-
+  TextEditingController titleNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     String date = DateFormat('yMMMMd').format(now);

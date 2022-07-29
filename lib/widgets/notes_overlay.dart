@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/utils/utils.dart';
+import 'package:kudidemo/widgets/text_field.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
@@ -84,25 +85,10 @@ class NotesOverlayState extends State<NotesOverlay>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 5),
-                        width: size.width * 0.8,
-                        decoration: decorator.copyWith(
-                            color:
-                                themeData ? Colors.grey[300] : Colors.grey[900],
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: TextFormField(
-                          controller: notesController,
-                          keyboardType: TextInputType.text,
-                          onChanged: (value) {},
-                          cursorColor: Colors.black45,
-                          decoration: InputDecoration(
-                              hintText: 'Additional notes',
-                              hintStyle: GoogleFonts.prompt(),
-                              border: InputBorder.none),
-                        )),
+                    CustomTextField(
+                        controller: notesController,
+                        emptytext: 'Additional notes',
+                        hintText: 'Additional notes'),
                     SizedBox(
                       height: size.height * 0.05,
                     ),

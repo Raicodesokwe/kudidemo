@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/pages/group_task.dart';
 import 'package:kudidemo/widgets/task_widget.dart';
 
 import '../pages/finances_page.dart';
@@ -88,27 +89,33 @@ class ScrollWidget extends StatelessWidget {
           SizedBox(
             width: size.width * 0.06,
           ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 100,
-                  child: Image.asset(
-                    "assets/images/group.png",
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => GroupTask()));
+            },
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: 100,
+                    child: Image.asset(
+                      "assets/images/group.png",
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: size.height * 0.03,
-                ),
-                Text('Group tasks',
-                    style: GoogleFonts.prompt(
-                        fontSize: 17, fontWeight: FontWeight.w700))
-              ],
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
+                  Text('Group tasks',
+                      style: GoogleFonts.prompt(
+                          fontSize: 17, fontWeight: FontWeight.w700))
+                ],
+              ),
+              decoration: decorator.copyWith(
+                  color: Colors.purpleAccent,
+                  borderRadius: BorderRadius.circular(10.0)),
             ),
-            decoration: decorator.copyWith(
-                color: Colors.purpleAccent,
-                borderRadius: BorderRadius.circular(10.0)),
           ),
           SizedBox(width: size.width * 0.06),
         ],

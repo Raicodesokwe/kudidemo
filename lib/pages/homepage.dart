@@ -468,20 +468,32 @@ class _HomePageState extends State<HomePage> {
                                         children: [
                                           Icon(
                                             Icons.watch,
-                                            color: Colors.black54,
+                                            color: themeData
+                                                ? Colors.black54
+                                                : Colors.white54,
                                           ),
                                           Text(
                                             Utils.toTime(tasks[index].from!),
                                             style: TextStyle(
                                                 fontSize: 10,
-                                                color: Colors.black54),
+                                                color: themeData
+                                                    ? Colors.black54
+                                                    : Colors.white54),
                                           ),
-                                          Text('-'),
+                                          Text(
+                                            '-',
+                                            style: TextStyle(
+                                                color: themeData
+                                                    ? Colors.black54
+                                                    : Colors.white54),
+                                          ),
                                           Text(
                                             Utils.toTime(tasks[index].to!),
                                             style: TextStyle(
                                                 fontSize: 10,
-                                                color: Colors.black54),
+                                                color: themeData
+                                                    ? Colors.black54
+                                                    : Colors.white54),
                                           ),
                                         ],
                                       ),
@@ -494,6 +506,11 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       Text(
                                         tasks[index].notes!,
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: themeData
+                                                ? Colors.black87
+                                                : Colors.white70),
                                       ),
                                     ],
                                   ),

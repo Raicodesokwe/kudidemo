@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/utils/utils.dart';
+import 'package:kudidemo/widgets/oval_container.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
@@ -209,6 +210,40 @@ class FunkyOverlayState extends State<FunkyOverlay>
                             trailing: Icon(Icons.arrow_drop_down),
                           ),
                         )
+                      ],
+                    ),
+                    SizedBox(
+                      height: size.height * 0.03,
+                    ),
+                    Text(
+                      'Remind',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        OvalContainer(text: '5 mins'),
+                        OvalContainer(text: '10 mins'),
+                        OvalContainer(text: '15 mins'),
+                        OvalContainer(text: '20 mins')
+                      ],
+                    ),
+                    SizedBox(
+                      height: size.height * 0.03,
+                    ),
+                    Text(
+                      'Repeat',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        OvalContainer(text: 'None'),
+                        OvalContainer(text: 'Daily'),
+                        OvalContainer(text: 'Weekly'),
+                        OvalContainer(text: 'Monthly')
                       ],
                     ),
                     SizedBox(

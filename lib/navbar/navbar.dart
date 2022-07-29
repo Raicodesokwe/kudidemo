@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/pages/pospage.dart';
@@ -15,6 +16,11 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int _currentIndex = 0;
+  List<ValueKey<int>> _keys = [
+    ValueKey<int>(0),
+    ValueKey<int>(1),
+    ValueKey<int>(2),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +28,24 @@ class _BottomNavBarState extends State<BottomNavBar> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       extendBody: true,
-      body: IndexedStack(
-        index: _currentIndex,
-        children: [
-          HomePage(),
-          PosPage(),
-          WalletPage(),
-        ],
+      body: PageTransitionSwitcher(
+        duration: Duration(seconds: 1),
+        transitionBuilder: (child, animation, secondaryAnimation) {
+          return FadeThroughTransition(
+            animation: animation,
+            secondaryAnimation: secondaryAnimation,
+            child: child,
+          );
+        },
+        child: IndexedStack(
+          key: ValueKey<int>(_currentIndex),
+          index: _currentIndex,
+          children: [
+            HomePage(),
+            PosPage(),
+            WalletPage(),
+          ],
+        ),
       ),
       bottomNavigationBar: BounceTabBar(
         initialIndex: 0,

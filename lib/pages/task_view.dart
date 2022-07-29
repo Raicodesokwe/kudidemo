@@ -3,7 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/models/task_model.dart';
 import 'package:kudidemo/providers/task_provider.dart';
+import 'package:kudidemo/widgets/circle_button.dart';
+import 'package:kudidemo/widgets/neon_button.dart';
 import 'package:kudidemo/widgets/notes_overlay.dart';
+import 'package:kudidemo/widgets/text_field.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -150,26 +153,10 @@ class _TaskViewState extends State<TaskView> {
             SizedBox(
               height: size.height * 0.03,
             ),
-            Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                width: size.width * 0.8,
-                decoration: decorator.copyWith(
-                    color: themeData ? Colors.grey[300] : Colors.grey[900],
-                    borderRadius: BorderRadius.circular(10.0)),
-                child: TextFormField(
-                  controller: taskNameController,
-                  validator: (value) =>
-                      value!.isEmpty ? 'task name is required' : null,
-                  keyboardType: TextInputType.text,
-                  onChanged: (value) {},
-                  cursorColor: Colors.black45,
-                  decoration: InputDecoration(
-                      hintText: 'Task name',
-                      hintStyle: GoogleFonts.prompt(),
-                      border: InputBorder.none),
-                )),
+            CustomTextField(
+                controller: taskNameController,
+                emptytext: 'task name is required',
+                hintText: 'Task name'),
             SizedBox(
               height: size.height * 0.03,
             ),
@@ -178,6 +165,20 @@ class _TaskViewState extends State<TaskView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  Container(
+                      padding: const EdgeInsets.all(7),
+                      child: Center(
+                          child: Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 92, 202, 96),
+                            shape: BoxShape.circle),
+                      )),
+                      decoration: decorator.copyWith(
+                          color:
+                              themeData ? Colors.grey[300] : Colors.grey[900],
+                          borderRadius: BorderRadius.circular(30))),
                   GestureDetector(
                     onTap: () {
                       FocusScope.of(context).unfocus();
@@ -242,68 +243,10 @@ class _TaskViewState extends State<TaskView> {
               height: size.height * 0.2,
             ),
             GestureDetector(
-              onTap: () => saveForm(),
-              child: taskNameController.text.isNotEmpty
-                  ? Container(
-                      height: 100,
-                      width: 100,
-                      child: Center(
-                        child: RotatedBox(
-                          quarterTurns: 3,
-                          child: Center(
-                            child: Icon(
-                              Icons.send,
-                              color:
-                                  themeData ? Colors.black54 : Colors.white54,
-                              size: 50,
-                            ),
-                          ),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.green.withAlpha(225),
-                                blurRadius: 45,
-                                spreadRadius: 15,
-                                offset: Offset(0, 0))
-                          ],
-                          gradient: LinearGradient(
-                              colors: [Colors.green, Colors.greenAccent],
-                              begin: Alignment.centerRight,
-                              end: Alignment.centerLeft),
-                          border: Border.all(
-                            width: 10,
-                            color: themeData ? Colors.black54 : Colors.white54,
-                          ),
-                          shape: BoxShape.circle),
-                    )
-                  : Container(
-                      child: Center(
-                        child: RotatedBox(
-                          quarterTurns: 3,
-                          child: Center(
-                            child: Icon(
-                              Icons.send,
-                              color:
-                                  themeData ? Colors.black54 : Colors.white54,
-                              size: 50,
-                            ),
-                          ),
-                        ),
-                      ),
-                      height: 100,
-                      width: 100,
-                      decoration: decorator.copyWith(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
-                          border: Border.all(
-                              width: 10,
-                              color:
-                                  themeData ? Colors.black54 : Colors.white54),
-                          shape: BoxShape.circle),
-                    ),
-            )
+                onTap: () => saveForm(),
+                child: taskNameController.text.isNotEmpty
+                    ? NeonButton()
+                    : CircleButton())
           ],
         ),
       ),
