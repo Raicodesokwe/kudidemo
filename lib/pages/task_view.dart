@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
 import '../utils/utils.dart';
+import '../widgets/color_overlay.dart';
 import '../widgets/funky_overlay.dart';
 
 class TaskView extends StatefulWidget {
@@ -27,7 +28,7 @@ class _TaskViewState extends State<TaskView> {
   late String notes = '';
   final DateTime now = DateTime.now();
   late DateTime fromDate;
-
+  late Color color = Colors.green.shade200;
   late DateTime toDate;
 
   TextEditingController taskNameController = TextEditingController();
@@ -103,15 +104,24 @@ class _TaskViewState extends State<TaskView> {
       );
     }
 
+    Future selectColorDialog(BuildContext context) {
+      return showDialog(
+        context: context,
+        builder: (_) => ColorOverlay(
+          color: color,
+        ),
+      );
+    }
+
     Future saveForm() async {
       final isValid = _taskForm.currentState!.validate();
       if (isValid) {
         final task = TaskModel(
-          name: taskNameController.text,
-          from: fromDate,
-          to: toDate,
-          notes: notes,
-        );
+            name: taskNameController.text,
+            from: fromDate,
+            to: toDate,
+            notes: notes,
+            color: color);
         final taskProvider = Provider.of<TaskProvider>(context, listen: false);
         taskProvider.addTask(task);
         Navigator.of(context).pop();
@@ -165,20 +175,28 @@ class _TaskViewState extends State<TaskView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                      padding: const EdgeInsets.all(7),
-                      child: Center(
-                          child: Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 92, 202, 96),
-                            shape: BoxShape.circle),
-                      )),
-                      decoration: decorator.copyWith(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
-                          borderRadius: BorderRadius.circular(30))),
+                  GestureDetector(
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      selectColorDialog(context).then((value) {
+                        color = value;
+                        setState(() {});
+                      });
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.all(7),
+                        child: Center(
+                            child: Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                              color: color, shape: BoxShape.circle),
+                        )),
+                        decoration: decorator.copyWith(
+                            color:
+                                themeData ? Colors.grey[300] : Colors.grey[900],
+                            borderRadius: BorderRadius.circular(30))),
+                  ),
                   GestureDetector(
                     onTap: () {
                       FocusScope.of(context).unfocus();

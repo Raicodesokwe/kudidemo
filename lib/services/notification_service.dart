@@ -23,6 +23,13 @@ class NotifyService {
     });
   }
 
+  void requestIOSPermissions() {
+    _notifications
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(alert: true, badge: true, sound: true);
+  }
+
   static Future showNotification({
     int id = 0,
     String? title,

@@ -5,6 +5,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:kudidemo/pages/calendar_widget.dart';
+import 'package:kudidemo/services/notification_service.dart';
 
 import 'package:kudidemo/theme/changethemebtn.dart';
 import 'package:kudidemo/providers/theme_provider.dart';
@@ -64,6 +65,23 @@ class _HomePageState extends State<HomePage> {
   String? month;
   String? previousMonth;
   String? nextMonth;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    NotifyService.init();
+    if (Platform.isIOS) {
+      NotifyService().requestIOSPermissions();
+    }
+    listenNotifications();
+  }
+
+  void listenNotifications() {
+    NotifyService.onNotifications.stream.listen(onClickedNotification);
+  }
+
+  void onClickedNotification(String? payload) {}
+
   @override
   Widget build(BuildContext context) {
     if (now.month == 1) {
@@ -458,7 +476,8 @@ class _HomePageState extends State<HomePage> {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 15),
                                 child: Container(
-                                  padding: const EdgeInsets.all(15),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
                                   width: double.infinity,
                                   child: Column(
                                     crossAxisAlignment:
@@ -497,6 +516,9 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ],
                                       ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
                                       Text(
                                         tasks[index].name!,
                                         style: TextStyle(fontSize: 19),
@@ -515,9 +537,7 @@ class _HomePageState extends State<HomePage> {
                                     ],
                                   ),
                                   decoration: decorator.copyWith(
-                                      color: themeData
-                                          ? Colors.grey[300]
-                                          : Colors.grey[900],
+                                      color: tasks[index].color,
                                       borderRadius:
                                           BorderRadius.circular(10.0)),
                                 ),

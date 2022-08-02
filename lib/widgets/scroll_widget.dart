@@ -35,7 +35,7 @@ class ScrollWidget extends StatelessWidget {
             child: TaskWidget(
               size: size,
               decorator: decorator,
-              color: Colors.pink,
+              color: Colors.pink.shade100,
               task: 'Task',
               image: "assets/images/tasks.png",
             ),
@@ -49,7 +49,7 @@ class ScrollWidget extends StatelessWidget {
             child: TaskWidget(
               size: size,
               decorator: decorator,
-              color: Colors.blue,
+              color: Colors.blue.shade100,
               task: 'Habits',
               image: "assets/images/habits.png",
             ),
@@ -65,7 +65,7 @@ class ScrollWidget extends StatelessWidget {
             child: TaskWidget(
               size: size,
               decorator: decorator,
-              color: Colors.green,
+              color: Colors.green.shade100,
               task: 'Finances',
               image: "assets/images/finances.png",
             ),
@@ -81,7 +81,7 @@ class ScrollWidget extends StatelessWidget {
             child: TaskWidget(
               size: size,
               decorator: decorator,
-              color: Colors.orangeAccent,
+              color: Colors.orange.shade100,
               task: 'Journal',
               image: "assets/images/journal.png",
             ),
@@ -109,11 +109,13 @@ class ScrollWidget extends StatelessWidget {
                   ),
                   Text('Group tasks',
                       style: GoogleFonts.prompt(
-                          fontSize: 17, fontWeight: FontWeight.w700))
+                          color: Colors.black,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700))
                 ],
               ),
               decoration: decorator.copyWith(
-                  color: Colors.purpleAccent,
+                  color: Colors.purple.shade100,
                   borderRadius: BorderRadius.circular(10.0)),
             ),
           ),

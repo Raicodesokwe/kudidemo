@@ -35,7 +35,9 @@ class TaskWidget extends StatelessWidget {
             ),
             Text(task,
                 style: GoogleFonts.prompt(
-                    fontSize: 20, fontWeight: FontWeight.w700))
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700))
           ],
         ),
         decoration: decorator.copyWith(
