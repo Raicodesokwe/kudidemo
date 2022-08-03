@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/pages/day_rating.dart';
 import 'package:kudidemo/pages/group_task.dart';
 import 'package:kudidemo/widgets/task_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../pages/finances_page.dart';
 import '../pages/habits_page.dart';
 import '../pages/journal_page.dart';
 import '../pages/task_view.dart';
+import '../providers/theme_provider.dart';
 
 class ScrollWidget extends StatelessWidget {
   const ScrollWidget({
@@ -20,6 +23,36 @@ class ScrollWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
+    final BoxDecoration decorator = BoxDecoration(
+      boxShadow: themeData
+          ? [
+              BoxShadow(
+                  color: Colors.grey.shade500,
+                  offset: Offset(4, 4),
+                  blurRadius: 15,
+                  spreadRadius: 1),
+              BoxShadow(
+                spreadRadius: 1,
+                color: Colors.white,
+                offset: Offset(-4, -4),
+                blurRadius: 15,
+              )
+            ]
+          : [
+              BoxShadow(
+                  color: Colors.black,
+                  offset: Offset(5, 5),
+                  blurRadius: 15,
+                  spreadRadius: 5),
+              BoxShadow(
+                spreadRadius: 1,
+                color: Colors.grey.shade800,
+                offset: Offset(-4, -4),
+                blurRadius: 15,
+              )
+            ],
+    );
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -35,7 +68,6 @@ class ScrollWidget extends StatelessWidget {
             child: TaskWidget(
               size: size,
               decorator: decorator,
-              color: Colors.pink.shade100,
               task: 'Task',
               image: "assets/images/tasks.png",
             ),
@@ -49,7 +81,6 @@ class ScrollWidget extends StatelessWidget {
             child: TaskWidget(
               size: size,
               decorator: decorator,
-              color: Colors.blue.shade100,
               task: 'Habits',
               image: "assets/images/habits.png",
             ),
@@ -65,7 +96,6 @@ class ScrollWidget extends StatelessWidget {
             child: TaskWidget(
               size: size,
               decorator: decorator,
-              color: Colors.green.shade100,
               task: 'Finances',
               image: "assets/images/finances.png",
             ),
@@ -76,12 +106,11 @@ class ScrollWidget extends StatelessWidget {
           GestureDetector(
             onTap: () {
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => JournalPage()));
+                  .push(MaterialPageRoute(builder: (context) => DayRating()));
             },
             child: TaskWidget(
               size: size,
               decorator: decorator,
-              color: Colors.orange.shade100,
               task: 'Journal',
               image: "assets/images/journal.png",
             ),
@@ -109,13 +138,11 @@ class ScrollWidget extends StatelessWidget {
                   ),
                   Text('Group tasks',
                       style: GoogleFonts.prompt(
-                          color: Colors.black,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700))
+                          fontSize: 17, fontWeight: FontWeight.w700))
                 ],
               ),
               decoration: decorator.copyWith(
-                  color: Colors.purple.shade100,
+                  color: themeData ? Colors.grey[300] : Colors.grey[900],
                   borderRadius: BorderRadius.circular(10.0)),
             ),
           ),

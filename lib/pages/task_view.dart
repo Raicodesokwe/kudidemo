@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
 import '../utils/utils.dart';
+import '../widgets/back_arrow.dart';
 import '../widgets/color_overlay.dart';
 import '../widgets/funky_overlay.dart';
 
@@ -135,6 +136,8 @@ class _TaskViewState extends State<TaskView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            if (!isKeyboard)
+              BackArrow(decorator: decorator, themeData: themeData),
             if (!isKeyboard)
               Center(
                 child: SizedBox(

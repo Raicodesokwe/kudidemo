@@ -92,6 +92,7 @@ class ColorOverlayState extends State<ColorOverlay>
                         GestureDetector(
                           onTap: () {
                             widget.color = Colors.pink.shade200;
+                            setState(() {});
                           },
                           child: Container(
                               padding: const EdgeInsets.all(7),
@@ -104,14 +105,17 @@ class ColorOverlayState extends State<ColorOverlay>
                                     shape: BoxShape.circle),
                               )),
                               decoration: decorator.copyWith(
-                                  color: themeData
-                                      ? Colors.grey[300]
-                                      : Colors.grey[900],
+                                  color: widget.color == Colors.pink.shade200
+                                      ? Colors.pink.shade200
+                                      : themeData
+                                          ? Colors.grey[300]
+                                          : Colors.grey[900],
                                   borderRadius: BorderRadius.circular(30))),
                         ),
                         GestureDetector(
                           onTap: () {
                             widget.color = Colors.purple.shade200;
+                            setState(() {});
                           },
                           child: Container(
                               padding: const EdgeInsets.all(7),
@@ -124,14 +128,17 @@ class ColorOverlayState extends State<ColorOverlay>
                                     shape: BoxShape.circle),
                               )),
                               decoration: decorator.copyWith(
-                                  color: themeData
-                                      ? Colors.grey[300]
-                                      : Colors.grey[900],
+                                  color: widget.color == Colors.purple.shade200
+                                      ? Colors.purple.shade200
+                                      : themeData
+                                          ? Colors.grey[300]
+                                          : Colors.grey[900],
                                   borderRadius: BorderRadius.circular(30))),
                         ),
                         GestureDetector(
                           onTap: () {
                             widget.color = Colors.blue.shade200;
+                            setState(() {});
                           },
                           child: Container(
                               padding: const EdgeInsets.all(7),
@@ -144,14 +151,17 @@ class ColorOverlayState extends State<ColorOverlay>
                                     shape: BoxShape.circle),
                               )),
                               decoration: decorator.copyWith(
-                                  color: themeData
-                                      ? Colors.grey[300]
-                                      : Colors.grey[900],
+                                  color: widget.color == Colors.blue.shade200
+                                      ? Colors.blue.shade200
+                                      : themeData
+                                          ? Colors.grey[300]
+                                          : Colors.grey[900],
                                   borderRadius: BorderRadius.circular(30))),
                         ),
                         GestureDetector(
                           onTap: () {
                             widget.color = Colors.orange.shade200;
+                            setState(() {});
                           },
                           child: Container(
                               padding: const EdgeInsets.all(7),
@@ -164,14 +174,17 @@ class ColorOverlayState extends State<ColorOverlay>
                                     shape: BoxShape.circle),
                               )),
                               decoration: decorator.copyWith(
-                                  color: themeData
-                                      ? Colors.grey[300]
-                                      : Colors.grey[900],
+                                  color: widget.color == Colors.orange.shade200
+                                      ? Colors.orange.shade200
+                                      : themeData
+                                          ? Colors.grey[300]
+                                          : Colors.grey[900],
                                   borderRadius: BorderRadius.circular(30))),
                         ),
                         GestureDetector(
                           onTap: () {
                             widget.color = Colors.green.shade200;
+                            setState(() {});
                           },
                           child: Container(
                               padding: const EdgeInsets.all(7),
@@ -184,9 +197,11 @@ class ColorOverlayState extends State<ColorOverlay>
                                     shape: BoxShape.circle),
                               )),
                               decoration: decorator.copyWith(
-                                  color: themeData
-                                      ? Colors.grey[300]
-                                      : Colors.grey[900],
+                                  color: widget.color == Colors.green.shade200
+                                      ? Colors.green.shade200
+                                      : themeData
+                                          ? Colors.grey[300]
+                                          : Colors.grey[900],
                                   borderRadius: BorderRadius.circular(30))),
                         ),
                       ],

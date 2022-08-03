@@ -7,6 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
+import '../widgets/back_arrow.dart';
 import '../widgets/text_field.dart';
 
 class FinancesPage extends StatelessWidget {
@@ -64,6 +65,8 @@ class FinancesPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            if (!isKeyboard)
+              BackArrow(decorator: decorator, themeData: themeData),
             if (!isKeyboard)
               Center(
                 child: SizedBox(
@@ -163,7 +166,7 @@ class FinancesPage extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: size.height * 0.15,
+              height: size.height * 0.12,
             ),
             CircleButton()
           ],

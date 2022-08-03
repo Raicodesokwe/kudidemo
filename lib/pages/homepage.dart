@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    NotifyService.init();
+    NotifyService.init(initScheduled: true);
     if (Platform.isIOS) {
       NotifyService().requestIOSPermissions();
     }
