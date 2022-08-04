@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,7 +17,7 @@ import '../providers/theme_provider.dart';
 import '../utils/utils.dart';
 import '../widgets/back_arrow.dart';
 import '../widgets/color_overlay.dart';
-import '../widgets/funky_overlay.dart';
+import '../widgets/date_overlay.dart';
 
 class TaskView extends StatefulWidget {
   TaskView({Key? key, this.task}) : super(key: key);
@@ -89,29 +92,49 @@ class _TaskViewState extends State<TaskView> {
     );
     Size size = MediaQuery.of(context).size;
     Future createAlertDialog(BuildContext context) {
-      return showDialog(
-        context: context,
-        builder: (_) => FunkyOverlay(
-          fromDate: fromDate,
-          toDateString: toDate,
-        ),
-      );
+      return Platform.isIOS
+          ? showCupertinoDialog(
+              context: context,
+              builder: (_) => FunkyOverlay(
+                fromDate: fromDate,
+                toDateString: toDate,
+              ),
+            )
+          : showDialog(
+              context: context,
+              builder: (_) => FunkyOverlay(
+                fromDate: fromDate,
+                toDateString: toDate,
+              ),
+            );
     }
 
     Future createNotesDialog(BuildContext context) {
-      return showDialog(
-        context: context,
-        builder: (_) => NotesOverlay(),
-      );
+      return Platform.isIOS
+          ? showCupertinoDialog(
+              context: context,
+              builder: (_) => NotesOverlay(),
+            )
+          : showDialog(
+              context: context,
+              builder: (_) => NotesOverlay(),
+            );
     }
 
     Future selectColorDialog(BuildContext context) {
-      return showDialog(
-        context: context,
-        builder: (_) => ColorOverlay(
-          color: color,
-        ),
-      );
+      return Platform.isIOS
+          ? showCupertinoDialog(
+              context: context,
+              builder: (_) => ColorOverlay(
+                color: color,
+              ),
+            )
+          : showDialog(
+              context: context,
+              builder: (_) => ColorOverlay(
+                color: color,
+              ),
+            );
     }
 
     Future saveForm() async {

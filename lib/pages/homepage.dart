@@ -1,10 +1,15 @@
 import 'dart:io';
+import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:kudidemo/pages/calendar_widget.dart';
+import 'package:kudidemo/pages/group_task.dart';
+import 'package:kudidemo/pages/journal_page.dart';
+import 'package:kudidemo/pages/task_view.dart';
 import 'package:kudidemo/services/notification_service.dart';
 
 import 'package:kudidemo/theme/changethemebtn.dart';
@@ -15,8 +20,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../providers/task_provider.dart';
 import '../widgets/date_container.dart';
+import '../widgets/image_modal.dart';
 import '../widgets/scroll_widget.dart';
 import '../widgets/task_modal.dart';
+import 'finances_page.dart';
+import 'habits_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -28,6 +36,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? time;
   DateTime now = DateTime.now();
+
   _bottomSheet() {
     final themeData = Provider.of<ThemeProvider>(context).darkTheme;
     final BoxDecoration decorator = BoxDecoration(
@@ -170,12 +179,18 @@ class _HomePageState extends State<HomePage> {
       time = 'Good night,';
     }
     void _selectTask() {
-      showModalBottomSheet(
-          isScrollControlled: true,
-          context: context,
-          builder: (context) {
-            return _bottomSheet();
-          });
+      Platform.isIOS
+          ? showCupertinoModalPopup(
+              context: context,
+              builder: (context) {
+                return _bottomSheet();
+              })
+          : showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (context) {
+                return _bottomSheet();
+              });
     }
 
     final tasks = Provider.of<TaskProvider>(context).tasks;

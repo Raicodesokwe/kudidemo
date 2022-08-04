@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/utils/utils.dart';
@@ -68,26 +72,17 @@ class ColorOverlayState extends State<ColorOverlay>
     );
     Size size = MediaQuery.of(context).size;
 
-    return Center(
-      child: Material(
-        color: Colors.transparent,
-        child: ScaleTransition(
-          scale: scaleAnimation,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 60),
-            child: Container(
-              decoration: ShapeDecoration(
-                  color: themeData ? Colors.grey[300] : Colors.grey[900],
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0))),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return Platform.isIOS
+        ? ScaleTransition(
+            scale: scaleAnimation,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+              child: CupertinoAlertDialog(
+                content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         GestureDetector(
                           onTap: () {
@@ -112,6 +107,9 @@ class ColorOverlayState extends State<ColorOverlay>
                                           : Colors.grey[900],
                                   borderRadius: BorderRadius.circular(30))),
                         ),
+                        SizedBox(
+                          width: 20,
+                        ),
                         GestureDetector(
                           onTap: () {
                             widget.color = Colors.purple.shade200;
@@ -134,6 +132,9 @@ class ColorOverlayState extends State<ColorOverlay>
                                           ? Colors.grey[300]
                                           : Colors.grey[900],
                                   borderRadius: BorderRadius.circular(30))),
+                        ),
+                        SizedBox(
+                          width: 20,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -158,6 +159,14 @@ class ColorOverlayState extends State<ColorOverlay>
                                           : Colors.grey[900],
                                   borderRadius: BorderRadius.circular(30))),
                         ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         GestureDetector(
                           onTap: () {
                             widget.color = Colors.orange.shade200;
@@ -180,6 +189,9 @@ class ColorOverlayState extends State<ColorOverlay>
                                           ? Colors.grey[300]
                                           : Colors.grey[900],
                                   borderRadius: BorderRadius.circular(30))),
+                        ),
+                        SizedBox(
+                          width: 30,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -205,45 +217,220 @@ class ColorOverlayState extends State<ColorOverlay>
                                   borderRadius: BorderRadius.circular(30))),
                         ),
                       ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.05,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('Cancel')),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pop(widget.color);
-                          },
-                          child: Container(
-                            child: Center(
-                              child: Text(
-                                'Confirm',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            height: 50,
-                            width: 120,
-                            decoration: decorator.copyWith(
-                                borderRadius: BorderRadius.circular(7),
-                                color: Color.fromARGB(255, 12, 99, 212)),
-                          ),
-                        ),
-                      ],
                     )
                   ],
                 ),
+                actions: [
+                  CupertinoDialogAction(
+                      child: Text(
+                        'Cancel',
+                        style: GoogleFonts.prompt(
+                            color: themeData ? Colors.black : Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }),
+                  CupertinoDialogAction(
+                    child: Text(
+                      'Confirm',
+                      style: GoogleFonts.prompt(
+                          color: themeData ? Colors.black : Colors.white),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop(widget.color);
+                    },
+                  )
+                ],
               ),
             ),
-          ),
-        ),
-      ),
-    );
+          )
+        : Center(
+            child: Material(
+              color: Colors.transparent,
+              child: ScaleTransition(
+                scale: scaleAnimation,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 60),
+                  child: Container(
+                    decoration: ShapeDecoration(
+                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  widget.color = Colors.pink.shade200;
+                                  setState(() {});
+                                },
+                                child: Container(
+                                    padding: const EdgeInsets.all(7),
+                                    child: Center(
+                                        child: Container(
+                                      height: 30,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                          color: Colors.pink.shade200,
+                                          shape: BoxShape.circle),
+                                    )),
+                                    decoration: decorator.copyWith(
+                                        color:
+                                            widget.color == Colors.pink.shade200
+                                                ? Colors.pink.shade200
+                                                : themeData
+                                                    ? Colors.grey[300]
+                                                    : Colors.grey[900],
+                                        borderRadius:
+                                            BorderRadius.circular(30))),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  widget.color = Colors.purple.shade200;
+                                  setState(() {});
+                                },
+                                child: Container(
+                                    padding: const EdgeInsets.all(7),
+                                    child: Center(
+                                        child: Container(
+                                      height: 30,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                          color: Colors.purple.shade200,
+                                          shape: BoxShape.circle),
+                                    )),
+                                    decoration: decorator.copyWith(
+                                        color: widget.color ==
+                                                Colors.purple.shade200
+                                            ? Colors.purple.shade200
+                                            : themeData
+                                                ? Colors.grey[300]
+                                                : Colors.grey[900],
+                                        borderRadius:
+                                            BorderRadius.circular(30))),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  widget.color = Colors.blue.shade200;
+                                  setState(() {});
+                                },
+                                child: Container(
+                                    padding: const EdgeInsets.all(7),
+                                    child: Center(
+                                        child: Container(
+                                      height: 30,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                          color: Colors.blue.shade200,
+                                          shape: BoxShape.circle),
+                                    )),
+                                    decoration: decorator.copyWith(
+                                        color:
+                                            widget.color == Colors.blue.shade200
+                                                ? Colors.blue.shade200
+                                                : themeData
+                                                    ? Colors.grey[300]
+                                                    : Colors.grey[900],
+                                        borderRadius:
+                                            BorderRadius.circular(30))),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  widget.color = Colors.orange.shade200;
+                                  setState(() {});
+                                },
+                                child: Container(
+                                    padding: const EdgeInsets.all(7),
+                                    child: Center(
+                                        child: Container(
+                                      height: 30,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                          color: Colors.orange.shade200,
+                                          shape: BoxShape.circle),
+                                    )),
+                                    decoration: decorator.copyWith(
+                                        color: widget.color ==
+                                                Colors.orange.shade200
+                                            ? Colors.orange.shade200
+                                            : themeData
+                                                ? Colors.grey[300]
+                                                : Colors.grey[900],
+                                        borderRadius:
+                                            BorderRadius.circular(30))),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  widget.color = Colors.green.shade200;
+                                  setState(() {});
+                                },
+                                child: Container(
+                                    padding: const EdgeInsets.all(7),
+                                    child: Center(
+                                        child: Container(
+                                      height: 30,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                          color: Colors.green.shade200,
+                                          shape: BoxShape.circle),
+                                    )),
+                                    decoration: decorator.copyWith(
+                                        color: widget.color ==
+                                                Colors.green.shade200
+                                            ? Colors.green.shade200
+                                            : themeData
+                                                ? Colors.grey[300]
+                                                : Colors.grey[900],
+                                        borderRadius:
+                                            BorderRadius.circular(30))),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: size.height * 0.05,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Cancel')),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pop(widget.color);
+                                },
+                                child: Container(
+                                  child: Center(
+                                    child: Text(
+                                      'Confirm',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  height: 50,
+                                  width: 120,
+                                  decoration: decorator.copyWith(
+                                      borderRadius: BorderRadius.circular(7),
+                                      color: Color.fromARGB(255, 12, 99, 212)),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
   }
 }
