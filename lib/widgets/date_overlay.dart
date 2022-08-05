@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +10,15 @@ import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
 
-class FunkyOverlay extends StatefulWidget {
+class DateOverlay extends StatefulWidget {
   DateTime? fromDate;
   DateTime? toDateString;
-  FunkyOverlay({Key? key, required this.fromDate, required this.toDateString});
+  DateOverlay({Key? key, required this.fromDate, required this.toDateString});
   @override
-  State<StatefulWidget> createState() => FunkyOverlayState();
+  State<StatefulWidget> createState() => DateOverlayState();
 }
 
-class FunkyOverlayState extends State<FunkyOverlay>
+class DateOverlayState extends State<DateOverlay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
@@ -36,6 +37,13 @@ class FunkyOverlayState extends State<FunkyOverlay>
     });
 
     controller.forward();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
   }
 
   @override
@@ -118,305 +126,335 @@ class FunkyOverlayState extends State<FunkyOverlay>
 
     DateTime now = DateTime.now();
     return Platform.isIOS
-        ? CupertinoAlertDialog(
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'From',
-                  style: GoogleFonts.prompt(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: themeData ? Colors.black : Colors.white),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        ? ScaleTransition(
+            scale: scaleAnimation,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+              child: CupertinoAlertDialog(
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    GestureDetector(
-                      onTap: () => pickFromDateTime(pickDate: true),
-                      child: Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: decorator.copyWith(
-                          borderRadius: BorderRadius.circular(15.0),
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              Utils.toDate(widget.fromDate!),
-                              style: GoogleFonts.prompt(
-                                  color:
-                                      themeData ? Colors.black : Colors.white),
+                    Text(
+                      'From',
+                      style: GoogleFonts.prompt(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: themeData ? Colors.black : Colors.white),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () => pickFromDateTime(pickDate: true),
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: decorator.copyWith(
+                              borderRadius: BorderRadius.circular(15.0),
+                              color: themeData
+                                  ? Colors.grey[300]
+                                  : Colors.grey[900],
                             ),
-                            Icon(Icons.arrow_drop_down),
-                          ],
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => pickFromDateTime(pickDate: false),
-                      child: Row(
-                        children: [
-                          Text(
-                            Utils.toTime(widget.fromDate!),
-                            style: GoogleFonts.prompt(
-                                color: themeData ? Colors.black : Colors.white),
-                          ),
-                          Icon(Icons.arrow_drop_down)
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                Text(
-                  'To',
-                  style: GoogleFonts.prompt(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: themeData ? Colors.black : Colors.white),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () => pickToDateTime(pickDate: true),
-                      child: Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: decorator.copyWith(
-                          borderRadius: BorderRadius.circular(15.0),
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              Utils.toDate(widget.toDateString!),
-                              style: GoogleFonts.prompt(
-                                  color:
-                                      themeData ? Colors.black : Colors.white),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  Utils.toDate(widget.fromDate!),
+                                  style: GoogleFonts.prompt(
+                                      color: themeData
+                                          ? Colors.black
+                                          : Colors.white),
+                                ),
+                                Icon(Icons.arrow_drop_down),
+                              ],
                             ),
-                            Icon(Icons.arrow_drop_down),
-                          ],
+                          ),
                         ),
-                      ),
+                        GestureDetector(
+                          onTap: () => pickFromDateTime(pickDate: false),
+                          child: Row(
+                            children: [
+                              Text(
+                                Utils.toTime(widget.fromDate!),
+                                style: GoogleFonts.prompt(
+                                    color: themeData
+                                        ? Colors.black
+                                        : Colors.white),
+                              ),
+                              Icon(Icons.arrow_drop_down)
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    GestureDetector(
-                      onTap: () => pickFromDateTime(pickDate: false),
-                      child: Row(
-                        children: [
-                          Text(
-                            Utils.toTime(widget.toDateString!),
-                            style: GoogleFonts.prompt(
-                                color: themeData ? Colors.black : Colors.white),
-                          ),
-                          Icon(Icons.arrow_drop_down)
-                        ],
-                      ),
+                    Text(
+                      'To',
+                      style: GoogleFonts.prompt(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: themeData ? Colors.black : Colors.white),
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  'Remind',
-                  style: GoogleFonts.prompt(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: themeData ? Colors.black : Colors.white),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                        padding: const EdgeInsets.all(15),
-                        child: Center(
-                          child: Text(
-                            '5 mins',
-                            style: GoogleFonts.prompt(
-                                color:
-                                    themeData ? Colors.black45 : Colors.white54,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () => pickToDateTime(pickDate: true),
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: decorator.copyWith(
+                              borderRadius: BorderRadius.circular(15.0),
+                              color: themeData
+                                  ? Colors.grey[300]
+                                  : Colors.grey[900],
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  Utils.toDate(widget.toDateString!),
+                                  style: GoogleFonts.prompt(
+                                      color: themeData
+                                          ? Colors.black
+                                          : Colors.white),
+                                ),
+                                Icon(Icons.arrow_drop_down),
+                              ],
+                            ),
                           ),
                         ),
-                        decoration: decorator.copyWith(
-                            color:
-                                themeData ? Colors.grey[300] : Colors.grey[900],
-                            borderRadius: BorderRadius.circular(30))),
-                    Container(
-                        padding: const EdgeInsets.all(15),
-                        child: Center(
-                          child: Text(
-                            '10 mins',
-                            style: GoogleFonts.prompt(
-                                color:
-                                    themeData ? Colors.black45 : Colors.white54,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600),
+                        GestureDetector(
+                          onTap: () => pickFromDateTime(pickDate: false),
+                          child: Row(
+                            children: [
+                              Text(
+                                Utils.toTime(widget.toDateString!),
+                                style: GoogleFonts.prompt(
+                                    color: themeData
+                                        ? Colors.black
+                                        : Colors.white),
+                              ),
+                              Icon(Icons.arrow_drop_down)
+                            ],
                           ),
                         ),
-                        decoration: decorator.copyWith(
-                            color:
-                                themeData ? Colors.grey[300] : Colors.grey[900],
-                            borderRadius: BorderRadius.circular(30))),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                        padding: const EdgeInsets.all(15),
-                        child: Center(
-                          child: Text(
-                            '15 mins',
-                            style: GoogleFonts.prompt(
-                                color:
-                                    themeData ? Colors.black45 : Colors.white54,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        decoration: decorator.copyWith(
-                            color:
-                                themeData ? Colors.grey[300] : Colors.grey[900],
-                            borderRadius: BorderRadius.circular(30))),
+                      ],
+                    ),
                     SizedBox(
-                      width: 15,
+                      height: 15,
                     ),
-                    Container(
-                        padding: const EdgeInsets.all(15),
-                        child: Center(
-                          child: Text(
-                            '20 mins',
-                            style: GoogleFonts.prompt(
-                                color:
-                                    themeData ? Colors.black45 : Colors.white54,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600),
-                          ),
+                    Text(
+                      'Remind',
+                      style: GoogleFonts.prompt(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: themeData ? Colors.black : Colors.white),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            padding: const EdgeInsets.all(15),
+                            child: Center(
+                              child: Text(
+                                '5 mins',
+                                style: GoogleFonts.prompt(
+                                    color: themeData
+                                        ? Colors.black45
+                                        : Colors.white54,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            decoration: decorator.copyWith(
+                                color: themeData
+                                    ? Colors.grey[300]
+                                    : Colors.grey[900],
+                                borderRadius: BorderRadius.circular(30))),
+                        Container(
+                            padding: const EdgeInsets.all(15),
+                            child: Center(
+                              child: Text(
+                                '10 mins',
+                                style: GoogleFonts.prompt(
+                                    color: themeData
+                                        ? Colors.black45
+                                        : Colors.white54,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            decoration: decorator.copyWith(
+                                color: themeData
+                                    ? Colors.grey[300]
+                                    : Colors.grey[900],
+                                borderRadius: BorderRadius.circular(30))),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                            padding: const EdgeInsets.all(15),
+                            child: Center(
+                              child: Text(
+                                '15 mins',
+                                style: GoogleFonts.prompt(
+                                    color: themeData
+                                        ? Colors.black45
+                                        : Colors.white54,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            decoration: decorator.copyWith(
+                                color: themeData
+                                    ? Colors.grey[300]
+                                    : Colors.grey[900],
+                                borderRadius: BorderRadius.circular(30))),
+                        SizedBox(
+                          width: 15,
                         ),
-                        decoration: decorator.copyWith(
-                            color:
-                                themeData ? Colors.grey[300] : Colors.grey[900],
-                            borderRadius: BorderRadius.circular(30))),
-                  ],
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  'Repeat',
-                  style: GoogleFonts.prompt(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: themeData ? Colors.black : Colors.white),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                        padding: const EdgeInsets.all(15),
-                        child: Center(
-                          child: Text(
-                            'None',
-                            style: GoogleFonts.prompt(
-                                color:
-                                    themeData ? Colors.black45 : Colors.white54,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        decoration: decorator.copyWith(
-                            color:
-                                themeData ? Colors.grey[300] : Colors.grey[900],
-                            borderRadius: BorderRadius.circular(30))),
-                    Container(
-                        padding: const EdgeInsets.all(15),
-                        child: Center(
-                          child: Text(
-                            'Daily',
-                            style: GoogleFonts.prompt(
-                                color:
-                                    themeData ? Colors.black45 : Colors.white54,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        decoration: decorator.copyWith(
-                            color:
-                                themeData ? Colors.grey[300] : Colors.grey[900],
-                            borderRadius: BorderRadius.circular(30))),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                        padding: const EdgeInsets.all(15),
-                        child: Center(
-                          child: Text(
-                            'Weekly',
-                            style: GoogleFonts.prompt(
-                                color:
-                                    themeData ? Colors.black45 : Colors.white54,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        decoration: decorator.copyWith(
-                            color:
-                                themeData ? Colors.grey[300] : Colors.grey[900],
-                            borderRadius: BorderRadius.circular(30))),
+                        Container(
+                            padding: const EdgeInsets.all(15),
+                            child: Center(
+                              child: Text(
+                                '20 mins',
+                                style: GoogleFonts.prompt(
+                                    color: themeData
+                                        ? Colors.black45
+                                        : Colors.white54,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            decoration: decorator.copyWith(
+                                color: themeData
+                                    ? Colors.grey[300]
+                                    : Colors.grey[900],
+                                borderRadius: BorderRadius.circular(30))),
+                      ],
+                    ),
                     SizedBox(
-                      width: 15,
+                      height: 15,
                     ),
-                    Container(
-                        padding: const EdgeInsets.all(15),
-                        child: Center(
-                          child: Text(
-                            'Monthly',
-                            style: GoogleFonts.prompt(
-                                color:
-                                    themeData ? Colors.black45 : Colors.white54,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600),
-                          ),
+                    Text(
+                      'Repeat',
+                      style: GoogleFonts.prompt(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: themeData ? Colors.black : Colors.white),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            padding: const EdgeInsets.all(15),
+                            child: Center(
+                              child: Text(
+                                'None',
+                                style: GoogleFonts.prompt(
+                                    color: themeData
+                                        ? Colors.black45
+                                        : Colors.white54,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            decoration: decorator.copyWith(
+                                color: themeData
+                                    ? Colors.grey[300]
+                                    : Colors.grey[900],
+                                borderRadius: BorderRadius.circular(30))),
+                        Container(
+                            padding: const EdgeInsets.all(15),
+                            child: Center(
+                              child: Text(
+                                'Daily',
+                                style: GoogleFonts.prompt(
+                                    color: themeData
+                                        ? Colors.black45
+                                        : Colors.white54,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            decoration: decorator.copyWith(
+                                color: themeData
+                                    ? Colors.grey[300]
+                                    : Colors.grey[900],
+                                borderRadius: BorderRadius.circular(30))),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                            padding: const EdgeInsets.all(15),
+                            child: Center(
+                              child: Text(
+                                'Weekly',
+                                style: GoogleFonts.prompt(
+                                    color: themeData
+                                        ? Colors.black45
+                                        : Colors.white54,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            decoration: decorator.copyWith(
+                                color: themeData
+                                    ? Colors.grey[300]
+                                    : Colors.grey[900],
+                                borderRadius: BorderRadius.circular(30))),
+                        SizedBox(
+                          width: 15,
                         ),
-                        decoration: decorator.copyWith(
-                            color:
-                                themeData ? Colors.grey[300] : Colors.grey[900],
-                            borderRadius: BorderRadius.circular(30))),
+                        Container(
+                            padding: const EdgeInsets.all(15),
+                            child: Center(
+                              child: Text(
+                                'Monthly',
+                                style: GoogleFonts.prompt(
+                                    color: themeData
+                                        ? Colors.black45
+                                        : Colors.white54,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            decoration: decorator.copyWith(
+                                color: themeData
+                                    ? Colors.grey[300]
+                                    : Colors.grey[900],
+                                borderRadius: BorderRadius.circular(30))),
+                      ],
+                    ),
                   ],
                 ),
-              ],
+                actions: [
+                  CupertinoDialogAction(
+                      child: Text(
+                        'Cancel',
+                        style: GoogleFonts.prompt(
+                            color: themeData ? Colors.black : Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }),
+                  CupertinoDialogAction(
+                    child: Text(
+                      'Confirm',
+                      style: GoogleFonts.prompt(
+                          color: themeData ? Colors.black : Colors.white),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop(
+                          {"from": widget.fromDate, "to": widget.toDateString});
+                    },
+                  )
+                ],
+              ),
             ),
-            actions: [
-              CupertinoDialogAction(
-                  child: Text(
-                    'Cancel',
-                    style: GoogleFonts.prompt(
-                        color: themeData ? Colors.black : Colors.white),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  }),
-              CupertinoDialogAction(
-                child: Text(
-                  'Confirm',
-                  style: GoogleFonts.prompt(
-                      color: themeData ? Colors.black : Colors.white),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop(
-                      {"from": widget.fromDate, "to": widget.toDateString});
-                },
-              )
-            ],
           )
         : Center(
             child: Material(

@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/pages/day_rating.dart';
 import 'package:kudidemo/pages/finances_page.dart';
 import 'package:kudidemo/pages/group_task.dart';
 import 'package:kudidemo/pages/habits_page.dart';
@@ -146,7 +147,7 @@ class TaskModal extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => JournalPage()));
+                      MaterialPageRoute(builder: (context) => DayRating()));
                 },
                 child: Padding(
                   padding:

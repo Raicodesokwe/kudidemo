@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:kudidemo/providers/theme_provider.dart';
+import 'package:kudidemo/widgets/back_arrow.dart';
 import 'package:provider/provider.dart';
 
-class PosPage extends StatelessWidget {
-  const PosPage({Key? key}) : super(key: key);
+import '../providers/theme_provider.dart';
+
+class ReasonPage extends StatelessWidget {
+  const ReasonPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,32 +40,23 @@ class PosPage extends StatelessWidget {
               )
             ],
     );
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Center(
-          child: Text(
-            'Your tasks',
-            style: GoogleFonts.prompt(
-                fontWeight: FontWeight.w500,
-                fontSize: 23,
-                color: themeData ? Colors.black : Colors.white),
-          ),
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            BackArrow(decorator: decorator, themeData: themeData),
+            SizedBox(
+              height: size.height * 0.05,
+            ),
+            Text(
+              'What made your day HAPPY?',
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(
+              height: size.height * 0.05,
+            ),
+          ],
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: size.height * 0.03,
-          ),
-          Center(
-            child:
-                Text('Coming soon...', style: GoogleFonts.prompt(fontSize: 20)),
-          ),
-        ],
       ),
     );
   }

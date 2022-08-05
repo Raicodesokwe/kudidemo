@@ -28,7 +28,8 @@ class TaskView extends StatefulWidget {
   State<TaskView> createState() => _TaskViewState();
 }
 
-class _TaskViewState extends State<TaskView> {
+class _TaskViewState extends State<TaskView>
+    with SingleTickerProviderStateMixin {
   late String notes = '';
   final DateTime now = DateTime.now();
   late DateTime fromDate;
@@ -48,6 +49,9 @@ class _TaskViewState extends State<TaskView> {
     return false;
   }
 
+  late AnimationController controller;
+  late Animation<double> fadeAnimation;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -56,6 +60,23 @@ class _TaskViewState extends State<TaskView> {
       fromDate = now;
       toDate = now.add(Duration(hours: 1));
     }
+
+    controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 950));
+    fadeAnimation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
+
+    controller.addListener(() {
+      setState(() {});
+    });
+
+    controller.forward();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
   }
 
   @override
@@ -95,14 +116,14 @@ class _TaskViewState extends State<TaskView> {
       return Platform.isIOS
           ? showCupertinoDialog(
               context: context,
-              builder: (_) => FunkyOverlay(
+              builder: (_) => DateOverlay(
                 fromDate: fromDate,
                 toDateString: toDate,
               ),
             )
           : showDialog(
               context: context,
-              builder: (_) => FunkyOverlay(
+              builder: (_) => DateOverlay(
                 fromDate: fromDate,
                 toDateString: toDate,
               ),
@@ -156,142 +177,147 @@ class _TaskViewState extends State<TaskView> {
     return Scaffold(
       body: Form(
         key: _taskForm,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (!isKeyboard)
-              BackArrow(decorator: decorator, themeData: themeData),
-            if (!isKeyboard)
-              Center(
-                child: SizedBox(
-                    width: size.width * 0.4,
-                    child: Lottie.asset('assets/images/task.json')),
+        child: FadeTransition(
+          opacity: fadeAnimation,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (!isKeyboard)
+                BackArrow(decorator: decorator, themeData: themeData),
+              if (!isKeyboard)
+                Center(
+                  child: SizedBox(
+                      width: size.width * 0.4,
+                      child: Lottie.asset('assets/images/task.json')),
+                ),
+              SizedBox(
+                height: size.height * 0.03,
               ),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-            if (!isKeyboard)
-              Text('Task',
-                  style: TextStyle(
-                      color: themeData ? Colors.grey[300] : Colors.grey[900],
-                      fontSize: 50,
-                      shadows: const [
-                        Shadow(
-                            color: Color.fromARGB(255, 92, 202, 96),
-                            blurRadius: 8),
-                        Shadow(
-                            color: Color.fromARGB(255, 92, 202, 96),
-                            blurRadius: 10),
-                        Shadow(
-                            color: Color.fromARGB(255, 92, 202, 96),
-                            blurRadius: 12),
-                      ])),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-            CustomTextField(
-                controller: taskNameController,
-                emptytext: 'task name is required',
-                hintText: 'Task name'),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                      selectColorDialog(context).then((value) {
-                        color = value;
-                        setState(() {});
-                      });
-                    },
-                    child: Container(
-                        padding: const EdgeInsets.all(7),
+              if (!isKeyboard)
+                Text('Task',
+                    style: TextStyle(
+                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        fontSize: 50,
+                        shadows: const [
+                          Shadow(
+                              color: Color.fromARGB(255, 92, 202, 96),
+                              blurRadius: 8),
+                          Shadow(
+                              color: Color.fromARGB(255, 92, 202, 96),
+                              blurRadius: 10),
+                          Shadow(
+                              color: Color.fromARGB(255, 92, 202, 96),
+                              blurRadius: 12),
+                        ])),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+              CustomTextField(
+                  controller: taskNameController,
+                  emptytext: 'task name is required',
+                  hintText: 'Task name'),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                        selectColorDialog(context).then((value) {
+                          color = value;
+                          setState(() {});
+                        });
+                      },
+                      child: Container(
+                          padding: const EdgeInsets.all(7),
+                          child: Center(
+                              child: Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                                color: color, shape: BoxShape.circle),
+                          )),
+                          decoration: decorator.copyWith(
+                              color: themeData
+                                  ? Colors.grey[300]
+                                  : Colors.grey[900],
+                              borderRadius: BorderRadius.circular(30))),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                        createAlertDialog(context).then((value) {
+                          fromDate = value['from'];
+                          toDate = value['to'];
+                          setState(() {});
+                        });
+                      },
+                      child: Container(
+                        height: 35,
+                        width: 35,
                         child: Center(
-                            child: Container(
-                          height: 30,
-                          width: 30,
-                          decoration: BoxDecoration(
-                              color: color, shape: BoxShape.circle),
+                            child: Icon(
+                          Icons.calendar_month,
+                          color: themeData ? Colors.black54 : Colors.white54,
                         )),
                         decoration: decorator.copyWith(
                             color:
                                 themeData ? Colors.grey[300] : Colors.grey[900],
-                            borderRadius: BorderRadius.circular(30))),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                      createAlertDialog(context).then((value) {
-                        fromDate = value['from'];
-                        toDate = value['to'];
-                        setState(() {});
-                      });
-                    },
-                    child: Container(
+                            borderRadius: BorderRadius.circular(5)),
+                      ),
+                    ),
+                    Container(
                       height: 35,
                       width: 35,
-                      child: Center(
-                          child: Icon(
-                        Icons.calendar_month,
-                        color: themeData ? Colors.black54 : Colors.white54,
-                      )),
                       decoration: decorator.copyWith(
                           color:
                               themeData ? Colors.grey[300] : Colors.grey[900],
-                          borderRadius: BorderRadius.circular(5)),
+                          shape: BoxShape.circle),
+                      child: Icon(
+                        FontAwesomeIcons.codeBranch,
+                        color: themeData ? Colors.black54 : Colors.white60,
+                        size: 15,
+                      ),
                     ),
-                  ),
-                  Container(
-                    height: 35,
-                    width: 35,
-                    decoration: decorator.copyWith(
-                        color: themeData ? Colors.grey[300] : Colors.grey[900],
-                        shape: BoxShape.circle),
-                    child: Icon(
-                      FontAwesomeIcons.codeBranch,
-                      color: themeData ? Colors.black54 : Colors.white60,
-                      size: 15,
+                    GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                        createNotesDialog(context).then((value) {
+                          notes = value;
+                          setState(() {});
+                        });
+                      },
+                      child: Container(
+                        height: 35,
+                        width: 35,
+                        child: Center(
+                            child: Icon(
+                          Icons.note_alt,
+                          color: themeData ? Colors.black54 : Colors.white54,
+                        )),
+                        decoration: decorator.copyWith(
+                            color:
+                                themeData ? Colors.grey[300] : Colors.grey[900],
+                            borderRadius: BorderRadius.circular(5)),
+                      ),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                      createNotesDialog(context).then((value) {
-                        notes = value;
-                        setState(() {});
-                      });
-                    },
-                    child: Container(
-                      height: 35,
-                      width: 35,
-                      child: Center(
-                          child: Icon(
-                        Icons.note_alt,
-                        color: themeData ? Colors.black54 : Colors.white54,
-                      )),
-                      decoration: decorator.copyWith(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
-                          borderRadius: BorderRadius.circular(5)),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: size.height * 0.2,
-            ),
-            GestureDetector(
-                onTap: () => saveForm(),
-                child: taskNameController.text.isNotEmpty
-                    ? NeonButton()
-                    : CircleButton())
-          ],
+              SizedBox(
+                height: size.height * 0.2,
+              ),
+              GestureDetector(
+                  onTap: () => saveForm(),
+                  child: taskNameController.text.isNotEmpty
+                      ? NeonButton()
+                      : CircleButton())
+            ],
+          ),
         ),
       ),
     );

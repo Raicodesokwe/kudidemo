@@ -10,13 +10,21 @@ import '../providers/theme_provider.dart';
 import '../widgets/back_arrow.dart';
 import '../widgets/text_field.dart';
 
-class HabitsPage extends StatelessWidget {
+class HabitsPage extends StatefulWidget {
   HabitsPage({Key? key}) : super(key: key);
 
+  @override
+  State<HabitsPage> createState() => _HabitsPageState();
+}
+
+class _HabitsPageState extends State<HabitsPage>
+    with SingleTickerProviderStateMixin {
   late String habitsName;
 
   TextEditingController habitsNameController = TextEditingController();
+
   final _habitsForm = GlobalKey<FormState>();
+
   checkFields() {
     final form = _habitsForm.currentState;
     if (form!.validate()) {
@@ -24,6 +32,31 @@ class HabitsPage extends StatelessWidget {
       return true;
     }
     return false;
+  }
+
+  late AnimationController controller;
+  late Animation<double> fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 950));
+    fadeAnimation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
+
+    controller.addListener(() {
+      setState(() {});
+    });
+
+    controller.forward();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
   }
 
   @override
@@ -64,80 +97,83 @@ class HabitsPage extends StatelessWidget {
     return Scaffold(
       body: Form(
         key: _habitsForm,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (!isKeyboard)
-              BackArrow(decorator: decorator, themeData: themeData),
-            if (!isKeyboard)
-              Center(
-                child: SizedBox(
-                    width: size.width * 0.4,
-                    child: Lottie.asset('assets/images/habit.json')),
+        child: FadeTransition(
+          opacity: fadeAnimation,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (!isKeyboard)
+                BackArrow(decorator: decorator, themeData: themeData),
+              if (!isKeyboard)
+                Center(
+                  child: SizedBox(
+                      width: size.width * 0.4,
+                      child: Lottie.asset('assets/images/habit.json')),
+                ),
+              SizedBox(
+                height: size.height * 0.03,
               ),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-            if (!isKeyboard)
-              Text('Habits',
-                  style: TextStyle(
-                      color: themeData ? Colors.grey[300] : Colors.grey[900],
-                      fontSize: 50,
-                      shadows: const [
-                        Shadow(
-                            color: Color.fromARGB(255, 92, 202, 96),
-                            blurRadius: 8),
-                        Shadow(
-                            color: Color.fromARGB(255, 92, 202, 96),
-                            blurRadius: 10),
-                        Shadow(
-                            color: Color.fromARGB(255, 92, 202, 96),
-                            blurRadius: 12),
-                      ])),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-            CustomTextField(
-                controller: habitsNameController,
-                emptytext: 'habit name is required',
-                hintText: 'Habit name'),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                      padding: const EdgeInsets.all(7),
-                      child: Center(
-                          child: Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 92, 202, 96),
-                            shape: BoxShape.circle),
-                      )),
-                      decoration: decorator.copyWith(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
-                          borderRadius: BorderRadius.circular(30))),
-                  OvalContainer(text: 'Daily goal'),
-                  OvalIconContainer(
-                    text: 'Repeat',
-                    icon: Icons.repeat_on_sharp,
-                    size: 12,
-                  ),
-                  OvalContainer(text: 'Routine')
-                ],
+              if (!isKeyboard)
+                Text('Habits',
+                    style: TextStyle(
+                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        fontSize: 50,
+                        shadows: const [
+                          Shadow(
+                              color: Color.fromARGB(255, 92, 202, 96),
+                              blurRadius: 8),
+                          Shadow(
+                              color: Color.fromARGB(255, 92, 202, 96),
+                              blurRadius: 10),
+                          Shadow(
+                              color: Color.fromARGB(255, 92, 202, 96),
+                              blurRadius: 12),
+                        ])),
+              SizedBox(
+                height: size.height * 0.03,
               ),
-            ),
-            SizedBox(
-              height: size.height * 0.2,
-            ),
-            CircleButton()
-          ],
+              CustomTextField(
+                  controller: habitsNameController,
+                  emptytext: 'habit name is required',
+                  hintText: 'Habit name'),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                        padding: const EdgeInsets.all(7),
+                        child: Center(
+                            child: Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 92, 202, 96),
+                              shape: BoxShape.circle),
+                        )),
+                        decoration: decorator.copyWith(
+                            color:
+                                themeData ? Colors.grey[300] : Colors.grey[900],
+                            borderRadius: BorderRadius.circular(30))),
+                    OvalContainer(text: 'Daily goal'),
+                    OvalIconContainer(
+                      text: 'Repeat',
+                      icon: Icons.repeat_on_sharp,
+                      size: 12,
+                    ),
+                    OvalContainer(text: 'Routine')
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: size.height * 0.2,
+              ),
+              CircleButton()
+            ],
+          ),
         ),
       ),
     );

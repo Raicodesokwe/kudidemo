@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/pages/pospage.dart';
 import 'package:kudidemo/providers/theme_provider.dart';
@@ -74,13 +75,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                "assets/images/pos.png",
-                scale: 20,
+              Icon(
+                FontAwesomeIcons.clipboard,
+                size: 28,
                 color: themeData ? Colors.white : Colors.black,
               ),
               Text(
-                'pos',
+                'tasks',
                 style: GoogleFonts.prompt(fontSize: 12),
               )
             ],
@@ -94,7 +95,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 color: themeData ? Colors.white : Colors.black,
               ),
               Text(
-                'wallet',
+                'finances',
                 style: GoogleFonts.prompt(fontSize: 12),
               )
             ],

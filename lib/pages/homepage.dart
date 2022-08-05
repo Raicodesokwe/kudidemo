@@ -332,7 +332,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Icon(Icons.arrow_back),
                       Text(
-                        '${previousMonth}',
+                        '${previousMonth!.substring(0, 3)}',
                         style: GoogleFonts.prompt(),
                       ),
                       Spacer(),
@@ -343,7 +343,7 @@ class _HomePageState extends State<HomePage> {
                       Icon(Icons.keyboard_arrow_down),
                       Spacer(),
                       Text(
-                        '${nextMonth}',
+                        '${nextMonth!.substring(0, 3)}',
                         style: GoogleFonts.prompt(),
                       ),
                       Icon(Icons.arrow_forward),

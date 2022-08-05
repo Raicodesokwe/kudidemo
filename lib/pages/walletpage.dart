@@ -56,7 +56,7 @@ class _WalletPageState extends State<WalletPage> {
           automaticallyImplyLeading: false,
           title: Center(
             child: Text(
-              'Wallet Top-up',
+              'Track Finances',
               style: GoogleFonts.prompt(
                   fontWeight: FontWeight.w500,
                   fontSize: 23,
@@ -138,133 +138,21 @@ class _WalletPageState extends State<WalletPage> {
                                 ]),
                       tabs: const [
                         Tab(
-                          text: 'Bank Transfer',
+                          text: 'Weekly expenses',
                         ),
                         Tab(
-                          text: 'Card Payment',
+                          text: 'Monthly expenses',
                         ),
                       ]),
                 ),
               ),
               SizedBox(
-                height: size.height * 0.05,
+                height: size.height * 0.3,
               ),
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Enter Amount',
-                        style: GoogleFonts.prompt(fontSize: 18),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/naira.png",
-                            scale: 15,
-                            color: themeData ? Colors.black : Colors.white,
-                          ),
-                          selected == 'one'
-                              ? Text('500',
-                                  style: GoogleFonts.openSans(
-                                    fontSize: 35,
-                                    fontWeight: FontWeight.w700,
-                                  ))
-                              : selected == 'two'
-                                  ? Text('1000',
-                                      style: GoogleFonts.openSans(
-                                        fontSize: 35,
-                                        fontWeight: FontWeight.w700,
-                                      ))
-                                  : selected == 'three'
-                                      ? Text('2000',
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 35,
-                                            fontWeight: FontWeight.w700,
-                                          ))
-                                      : selected == 'four'
-                                          ? Text('5000',
-                                              style: GoogleFonts.openSans(
-                                                fontSize: 35,
-                                                fontWeight: FontWeight.w700,
-                                              ))
-                                          : selected == 'five'
-                                              ? Text('7500',
-                                                  style: GoogleFonts.openSans(
-                                                    fontSize: 35,
-                                                    fontWeight: FontWeight.w700,
-                                                  ))
-                                              : Text('7500',
-                                                  style: GoogleFonts.openSans(
-                                                    fontSize: 35,
-                                                    fontWeight: FontWeight.w700,
-                                                  ))
-                        ],
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                  Container(
-                      height: 70,
-                      width: 70,
-                      child: Image.asset(
-                        "assets/aro.png",
-                        scale: 15,
-                        color: themeData ? Colors.black : Colors.white,
-                      ),
-                      decoration: decorator.copyWith(
-                          shape: BoxShape.circle, color: Colors.greenAccent))
-                ],
+              Center(
+                child: Text('Coming soon...',
+                    style: GoogleFonts.prompt(fontSize: 20)),
               ),
-              SizedBox(
-                height: size.height * 0.05,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ActionChip(
-                    label: Text(
-                      'N1000',
-                      style: GoogleFonts.openSans(
-                          fontSize: 20, color: Colors.black),
-                    ),
-                    backgroundColor: Colors.greenAccent,
-                    onPressed: () {
-                      setState(() {
-                        selected = 'two';
-                      });
-                    },
-                  ),
-                  ActionChip(
-                    label: Text(
-                      'N2000',
-                      style: GoogleFonts.openSans(
-                          fontSize: 20, color: Colors.black),
-                    ),
-                    backgroundColor: Colors.greenAccent,
-                    onPressed: () {
-                      setState(() {
-                        selected = 'three';
-                      });
-                    },
-                  ),
-                  ActionChip(
-                    label: Text(
-                      'N5000',
-                      style: GoogleFonts.openSans(
-                          fontSize: 20, color: Colors.black),
-                    ),
-                    backgroundColor: Colors.greenAccent,
-                    onPressed: () {
-                      setState(() {
-                        selected = 'four';
-                      });
-                    },
-                  ),
-                ],
-              )
             ],
           ),
         ),
