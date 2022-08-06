@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
 import '../widgets/back_arrow.dart';
+import '../widgets/nextneon_button.dart';
+import '../widgets/next_button.dart';
 
 class DayRating extends StatefulWidget {
   const DayRating({Key? key}) : super(key: key);
@@ -90,26 +92,42 @@ class _DayRatingState extends State<DayRating>
                 height: size.height * 0.05,
               ),
               Text(
-                'How was your day today?',
-                style: TextStyle(fontSize: 20),
+                'Wassup Toluwanimi, how are you',
+                style: TextStyle(fontSize: 18),
+              ),
+              Text(
+                'feeling right now?',
+                style: TextStyle(fontSize: 18),
               ),
               SizedBox(
                 height: size.height * 0.1,
               ),
-              _currentValue >= 0 && _currentValue < 3
+              _currentValue >= 0 && _currentValue < 2
                   ? Image.asset(
-                      'assets/images/sademoji.png',
+                      'assets/images/sadaf.png',
                       color: themeData ? Colors.black : Colors.white,
                     )
-                  : _currentValue >= 3 && _currentValue < 6
+                  : _currentValue >= 2 && _currentValue < 4
                       ? Image.asset(
-                          'assets/images/second.png',
+                          'assets/images/sademoji.png',
                           color: themeData ? Colors.black : Colors.white,
                         )
-                      : Image.asset(
-                          'assets/images/happyemoji.png',
-                          color: themeData ? Colors.black : Colors.white,
-                        ),
+                      : _currentValue >= 4 && _currentValue < 6
+                          ? Image.asset(
+                              'assets/images/second.png',
+                              color: themeData ? Colors.black : Colors.white,
+                            )
+                          : _currentValue >= 6 && _currentValue < 8
+                              ? Image.asset(
+                                  'assets/images/happyemoji.png',
+                                  color:
+                                      themeData ? Colors.black : Colors.white,
+                                )
+                              : Image.asset(
+                                  'assets/images/happyaf.png',
+                                  color:
+                                      themeData ? Colors.black : Colors.white,
+                                ),
               SizedBox(
                 height: size.height * 0.1,
               ),
@@ -131,6 +149,11 @@ class _DayRatingState extends State<DayRating>
                             max: 10,
                             min: 0,
                             value: _currentValue,
+                            onChangeStart: (value) {
+                              setState(() {
+                                selected = true;
+                              });
+                            },
                             onChanged: (value) {
                               setState(() {
                                 _currentValue = value;
@@ -182,11 +205,15 @@ class _DayRatingState extends State<DayRating>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('How was your day?'),
-                    _currentValue >= 0 && _currentValue < 3
-                        ? Text('Sad')
-                        : _currentValue >= 3 && _currentValue < 6
-                            ? Text('Meh')
-                            : Text('Happy')
+                    _currentValue >= 0 && _currentValue < 2
+                        ? Text('super sad')
+                        : _currentValue >= 2 && _currentValue < 4
+                            ? Text('sad')
+                            : _currentValue >= 4 && _currentValue < 6
+                                ? Text('meh')
+                                : _currentValue >= 6 && _currentValue < 8
+                                    ? Text('happy')
+                                    : Text('super happy')
                   ],
                 ),
               ),
@@ -194,55 +221,19 @@ class _DayRatingState extends State<DayRating>
                 height: size.height * 0.15,
               ),
               GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => JournalPage()));
-                },
-                child: selected
-                    ? Container(
-                        height: 50,
-                        width: size.width * 0.4,
-                        child: Center(
-                          child: Text(
-                            'Next',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.green.withAlpha(225),
-                                  blurRadius: 45,
-                                  spreadRadius: 15,
-                                  offset: Offset(0, 0))
-                            ],
-                            gradient: LinearGradient(
-                                colors: [Colors.green, Colors.greenAccent],
-                                begin: Alignment.centerRight,
-                                end: Alignment.centerLeft),
-                            borderRadius: BorderRadius.circular(10),
-                            border:
-                                Border.all(width: 4, color: Colors.black54)),
-                      )
-                    : Container(
-                        height: 50,
-                        width: size.width * 0.4,
-                        child: Center(
-                          child: Text(
-                            'Next',
-                            style: TextStyle(
-                                color: themeData ? Colors.black : Colors.white),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                                width: 4,
-                                color: themeData
-                                    ? Colors.black54
-                                    : Colors.white54)),
-                      ),
-              )
+                  onTap: () {
+                    if (selected)
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ReasonPage()));
+                  },
+                  child: selected
+                      ? NextneonBtn(
+                          size: size,
+                        )
+                      : NextBtn(
+                          size: size,
+                          themeData: themeData,
+                        ))
             ],
           ),
         ),
