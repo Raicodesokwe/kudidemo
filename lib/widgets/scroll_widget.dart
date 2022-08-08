@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/pages/day_rating.dart';
 import 'package:kudidemo/pages/group_task.dart';
+import 'package:kudidemo/pages/timer_widget.dart';
 import 'package:kudidemo/widgets/task_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -113,6 +114,21 @@ class ScrollWidget extends StatelessWidget {
               decorator: decorator,
               task: 'Journal',
               image: "assets/images/journal.png",
+            ),
+          ),
+          SizedBox(
+            width: size.width * 0.06,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => TimerWidget()));
+            },
+            child: TaskWidget(
+              size: size,
+              decorator: decorator,
+              task: 'Timer',
+              image: "assets/images/stopwatch.png",
             ),
           ),
           SizedBox(

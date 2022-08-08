@@ -183,11 +183,10 @@ class _GroupTaskState extends State<GroupTask>
                               height: 60,
                               width: 60,
                               child: Center(
-                                child: Icon(
-                                  Icons.person_outline,
-                                  color: Colors.white,
-                                ),
-                              ),
+                                  child: Image.asset(
+                                'assets/images/girl.png',
+                                scale: 2,
+                              )),
                               decoration: BoxDecoration(
                                 color: Colors.red,
                                 border:
@@ -201,11 +200,10 @@ class _GroupTaskState extends State<GroupTask>
                                   height: 60,
                                   width: 60,
                                   child: Center(
-                                    child: Icon(
-                                      Icons.person_outline,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                      child: Image.asset(
+                                    'assets/images/man.png',
+                                    scale: 3,
+                                  )),
                                   decoration: BoxDecoration(
                                     color: Colors.blue,
                                     border: Border.all(
@@ -217,11 +215,10 @@ class _GroupTaskState extends State<GroupTask>
                                 left: 80,
                                 child: Container(
                                   child: Center(
-                                    child: Icon(
-                                      Icons.person_outline,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                      child: Image.asset(
+                                    'assets/images/girl.png',
+                                    scale: 2,
+                                  )),
                                   height: 60,
                                   width: 60,
                                   decoration: BoxDecoration(
