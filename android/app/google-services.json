@@ -7,35 +7,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:917998620823:android:d5c07d80999ad3397b59d2",
-        "android_client_info": {
-          "package_name": "com.example.kudidemo"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "917998620823-om5jhhhkfmul5ct8dim3361qi8ctd755.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDElShI5ejI3Y2aWyPtzHaC5WXlQabKlmQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "917998620823-om5jhhhkfmul5ct8dim3361qi8ctd755.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:917998620823:android:a430618ddc7099437b59d2",
         "android_client_info": {
           "package_name": "com.example.planit"
@@ -66,6 +37,13 @@
             {
               "client_id": "917998620823-om5jhhhkfmul5ct8dim3361qi8ctd755.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "917998620823-ccftujv21fif6btfbf2oa9ge6upmf153.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.planit"
+              }
             }
           ]
         }

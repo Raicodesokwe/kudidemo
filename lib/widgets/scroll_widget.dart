@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/pages/day_rating.dart';
 import 'package:kudidemo/pages/group_task.dart';
+import 'package:kudidemo/pages/landing_screen.dart';
+import 'package:kudidemo/pages/splash_screen.dart';
 import 'package:kudidemo/pages/timer_widget.dart';
 import 'package:kudidemo/widgets/task_widget.dart';
 import 'package:provider/provider.dart';
