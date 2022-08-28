@@ -5,10 +5,12 @@ class NextBtn extends StatelessWidget {
     Key? key,
     required this.size,
     required this.themeData,
+    required this.label,
   }) : super(key: key);
 
   final Size size;
   final bool themeData;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class NextBtn extends StatelessWidget {
       width: size.width * 0.4,
       child: Center(
         child: Text(
-          'Next',
+          label,
           style: TextStyle(color: themeData ? Colors.black : Colors.white),
         ),
       ),

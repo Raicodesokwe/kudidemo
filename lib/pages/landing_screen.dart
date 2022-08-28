@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/pages/signin.dart';
+import 'package:kudidemo/pages/signup.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
@@ -169,22 +170,28 @@ class _LandingScreenState extends State<LandingScreen>
               Spacer(),
               ScaleTransition(
                 scale: scaleAnimation,
-                child: Container(
-                  height: 70,
-                  child: Center(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SignUpScreen()));
+                  },
+                  child: Container(
+                    height: 70,
                     child: Center(
-                      child: Text(
-                        'Hi,let me in!',
-                        style: GoogleFonts.prompt(
-                            fontSize: 17,
-                            color: themeData ? Colors.white : Colors.black),
+                      child: Center(
+                        child: Text(
+                          'Hi,let me in!',
+                          style: GoogleFonts.prompt(
+                              fontSize: 17,
+                              color: themeData ? Colors.white : Colors.black),
+                        ),
                       ),
                     ),
+                    width: size.width * 0.8,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40),
+                        color: themeData ? Colors.black : Colors.white),
                   ),
-                  width: size.width * 0.8,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
-                      color: themeData ? Colors.black : Colors.white),
                 ),
               ),
               SizedBox(

@@ -244,6 +244,7 @@ class ReasonPage extends StatelessWidget {
               child: NextBtn(
                 size: size,
                 themeData: themeData,
+                label: 'Next',
               ),
             )
           ],

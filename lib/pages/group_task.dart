@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/pages/chat_page.dart';
 import 'package:kudidemo/widgets/circle_button.dart';
 import 'package:kudidemo/widgets/oval_icon_container.dart';
 import 'package:lottie/lottie.dart';
@@ -267,31 +268,37 @@ class _GroupTaskState extends State<GroupTask>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                            padding: const EdgeInsets.all(20),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  FontAwesomeIcons.message,
-                                  size: 15,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  'Chat',
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w300),
-                                ),
-                              ],
-                            ),
-                            decoration: decorator.copyWith(
-                                color: themeData
-                                    ? Colors.greenAccent
-                                    : Colors.redAccent,
-                                borderRadius: BorderRadius.circular(30))),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ChatPage()));
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.all(20),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.message,
+                                    size: 15,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    'Chat',
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                ],
+                              ),
+                              decoration: decorator.copyWith(
+                                  color: themeData
+                                      ? Colors.greenAccent
+                                      : Colors.redAccent,
+                                  borderRadius: BorderRadius.circular(30))),
+                        ),
                         Text(
                           'Chat with added friends',
                           style: TextStyle(

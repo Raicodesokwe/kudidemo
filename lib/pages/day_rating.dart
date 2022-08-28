@@ -229,10 +229,12 @@ class _DayRatingState extends State<DayRating>
                   child: selected
                       ? NextneonBtn(
                           size: size,
+                          label: 'Next',
                         )
                       : NextBtn(
                           size: size,
                           themeData: themeData,
+                          label: 'Next',
                         ))
             ],
           ),

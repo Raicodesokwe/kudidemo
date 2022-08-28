@@ -17,10 +17,11 @@ import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
 
-class SigninScreen extends StatelessWidget {
-  SigninScreen({Key? key}) : super(key: key);
+class SignUpScreen extends StatelessWidget {
+  SignUpScreen({Key? key}) : super(key: key);
   TextEditingController emailNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   final _emailForm = GlobalKey<FormState>();
   checkFields() {
     final form = _emailForm.currentState;
@@ -99,6 +100,23 @@ class SigninScreen extends StatelessWidget {
                   hintText: 'password',
                   hidepassword: true,
                   textInputType: TextInputType.none),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+              AuthTextField(
+                  controller: confirmPasswordController,
+                  validate: (value) {
+                    if (value!.isEmpty || value.length < 6) {
+                      return 'Please enter a valid password that matches';
+                    } else if (value != passwordController.text) {
+                      return 'Password must match the one above';
+                    }
+
+                    return null;
+                  },
+                  hintText: 'confirm password',
+                  hidepassword: true,
+                  textInputType: TextInputType.none),
 
               SizedBox(
                 height: size.height * 0.05,
@@ -138,10 +156,10 @@ class SigninScreen extends StatelessWidget {
                   ? GestureDetector(
                       onTap: () {
                         if (checkFields())
-                          AuthService.signUp(emailNameController.text,
-                              passwordController.text, context);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => BottomNavBar()));
+                          // AuthService.signIn(emailNameController.text,
+                          //     passwordController.text, context);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => BottomNavBar()));
                       },
                       child: NextneonBtn(size: size, label: 'Sign in'),
                     )

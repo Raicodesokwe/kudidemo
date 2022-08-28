@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 class NextneonBtn extends StatelessWidget {
-  const NextneonBtn({
-    Key? key,
-    required this.size,
-  }) : super(key: key);
+  const NextneonBtn({Key? key, required this.size, required this.label})
+      : super(key: key);
 
   final Size size;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +14,7 @@ class NextneonBtn extends StatelessWidget {
       width: size.width * 0.4,
       child: Center(
         child: Text(
-          'Next',
+          label,
           style: TextStyle(color: Colors.black),
         ),
       ),
