@@ -1,18 +1,14 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/navbar/navbar.dart';
+import 'package:kudidemo/providers/google_signin.dart';
 import 'package:kudidemo/services/auth_service.dart';
-import 'package:kudidemo/widgets/auth_textfield.dart';
+
 import 'package:kudidemo/widgets/next_button.dart';
 import 'package:kudidemo/widgets/nextneon_button.dart';
-import 'package:kudidemo/widgets/privacy_dialog.dart';
-import 'package:kudidemo/widgets/terms_dialog.dart';
+
 import 'package:kudidemo/widgets/terms_privacypolicy.dart';
-import 'package:kudidemo/widgets/text_field.dart';
+
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
@@ -31,6 +27,8 @@ class SigninScreen extends StatelessWidget {
     return false;
   }
 
+  late String email;
+  late String password;
   @override
   Widget build(BuildContext context) {
     final themeData = Provider.of<ThemeProvider>(context).darkTheme;
@@ -73,60 +71,95 @@ class SigninScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AuthTextField(
-                  controller: emailNameController,
-                  validate: (value) {
-                    if (value!.isEmpty || !value.contains('@')) {
-                      return 'Please enter a valid email';
-                    }
-                    return null;
-                  },
-                  hintText: 'email',
-                  hidepassword: false,
-                  textInputType: TextInputType.emailAddress),
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  width: size.width * 0.8,
+                  decoration: decorator.copyWith(
+                      color: themeData ? Colors.grey[300] : Colors.grey[900],
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: TextFormField(
+                    controller: emailNameController,
+                    validator: (value) {
+                      if (value!.isEmpty || !value.contains('@')) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    onChanged: (value) {
+                      this.email = value;
+                    },
+                    cursorColor: Colors.black45,
+                    decoration: InputDecoration(
+                        hintText: 'email',
+                        hintStyle: GoogleFonts.prompt(),
+                        border: InputBorder.none),
+                  )),
 
               SizedBox(
                 height: size.height * 0.03,
               ),
-              AuthTextField(
-                  controller: passwordController,
-                  validate: (value) {
-                    if (value!.isEmpty || value.length < 6) {
-                      return 'Password must be at least 6 characters long';
-                    }
-                    return null;
-                  },
-                  hintText: 'password',
-                  hidepassword: true,
-                  textInputType: TextInputType.none),
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  width: size.width * 0.8,
+                  decoration: decorator.copyWith(
+                      color: themeData ? Colors.grey[300] : Colors.grey[900],
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: TextFormField(
+                    controller: passwordController,
+                    validator: (value) {
+                      if (value!.isEmpty || value.length < 6) {
+                        return 'Password must be at least 6 characters long';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      this.password = value;
+                    },
+                    cursorColor: Colors.black45,
+                    decoration: InputDecoration(
+                        hintText: 'password',
+                        hintStyle: GoogleFonts.prompt(),
+                        border: InputBorder.none),
+                  )),
 
               SizedBox(
                 height: size.height * 0.05,
               ),
               if (!isKeyboard)
-                Container(
-                  height: 50,
-                  width: size.width * 0.8,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          width: 30,
-                          child: Image.asset('assets/images/GoogleLogo.png')),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        'Sign in with Google',
-                        style: TextStyle(
-                            color: themeData ? Colors.white : Colors.black),
-                      )
-                    ],
+                GestureDetector(
+                  onTap: () {
+                    Provider.of<GoogleSignInProvider>(context, listen: false)
+                        .googleLogin();
+                  },
+                  child: Container(
+                    height: 50,
+                    width: size.width * 0.8,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                            width: 30,
+                            child: Image.asset('assets/images/GoogleLogo.png')),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          'Sign in with Google',
+                          style: TextStyle(
+                              color: themeData ? Colors.white : Colors.black),
+                        )
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40),
+                        color: themeData ? Colors.black : Colors.white),
                   ),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
-                      color: themeData ? Colors.black : Colors.white),
                 ),
 
               SizedBox(
@@ -138,10 +171,12 @@ class SigninScreen extends StatelessWidget {
                   ? GestureDetector(
                       onTap: () {
                         if (checkFields())
-                          AuthService.signUp(emailNameController.text,
-                              passwordController.text, context);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => BottomNavBar()));
+                          AuthService.signIn(emailNameController.text.trim(),
+                              passwordController.text.trim(), context);
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //     builder: (context) => BottomNavBar()));
+                        print(emailNameController.text);
+                        print(passwordController.text);
                       },
                       child: NextneonBtn(size: size, label: 'Sign in'),
                     )

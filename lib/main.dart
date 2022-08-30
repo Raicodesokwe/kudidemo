@@ -4,8 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:kudidemo/pages/homepage.dart';
 import 'package:kudidemo/navbar/navbar.dart';
 import 'package:kudidemo/pages/splash_screen.dart';
+import 'package:kudidemo/providers/google_signin.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/providers/theme_provider.dart';
+import 'package:kudidemo/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -33,6 +35,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => TaskProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => GoogleSignInProvider(),
+        ),
       ],
       child: Consumer<ThemeProvider>(
           builder: (context, ThemeProvider notifier, child) {
@@ -42,7 +47,7 @@ class MyApp extends StatelessWidget {
           theme: notifier.darkTheme
               ? lightThemeData(context)
               : darkThemeData(context),
-          home: SplashScreen(),
+          home: AuthService.handleAuth(),
         );
       }),
     );

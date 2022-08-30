@@ -1,28 +1,36 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/navbar/navbar.dart';
-import 'package:kudidemo/services/auth_service.dart';
-import 'package:kudidemo/widgets/auth_textfield.dart';
+
 import 'package:kudidemo/widgets/next_button.dart';
 import 'package:kudidemo/widgets/nextneon_button.dart';
-import 'package:kudidemo/widgets/privacy_dialog.dart';
-import 'package:kudidemo/widgets/terms_dialog.dart';
+
 import 'package:kudidemo/widgets/terms_privacypolicy.dart';
-import 'package:kudidemo/widgets/text_field.dart';
+
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../providers/theme_provider.dart';
+import '../services/auth_service.dart';
+import 'name_pic.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   SignUpScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailNameController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
+
   TextEditingController confirmPasswordController = TextEditingController();
+
   final _emailForm = GlobalKey<FormState>();
+
   checkFields() {
     final form = _emailForm.currentState;
     if (form!.validate()) {
@@ -32,6 +40,11 @@ class SignUpScreen extends StatelessWidget {
     return false;
   }
 
+  late String email;
+
+  late String password;
+  bool isLoading = false;
+  var message = 'Something went wrong';
   @override
   Widget build(BuildContext context) {
     final themeData = Provider.of<ThemeProvider>(context).darkTheme;
@@ -74,50 +87,89 @@ class SignUpScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AuthTextField(
-                  controller: emailNameController,
-                  validate: (value) {
-                    if (value!.isEmpty || !value.contains('@')) {
-                      return 'Please enter a valid email';
-                    }
-                    return null;
-                  },
-                  hintText: 'email',
-                  hidepassword: false,
-                  textInputType: TextInputType.emailAddress),
-
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  width: size.width * 0.8,
+                  decoration: decorator.copyWith(
+                      color: themeData ? Colors.grey[300] : Colors.grey[900],
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: TextFormField(
+                    controller: emailNameController,
+                    validator: (value) {
+                      if (value!.isEmpty || !value.contains('@')) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    onChanged: (value) {
+                      this.email = value;
+                    },
+                    cursorColor: Colors.black45,
+                    decoration: InputDecoration(
+                        hintText: 'email',
+                        hintStyle: GoogleFonts.prompt(),
+                        border: InputBorder.none),
+                  )),
               SizedBox(
                 height: size.height * 0.03,
               ),
-              AuthTextField(
-                  controller: passwordController,
-                  validate: (value) {
-                    if (value!.isEmpty || value.length < 6) {
-                      return 'Password must be at least 6 characters long';
-                    }
-                    return null;
-                  },
-                  hintText: 'password',
-                  hidepassword: true,
-                  textInputType: TextInputType.none),
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  width: size.width * 0.8,
+                  decoration: decorator.copyWith(
+                      color: themeData ? Colors.grey[300] : Colors.grey[900],
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: TextFormField(
+                    controller: passwordController,
+                    validator: (value) {
+                      if (value!.isEmpty || value.length < 6) {
+                        return 'Password must be at least 6 characters long';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      this.password = value;
+                    },
+                    cursorColor: Colors.black45,
+                    decoration: InputDecoration(
+                        hintText: 'password',
+                        hintStyle: GoogleFonts.prompt(),
+                        border: InputBorder.none),
+                  )),
               SizedBox(
                 height: size.height * 0.03,
               ),
-              AuthTextField(
-                  controller: confirmPasswordController,
-                  validate: (value) {
-                    if (value!.isEmpty || value.length < 6) {
-                      return 'Please enter a valid password that matches';
-                    } else if (value != passwordController.text) {
-                      return 'Password must match the one above';
-                    }
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  width: size.width * 0.8,
+                  decoration: decorator.copyWith(
+                      color: themeData ? Colors.grey[300] : Colors.grey[900],
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: TextFormField(
+                    controller: confirmPasswordController,
+                    validator: (value) {
+                      if (value!.isEmpty || value.length < 6) {
+                        return 'Please enter a valid password that matches';
+                      } else if (value != passwordController.text) {
+                        return 'Password must match the one above';
+                      }
 
-                    return null;
-                  },
-                  hintText: 'confirm password',
-                  hidepassword: true,
-                  textInputType: TextInputType.none),
-
+                      return null;
+                    },
+                    onChanged: (value) {},
+                    cursorColor: Colors.black45,
+                    decoration: InputDecoration(
+                        hintText: 'confirm password',
+                        hintStyle: GoogleFonts.prompt(),
+                        border: InputBorder.none),
+                  )),
               SizedBox(
                 height: size.height * 0.05,
               ),
@@ -146,24 +198,69 @@ class SignUpScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(40),
                       color: themeData ? Colors.black : Colors.white),
                 ),
-
               SizedBox(
-                height: size.height * 0.1,
+                height: size.height * 0.05,
               ),
-              // if (!isKeyboard)
-              emailNameController.text.isNotEmpty &&
-                      passwordController.text.isNotEmpty
-                  ? GestureDetector(
-                      onTap: () {
-                        if (checkFields())
-                          // AuthService.signIn(emailNameController.text,
-                          //     passwordController.text, context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => BottomNavBar()));
-                      },
-                      child: NextneonBtn(size: size, label: 'Sign in'),
-                    )
-                  : NextBtn(size: size, themeData: themeData, label: 'Sign in'),
+              if (!isKeyboard)
+                emailNameController.text.isNotEmpty &&
+                        passwordController.text.isNotEmpty
+                    ? GestureDetector(
+                        onTap: () async {
+                          if (checkFields())
+                            setState(() {
+                              isLoading = true;
+                            });
+                          try {
+                            await FirebaseAuth.instance
+                                .createUserWithEmailAndPassword(
+                                    email: email, password: password);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        NamePicScreen(email: email)));
+                          } on FirebaseAuthException catch (e) {
+                            setState(() {
+                              isLoading = false;
+                            });
+
+                            if (e.message != null) {
+                              message = e.message!;
+                            }
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(e.message.toString())));
+                          }
+                        },
+                        child: isLoading
+                            ? Shimmer.fromColors(
+                                baseColor: Colors.green,
+                                highlightColor: Colors.green.withOpacity(0.5),
+                                child: Container(
+                                  height: 50,
+                                  width: size.width * 0.4,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.green.withAlpha(225),
+                                          blurRadius: 45,
+                                          spreadRadius: 15,
+                                          offset: Offset(0, 0))
+                                    ],
+                                    gradient: LinearGradient(
+                                        colors: [
+                                          Colors.green,
+                                          Colors.greenAccent
+                                        ],
+                                        begin: Alignment.centerRight,
+                                        end: Alignment.centerLeft),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              )
+                            : NextneonBtn(size: size, label: 'Sign up'),
+                      )
+                    : NextBtn(
+                        size: size, themeData: themeData, label: 'Sign up'),
               SizedBox(
                 height: size.height * 0.05,
               ),
