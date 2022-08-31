@@ -112,7 +112,7 @@ class _LandingScreenState extends State<LandingScreen>
                 opacity: fadeAnimation,
                 child: Center(
                   child: Container(
-                      padding: const EdgeInsets.all(10),
+                      // padding: const EdgeInsets.all(10),
                       decoration: decorator.copyWith(
                         color: themeData ? Colors.grey[300] : Colors.grey[900],
                       ),

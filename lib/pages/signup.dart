@@ -213,7 +213,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           try {
                             await FirebaseAuth.instance
                                 .createUserWithEmailAndPassword(
-                                    email: email, password: password);
+                                    email: email.trim(),
+                                    password: password.trim());
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(

@@ -185,7 +185,7 @@ class _GroupTaskState extends State<GroupTask>
                               width: 60,
                               child: Center(
                                   child: Image.asset(
-                                'assets/images/girl.png',
+                                'assets/images/cat.png',
                                 scale: 2,
                               )),
                               decoration: BoxDecoration(
@@ -202,8 +202,8 @@ class _GroupTaskState extends State<GroupTask>
                                   width: 60,
                                   child: Center(
                                       child: Image.asset(
-                                    'assets/images/man.png',
-                                    scale: 3,
+                                    'assets/images/puppy.png',
+                                    scale: 2,
                                   )),
                                   decoration: BoxDecoration(
                                     color: Colors.blue,
@@ -217,7 +217,7 @@ class _GroupTaskState extends State<GroupTask>
                                 child: Container(
                                   child: Center(
                                       child: Image.asset(
-                                    'assets/images/girl.png',
+                                    'assets/images/rabbit.png',
                                     scale: 2,
                                   )),
                                   height: 60,
