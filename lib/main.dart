@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kudidemo/pages/chat_page.dart';
+import 'package:kudidemo/pages/group_task.dart';
 import 'package:kudidemo/pages/homepage.dart';
 import 'package:kudidemo/navbar/navbar.dart';
 import 'package:kudidemo/pages/splash_screen.dart';
@@ -8,12 +11,19 @@ import 'package:kudidemo/providers/google_signin.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/providers/theme_provider.dart';
 import 'package:kudidemo/services/auth_service.dart';
+import 'package:kudidemo/services/notification_service.dart';
 import 'package:provider/provider.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print('Handling a background message ${message.data.toString()}');
+  print('Handling a background message ${message.notification!.title}');
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  NotifyService.init();
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -48,6 +58,7 @@ class MyApp extends StatelessWidget {
               ? lightThemeData(context)
               : darkThemeData(context),
           home: AuthService.handleAuth(),
+          routes: {'chat': (_) => ChatPage(), 'group': (_) => GroupTask()},
         );
       }),
     );

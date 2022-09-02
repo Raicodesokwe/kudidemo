@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:rxdart/rxdart.dart';
@@ -36,6 +37,19 @@ class NotifyService {
         .resolvePlatformSpecificImplementation<
             IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(alert: true, badge: true, sound: true);
+  }
+
+  static void display(RemoteMessage message) async {
+    try {
+      final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+      final NotificationDetails notificationDetails = NotificationDetails(
+          android: AndroidNotificationDetails("planit", "planit channel",
+              importance: Importance.max, priority: Priority.high));
+      await _notifications.show(id, message.notification!.title,
+          message.notification!.body, notificationDetails);
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 
   static Future showNotification({

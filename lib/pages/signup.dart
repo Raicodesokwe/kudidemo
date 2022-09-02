@@ -43,6 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late String email;
 
   late String password;
+  late String confirmPassword;
   bool isLoading = false;
   var message = 'Something went wrong';
   @override
@@ -163,7 +164,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       return null;
                     },
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      confirmPassword = value;
+                    },
                     cursorColor: Colors.black45,
                     decoration: InputDecoration(
                         hintText: 'confirm password',
@@ -203,33 +206,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               if (!isKeyboard)
                 emailNameController.text.isNotEmpty &&
+                        passwordController.text.isNotEmpty &&
                         passwordController.text.isNotEmpty
                     ? GestureDetector(
                         onTap: () async {
-                          if (checkFields())
+                          if (checkFields()) {
                             setState(() {
                               isLoading = true;
                             });
-                          try {
-                            await FirebaseAuth.instance
-                                .createUserWithEmailAndPassword(
-                                    email: email.trim(),
-                                    password: password.trim());
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        NamePicScreen(email: email)));
-                          } on FirebaseAuthException catch (e) {
-                            setState(() {
-                              isLoading = false;
-                            });
+                            try {
+                              await FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                      email: email.trim(),
+                                      password: password.trim());
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          NamePicScreen(email: email)));
+                            } on FirebaseAuthException catch (e) {
+                              setState(() {
+                                isLoading = false;
+                              });
 
-                            if (e.message != null) {
-                              message = e.message!;
+                              if (e.message != null) {
+                                message = e.message!;
+                              }
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(e.message.toString())));
                             }
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(e.message.toString())));
                           }
                         },
                         child: isLoading

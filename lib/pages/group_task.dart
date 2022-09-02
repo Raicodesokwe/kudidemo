@@ -270,8 +270,7 @@ class _GroupTaskState extends State<GroupTask>
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ChatPage()));
+                            Navigator.of(context).pushNamed("chat");
                           },
                           child: Container(
                               padding: const EdgeInsets.all(20),

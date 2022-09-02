@@ -12,12 +12,12 @@ class AuthService {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              !snapshot.hasData ||
+          if (snapshot.hasData ||
+              snapshot.connectionState == ConnectionState.waiting ||
               snapshot.hasError) {
             return SplashScreen();
           }
-          return BottomNavBar();
+          return LandingScreen();
         });
   }
 
@@ -26,22 +26,6 @@ class AuthService {
       await FirebaseAuth.instance.signOut();
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => LandingScreen()));
-    } on FirebaseAuthException catch (e) {
-      var message = 'Something went wrong';
-      if (e.message != null) {
-        message = e.message!;
-      }
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(message)));
-    }
-  }
-
-  static signIn(String email, String password, context) async {
-    try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => BottomNavBar()));
     } on FirebaseAuthException catch (e) {
       var message = 'Something went wrong';
       if (e.message != null) {

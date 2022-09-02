@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/pages/group_task.dart';
+import 'package:kudidemo/services/notification_service.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
@@ -23,6 +26,24 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void initState() {
+    FirebaseMessaging.instance.getInitialMessage().then((value) {
+      if (value != null) {
+        final routeMessage = value.data["route"];
+        Navigator.of(context).pushNamed(routeMessage);
+      }
+    });
+    FirebaseMessaging.onMessage.listen((event) {
+      if (event.notification != null) {
+        print('Erick amedai>>>>>>>${event.notification!.body}');
+        print('Erick amedai>>>>>>>${event.notification!.title}');
+      }
+      NotifyService.display(event);
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      final routeMessage = event.data["route"];
+      Navigator.of(context).pushNamed(routeMessage);
+    });
+
     _chatStream = FirebaseFirestore.instance
         .collection('chats')
         .orderBy('createdAt', descending: true)
@@ -146,7 +167,7 @@ class _ChatPageState extends State<ChatPage> {
                             Container(
                                 width: 140,
                                 margin: const EdgeInsets.symmetric(
-                                    vertical: 4, horizontal: 8),
+                                    vertical: 15, horizontal: 8),
                                 padding: const EdgeInsets.only(
                                     left: 16, right: 16, top: 2, bottom: 8),
                                 decoration: decorator.copyWith(
@@ -193,7 +214,7 @@ class _ChatPageState extends State<ChatPage> {
                           ],
                         ),
                         Positioned(
-                          top: -20,
+                          top: -10,
                           left: isMe ? null : 120,
                           right: isMe ? 120 : null,
                           child: Container(

@@ -77,6 +77,7 @@ class _SigninScreenState extends State<SigninScreen> {
     Size size = MediaQuery.of(context).size;
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     bool isLoading = false;
+    void_trySubmit() async {}
     return Scaffold(
       body: Form(
         key: _emailForm,

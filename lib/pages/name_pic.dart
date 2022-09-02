@@ -105,7 +105,7 @@ class _NamePicScreenState extends State<NamePicScreen> {
                   controller: nameController,
                   validator: (value) {
                     if (value!.isEmpty || value.length < 4) {
-                      return 'Please enter a username';
+                      return 'Please enter a valid username, at least 4 characters';
                     }
                     return null;
                   },
