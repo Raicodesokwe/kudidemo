@@ -17,7 +17,7 @@ class AuthService {
               snapshot.hasError) {
             return SplashScreen();
           }
-          return LandingScreen();
+          return SplashScreen();
         });
   }
 

@@ -44,20 +44,6 @@ class _LandingScreenState extends State<LandingScreen>
     );
     scaleAnimation =
         CurvedAnimation(parent: scaleController, curve: Curves.elasticInOut);
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    controller.dispose();
-    controllerTwo.dispose();
-    controllerThree.dispose();
-    scaleController.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 1), () {
       controller.forward();
     });
@@ -68,6 +54,20 @@ class _LandingScreenState extends State<LandingScreen>
     Future.delayed(Duration(seconds: 3), () {
       controllerThree.forward().then((value) => scaleController.forward());
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    controller.dispose();
+    controllerTwo.dispose();
+    controllerThree.dispose();
+    scaleController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final themeData = Provider.of<ThemeProvider>(context).darkTheme;
     final BoxDecoration decorator = BoxDecoration(
       boxShadow: themeData

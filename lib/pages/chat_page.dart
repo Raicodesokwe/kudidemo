@@ -29,7 +29,8 @@ class _ChatPageState extends State<ChatPage> {
     FirebaseMessaging.instance.getInitialMessage().then((value) {
       if (value != null) {
         final routeMessage = value.data["route"];
-        Navigator.of(context).pushNamed(routeMessage);
+        NotifyService.display(value);
+        Navigator.of(context).pushNamed('chat');
       }
     });
     FirebaseMessaging.onMessage.listen((event) {
@@ -41,9 +42,10 @@ class _ChatPageState extends State<ChatPage> {
     });
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       final routeMessage = event.data["route"];
-      Navigator.of(context).pushNamed(routeMessage);
+      NotifyService.display(event);
+      Navigator.of(context).pushNamed('chat');
     });
-
+    FirebaseMessaging.instance.subscribeToTopic('chats');
     _chatStream = FirebaseFirestore.instance
         .collection('chats')
         .orderBy('createdAt', descending: true)
@@ -95,7 +97,6 @@ class _ChatPageState extends State<ChatPage> {
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20, top: 40),
           child: Container(
-            height: 70,
             width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.only(left: 30, top: 10),

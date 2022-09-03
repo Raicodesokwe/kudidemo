@@ -15,7 +15,9 @@ import 'package:kudidemo/services/notification_service.dart';
 import 'package:kudidemo/theme/changethemebtn.dart';
 import 'package:kudidemo/providers/theme_provider.dart';
 import 'package:kudidemo/utils/utils.dart';
+import 'package:kudidemo/widgets/custom_showcase.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../providers/task_provider.dart';
@@ -36,7 +38,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? time;
   DateTime now = DateTime.now();
-
+  final keyone = GlobalKey();
   _bottomSheet() {
     final themeData = Provider.of<ThemeProvider>(context).darkTheme;
     final BoxDecoration decorator = BoxDecoration(
@@ -83,6 +85,9 @@ class _HomePageState extends State<HomePage> {
       NotifyService().requestIOSPermissions();
     }
     listenNotifications();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context).startShowCase([keyone]);
+    });
   }
 
   void listenNotifications() {
@@ -294,27 +299,31 @@ class _HomePageState extends State<HomePage> {
               ),
               GestureDetector(
                 onTap: () => _selectTask(),
-                child: Container(
-                  height: size.height * 0.07,
-                  width: size.width * 0.4,
-                  decoration: decorator.copyWith(
-                      borderRadius: BorderRadius.circular(30.0),
-                      color: Colors.greenAccent),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Create task',
-                        style: GoogleFonts.prompt(color: Colors.black),
-                      ),
-                      SizedBox(
-                        width: size.width * 0.02,
-                      ),
-                      const Icon(
-                        Icons.add,
-                        color: Colors.black,
-                      )
-                    ],
+                child: CustomShowcaseWidget(
+                  globalKey: keyone,
+                  description: 'Create task or journal',
+                  child: Container(
+                    height: size.height * 0.07,
+                    width: size.width * 0.4,
+                    decoration: decorator.copyWith(
+                        borderRadius: BorderRadius.circular(30.0),
+                        color: Colors.greenAccent),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Create task',
+                          style: GoogleFonts.prompt(color: Colors.black),
+                        ),
+                        SizedBox(
+                          width: size.width * 0.02,
+                        ),
+                        const Icon(
+                          Icons.add,
+                          color: Colors.black,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

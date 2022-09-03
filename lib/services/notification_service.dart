@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,7 +16,9 @@ class NotifyService {
         iOS: IOSNotificationDetails());
   }
 
-  static Future init({bool initScheduled = false}) async {
+  static Future init({
+    bool initScheduled = false,
+  }) async {
     final android = AndroidInitializationSettings('appicon');
     final iOS = IOSInitializationSettings(
         requestSoundPermission: false,
