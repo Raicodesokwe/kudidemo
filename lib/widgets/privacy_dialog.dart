@@ -38,36 +38,19 @@ class _PrivacyDialogState extends State<PrivacyDialog>
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     Size size = MediaQuery.of(context).size;
     return Platform.isIOS
         ? ScaleTransition(
@@ -368,8 +351,7 @@ class _PrivacyDialogState extends State<PrivacyDialog>
                         },
                         child: Text(
                           'ok',
-                          style: GoogleFonts.prompt(
-                              color: themeData ? Colors.black : Colors.white),
+                          style: GoogleFonts.prompt(color: Colors.black),
                         ))
                   ],
                 )),
@@ -377,7 +359,7 @@ class _PrivacyDialogState extends State<PrivacyDialog>
         : ScaleTransition(
             scale: scaleAnimation,
             child: AlertDialog(
-              backgroundColor: themeData ? Colors.grey[300] : Colors.grey[900],
+              backgroundColor: Theme.of(context).backgroundColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20.0))),
               insetPadding: EdgeInsets.all(30),
@@ -673,14 +655,13 @@ class _PrivacyDialogState extends State<PrivacyDialog>
                         child: Icon(
                           Icons.check,
                           size: 30,
-                          color: themeData ? Colors.black : Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                       width: 60,
                       decoration: decorator.copyWith(
                           shape: BoxShape.circle,
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900]),
+                          color: Theme.of(context).backgroundColor),
                     ),
                   ),
                 )

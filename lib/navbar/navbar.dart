@@ -25,8 +25,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       extendBody: true,
       body: PageTransitionSwitcher(
@@ -56,7 +54,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             _currentIndex = index;
           });
         },
-        backgroundColor: themeData ? Colors.black87 : Colors.grey,
+        backgroundColor: Colors.black87,
         items: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +62,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               Image.asset(
                 "assets/images/homepage.png",
                 scale: 20,
-                color: themeData ? Colors.white : Colors.black,
+                color: Colors.black87,
               ),
               Text(
                 'home',
@@ -78,7 +76,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               Icon(
                 FontAwesomeIcons.clipboard,
                 size: 28,
-                color: themeData ? Colors.white : Colors.black,
+                color: Colors.black87,
               ),
               Text(
                 'tasks',
@@ -92,7 +90,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               Image.asset(
                 "assets/images/funds.png",
                 scale: 20,
-                color: themeData ? Colors.white : Colors.black,
+                color: Colors.black87,
               ),
               Text(
                 'finances',

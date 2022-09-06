@@ -60,37 +60,19 @@ class _ChatPageState extends State<ChatPage> {
   late bool isMe;
   @override
   Widget build(BuildContext context) {
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
-    Size size = MediaQuery.of(context).size;
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     return Scaffold(
         body: Column(
       children: [
@@ -130,17 +112,8 @@ class _ChatPageState extends State<ChatPage> {
                 ],
               ),
             ),
-            decoration: themeData
-                ? SecondDecoration(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    depression: 10,
-                    colors: [Color.fromRGBO(216, 213, 208, 1), Colors.white])
-                : ConcaveDecoration(
-                    colors: [Colors.black, Colors.grey.shade800],
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    depression: 10),
+            decoration:
+                decorator.copyWith(color: Theme.of(context).backgroundColor),
           ),
         ),
         Expanded(
@@ -174,9 +147,7 @@ class _ChatPageState extends State<ChatPage> {
                                 decoration: decorator.copyWith(
                                     color: isMe
                                         ? Colors.black
-                                        : themeData
-                                            ? Colors.grey[300]
-                                            : Colors.grey[900],
+                                        : Theme.of(context).backgroundColor,
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(12),
                                         topRight: Radius.circular(12),
@@ -194,7 +165,7 @@ class _ChatPageState extends State<ChatPage> {
                                     Text(
                                       data['username'],
                                       style: GoogleFonts.prompt(
-                                          color: isMe && themeData
+                                          color: isMe
                                               ? Colors.white70
                                               : Colors.black54),
                                     ),
@@ -206,9 +177,7 @@ class _ChatPageState extends State<ChatPage> {
                                       style: TextStyle(
                                           color: isMe
                                               ? Colors.white
-                                              : themeData
-                                                  ? Colors.black
-                                                  : Colors.white),
+                                              : Colors.black),
                                     ),
                                   ],
                                 )),
@@ -259,7 +228,7 @@ class _ChatPageState extends State<ChatPage> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     decoration: decorator.copyWith(
-                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        color: Colors.grey[300],
                         borderRadius: BorderRadius.circular(10.0)),
                     child: TextField(
                       onChanged: (value) {
@@ -301,8 +270,7 @@ class _ChatPageState extends State<ChatPage> {
                           child: Center(
                             child: Icon(
                               Icons.send,
-                              color:
-                                  themeData ? Colors.black54 : Colors.white54,
+                              color: Colors.black54,
                             ),
                           ),
                         ),

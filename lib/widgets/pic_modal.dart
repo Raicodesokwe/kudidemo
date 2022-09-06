@@ -45,36 +45,19 @@ class _PicModalState extends State<PicModal> {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     Color greenColor = const Color(0xFF00AF19);
     Future<void> _showSelectionDialog(BuildContext context) {
       Color greenColor = const Color(0xFF00AF19);
@@ -98,9 +81,7 @@ class _PicModalState extends State<PicModal> {
                           height: 50,
                           decoration: decorator.copyWith(
                               borderRadius: BorderRadius.circular(20.0),
-                              color: themeData
-                                  ? Colors.grey[300]
-                                  : Colors.grey[900]),
+                              color: Theme.of(context).backgroundColor),
                           child: Center(
                             child: GestureDetector(
                               child: Text(
@@ -119,9 +100,7 @@ class _PicModalState extends State<PicModal> {
                           height: 50,
                           decoration: decorator.copyWith(
                               borderRadius: BorderRadius.circular(20.0),
-                              color: themeData
-                                  ? Colors.grey[300]
-                                  : Colors.grey[900]),
+                              color: Theme.of(context).backgroundColor),
                           child: Center(
                             child: GestureDetector(
                               child: Text(
@@ -147,8 +126,7 @@ class _PicModalState extends State<PicModal> {
                 return AlertDialog(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
-                  backgroundColor:
-                      themeData ? Colors.grey[300] : Colors.grey[900],
+                  backgroundColor: Theme.of(context).backgroundColor,
                   title: const Text(
                     'PICK IMAGE FROM :',
                     textAlign: TextAlign.center,
@@ -164,9 +142,7 @@ class _PicModalState extends State<PicModal> {
                           height: 50,
                           decoration: decorator.copyWith(
                               borderRadius: BorderRadius.circular(20.0),
-                              color: themeData
-                                  ? Colors.grey[300]
-                                  : Colors.grey[900]),
+                              color: Theme.of(context).backgroundColor),
                           child: Center(
                             child: Text("Gallery"),
                           ),
@@ -181,9 +157,7 @@ class _PicModalState extends State<PicModal> {
                           height: 50,
                           decoration: decorator.copyWith(
                               borderRadius: BorderRadius.circular(20.0),
-                              color: themeData
-                                  ? Colors.grey[300]
-                                  : Colors.grey[900]),
+                              color: Theme.of(context).backgroundColor),
                           child: Center(
                             child: Text("Camera"),
                           ),
@@ -210,8 +184,7 @@ class _PicModalState extends State<PicModal> {
         Container(
           padding: const EdgeInsets.all(10),
           decoration: decorator.copyWith(
-              shape: BoxShape.circle,
-              color: themeData ? Colors.grey[300] : Colors.grey[900]),
+              shape: BoxShape.circle, color: Theme.of(context).backgroundColor),
           child: Container(
             height: 80,
             width: 80,
@@ -244,13 +217,12 @@ class _PicModalState extends State<PicModal> {
 
           label: Text(
             'Add Avatar',
-            style: TextStyle(color: themeData ? Colors.white : Colors.black),
+            style: TextStyle(color: Colors.white),
           ),
           icon: Icon(FontAwesomeIcons.cameraRetro),
           style: ButtonStyle(
               elevation: MaterialStateProperty.all(7),
-              backgroundColor: MaterialStateProperty.all(
-                  themeData ? Colors.black : Colors.white)),
+              backgroundColor: MaterialStateProperty.all(Colors.black)),
         ),
       ],
     );

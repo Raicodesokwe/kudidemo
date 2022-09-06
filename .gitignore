@@ -10,7 +10,9 @@
 .svn/
 .firebaserc
 firebase.json
-functions
+
+.fvm
+.vscode
 # IntelliJ related
 *.iml
 *.ipr

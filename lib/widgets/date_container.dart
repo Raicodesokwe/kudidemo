@@ -4,13 +4,11 @@ class DateContainer extends StatelessWidget {
   const DateContainer({
     Key? key,
     required this.decorator,
-    required this.themeData,
     required this.day,
     required this.date,
   }) : super(key: key);
 
   final BoxDecoration decorator;
-  final bool themeData;
 
   final String? day;
   final String? date;
@@ -19,7 +17,7 @@ class DateContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: decorator.copyWith(
-          color: themeData ? Colors.grey[300] : Colors.grey[900],
+          color: Theme.of(context).backgroundColor,
           borderRadius: BorderRadius.circular(10.0)),
       height: 60,
       width: 50,
@@ -30,7 +28,3 @@ class DateContainer extends StatelessWidget {
     );
   }
 }
-      // Text(
-      //       '${DateFormat("EEEE").format(now.subtract(Duration(days: 2))).substring(0, 3)}',
-      //     ),
-      //     Text((now.day - 2).toString())

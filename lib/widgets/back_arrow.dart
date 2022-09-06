@@ -4,11 +4,9 @@ class BackArrow extends StatelessWidget {
   const BackArrow({
     Key? key,
     required this.decorator,
-    required this.themeData,
   }) : super(key: key);
 
   final BoxDecoration decorator;
-  final bool themeData;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +20,7 @@ class BackArrow extends StatelessWidget {
             },
             child: Container(
               decoration: decorator.copyWith(
-                  color: themeData ? Colors.grey[300] : Colors.grey[900],
+                  color: Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.circular(10.0)),
               height: 50,
               width: 50,

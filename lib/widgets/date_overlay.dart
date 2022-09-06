@@ -48,36 +48,19 @@ class DateOverlayState extends State<DateOverlay>
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     Size size = MediaQuery.of(context).size;
     Future<DateTime?> pickDateTime(DateTime initialDate,
         {required bool pickDate, DateTime? firstDate}) async {
@@ -124,7 +107,6 @@ class DateOverlayState extends State<DateOverlay>
       setState(() => widget.toDateString = date);
     }
 
-    DateTime now = DateTime.now();
     return Platform.isIOS
         ? ScaleTransition(
             scale: scaleAnimation,
@@ -140,7 +122,7 @@ class DateOverlayState extends State<DateOverlay>
                       style: GoogleFonts.prompt(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: themeData ? Colors.black : Colors.white),
+                          color: Colors.black),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -151,19 +133,15 @@ class DateOverlayState extends State<DateOverlay>
                             padding: const EdgeInsets.all(5),
                             decoration: decorator.copyWith(
                               borderRadius: BorderRadius.circular(15.0),
-                              color: themeData
-                                  ? Colors.grey[300]
-                                  : Colors.grey[900],
+                              color: Theme.of(context).backgroundColor,
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   Utils.toDate(widget.fromDate!),
-                                  style: GoogleFonts.prompt(
-                                      color: themeData
-                                          ? Colors.black
-                                          : Colors.white),
+                                  style:
+                                      GoogleFonts.prompt(color: Colors.black),
                                 ),
                                 Icon(Icons.arrow_drop_down),
                               ],
@@ -176,10 +154,7 @@ class DateOverlayState extends State<DateOverlay>
                             children: [
                               Text(
                                 Utils.toTime(widget.fromDate!),
-                                style: GoogleFonts.prompt(
-                                    color: themeData
-                                        ? Colors.black
-                                        : Colors.white),
+                                style: GoogleFonts.prompt(color: Colors.black),
                               ),
                               Icon(Icons.arrow_drop_down)
                             ],
@@ -192,7 +167,7 @@ class DateOverlayState extends State<DateOverlay>
                       style: GoogleFonts.prompt(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: themeData ? Colors.black : Colors.white),
+                          color: Colors.black),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -203,19 +178,15 @@ class DateOverlayState extends State<DateOverlay>
                             padding: const EdgeInsets.all(5),
                             decoration: decorator.copyWith(
                               borderRadius: BorderRadius.circular(15.0),
-                              color: themeData
-                                  ? Colors.grey[300]
-                                  : Colors.grey[900],
+                              color: Theme.of(context).backgroundColor,
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   Utils.toDate(widget.toDateString!),
-                                  style: GoogleFonts.prompt(
-                                      color: themeData
-                                          ? Colors.black
-                                          : Colors.white),
+                                  style:
+                                      GoogleFonts.prompt(color: Colors.black),
                                 ),
                                 Icon(Icons.arrow_drop_down),
                               ],
@@ -228,10 +199,7 @@ class DateOverlayState extends State<DateOverlay>
                             children: [
                               Text(
                                 Utils.toTime(widget.toDateString!),
-                                style: GoogleFonts.prompt(
-                                    color: themeData
-                                        ? Colors.black
-                                        : Colors.white),
+                                style: GoogleFonts.prompt(color: Colors.black),
                               ),
                               Icon(Icons.arrow_drop_down)
                             ],
@@ -247,7 +215,7 @@ class DateOverlayState extends State<DateOverlay>
                       style: GoogleFonts.prompt(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: themeData ? Colors.black : Colors.white),
+                          color: Colors.black),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -258,17 +226,13 @@ class DateOverlayState extends State<DateOverlay>
                               child: Text(
                                 '5 mins',
                                 style: GoogleFonts.prompt(
-                                    color: themeData
-                                        ? Colors.black45
-                                        : Colors.white54,
+                                    color: Colors.black45,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
                             decoration: decorator.copyWith(
-                                color: themeData
-                                    ? Colors.grey[300]
-                                    : Colors.grey[900],
+                                color: Theme.of(context).backgroundColor,
                                 borderRadius: BorderRadius.circular(30))),
                         Container(
                             padding: const EdgeInsets.all(15),
@@ -276,17 +240,13 @@ class DateOverlayState extends State<DateOverlay>
                               child: Text(
                                 '10 mins',
                                 style: GoogleFonts.prompt(
-                                    color: themeData
-                                        ? Colors.black45
-                                        : Colors.white54,
+                                    color: Colors.black45,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
                             decoration: decorator.copyWith(
-                                color: themeData
-                                    ? Colors.grey[300]
-                                    : Colors.grey[900],
+                                color: Theme.of(context).backgroundColor,
                                 borderRadius: BorderRadius.circular(30))),
                       ],
                     ),
@@ -299,17 +259,13 @@ class DateOverlayState extends State<DateOverlay>
                               child: Text(
                                 '15 mins',
                                 style: GoogleFonts.prompt(
-                                    color: themeData
-                                        ? Colors.black45
-                                        : Colors.white54,
+                                    color: Colors.black45,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
                             decoration: decorator.copyWith(
-                                color: themeData
-                                    ? Colors.grey[300]
-                                    : Colors.grey[900],
+                                color: Theme.of(context).backgroundColor,
                                 borderRadius: BorderRadius.circular(30))),
                         SizedBox(
                           width: 15,
@@ -320,17 +276,13 @@ class DateOverlayState extends State<DateOverlay>
                               child: Text(
                                 '20 mins',
                                 style: GoogleFonts.prompt(
-                                    color: themeData
-                                        ? Colors.black45
-                                        : Colors.white54,
+                                    color: Colors.black45,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
                             decoration: decorator.copyWith(
-                                color: themeData
-                                    ? Colors.grey[300]
-                                    : Colors.grey[900],
+                                color: Theme.of(context).backgroundColor,
                                 borderRadius: BorderRadius.circular(30))),
                       ],
                     ),
@@ -342,7 +294,7 @@ class DateOverlayState extends State<DateOverlay>
                       style: GoogleFonts.prompt(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: themeData ? Colors.black : Colors.white),
+                          color: Colors.black),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -353,17 +305,13 @@ class DateOverlayState extends State<DateOverlay>
                               child: Text(
                                 'None',
                                 style: GoogleFonts.prompt(
-                                    color: themeData
-                                        ? Colors.black45
-                                        : Colors.white54,
+                                    color: Colors.black45,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
                             decoration: decorator.copyWith(
-                                color: themeData
-                                    ? Colors.grey[300]
-                                    : Colors.grey[900],
+                                color: Theme.of(context).backgroundColor,
                                 borderRadius: BorderRadius.circular(30))),
                         Container(
                             padding: const EdgeInsets.all(15),
@@ -371,17 +319,13 @@ class DateOverlayState extends State<DateOverlay>
                               child: Text(
                                 'Daily',
                                 style: GoogleFonts.prompt(
-                                    color: themeData
-                                        ? Colors.black45
-                                        : Colors.white54,
+                                    color: Colors.black45,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
                             decoration: decorator.copyWith(
-                                color: themeData
-                                    ? Colors.grey[300]
-                                    : Colors.grey[900],
+                                color: Theme.of(context).backgroundColor,
                                 borderRadius: BorderRadius.circular(30))),
                       ],
                     ),
@@ -394,17 +338,13 @@ class DateOverlayState extends State<DateOverlay>
                               child: Text(
                                 'Weekly',
                                 style: GoogleFonts.prompt(
-                                    color: themeData
-                                        ? Colors.black45
-                                        : Colors.white54,
+                                    color: Colors.black45,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
                             decoration: decorator.copyWith(
-                                color: themeData
-                                    ? Colors.grey[300]
-                                    : Colors.grey[900],
+                                color: Theme.of(context).backgroundColor,
                                 borderRadius: BorderRadius.circular(30))),
                         SizedBox(
                           width: 15,
@@ -415,17 +355,13 @@ class DateOverlayState extends State<DateOverlay>
                               child: Text(
                                 'Monthly',
                                 style: GoogleFonts.prompt(
-                                    color: themeData
-                                        ? Colors.black45
-                                        : Colors.white54,
+                                    color: Colors.black45,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
                             decoration: decorator.copyWith(
-                                color: themeData
-                                    ? Colors.grey[300]
-                                    : Colors.grey[900],
+                                color: Theme.of(context).backgroundColor,
                                 borderRadius: BorderRadius.circular(30))),
                       ],
                     ),
@@ -435,8 +371,7 @@ class DateOverlayState extends State<DateOverlay>
                   CupertinoDialogAction(
                       child: Text(
                         'Cancel',
-                        style: GoogleFonts.prompt(
-                            color: themeData ? Colors.black : Colors.white),
+                        style: GoogleFonts.prompt(color: Colors.black),
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -444,8 +379,7 @@ class DateOverlayState extends State<DateOverlay>
                   CupertinoDialogAction(
                     child: Text(
                       'Confirm',
-                      style: GoogleFonts.prompt(
-                          color: themeData ? Colors.black : Colors.white),
+                      style: GoogleFonts.prompt(color: Colors.black),
                     ),
                     onPressed: () {
                       Navigator.of(context).pop(
@@ -465,7 +399,7 @@ class DateOverlayState extends State<DateOverlay>
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Container(
                     decoration: ShapeDecoration(
-                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        color: Theme.of(context).backgroundColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0))),
                     child: Padding(
@@ -487,9 +421,7 @@ class DateOverlayState extends State<DateOverlay>
                                   padding: const EdgeInsets.all(5),
                                   decoration: decorator.copyWith(
                                     borderRadius: BorderRadius.circular(15.0),
-                                    color: themeData
-                                        ? Colors.grey[300]
-                                        : Colors.grey[900],
+                                    color: Theme.of(context).backgroundColor,
                                   ),
                                   child: ListTile(
                                     onTap: () =>
@@ -531,9 +463,7 @@ class DateOverlayState extends State<DateOverlay>
                                   padding: const EdgeInsets.all(5),
                                   decoration: decorator.copyWith(
                                     borderRadius: BorderRadius.circular(15.0),
-                                    color: themeData
-                                        ? Colors.grey[300]
-                                        : Colors.grey[900],
+                                    color: Theme.of(context).backgroundColor,
                                   ),
                                   child: ListTile(
                                     onTap: () => pickToDateTime(pickDate: true),

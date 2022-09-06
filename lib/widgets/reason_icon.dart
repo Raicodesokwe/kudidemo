@@ -3,14 +3,8 @@ import 'package:flutter/material.dart';
 class ReasonIcon extends StatelessWidget {
   final String reason;
   final IconData icon;
-  const ReasonIcon(
-      {Key? key,
-      required this.themeData,
-      required this.reason,
-      required this.icon})
+  const ReasonIcon({Key? key, required this.reason, required this.icon})
       : super(key: key);
-
-  final bool themeData;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +12,7 @@ class ReasonIcon extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: themeData ? Colors.black87 : Colors.white70,
+          color: Colors.black87,
         ),
         SizedBox(
           height: 5,
@@ -26,7 +20,7 @@ class ReasonIcon extends StatelessWidget {
         Text(
           reason,
           style: TextStyle(
-            color: themeData ? Colors.black54 : Colors.white54,
+            color: Colors.black54,
           ),
         )
       ],

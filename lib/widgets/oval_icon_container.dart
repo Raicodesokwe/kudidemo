@@ -13,36 +13,20 @@ class OvalIconContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
+
     return Container(
         padding: const EdgeInsets.all(15),
         child: Center(
@@ -50,7 +34,7 @@ class OvalIconContainer extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: themeData ? Colors.black54 : Colors.white54,
+                color: Colors.black54,
                 size: size,
               ),
               SizedBox(
@@ -59,7 +43,7 @@ class OvalIconContainer extends StatelessWidget {
               Text(
                 text,
                 style: TextStyle(
-                    color: themeData ? Colors.black45 : Colors.white54,
+                    color: Colors.black45,
                     fontSize: 10,
                     fontWeight: FontWeight.w300),
               ),
@@ -67,7 +51,7 @@ class OvalIconContainer extends StatelessWidget {
           ),
         ),
         decoration: decorator.copyWith(
-            color: themeData ? Colors.grey[300] : Colors.grey[900],
+            color: Theme.of(context).backgroundColor,
             borderRadius: BorderRadius.circular(30)));
   }
 }

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kudidemo/providers/task_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-import '../providers/theme_provider.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarWidget extends StatelessWidget {
   CalendarWidget({Key? key}) : super(key: key);
@@ -12,37 +9,19 @@ class CalendarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final tasks = Provider.of<TaskProvider>(context).tasks;
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -54,7 +33,7 @@ class CalendarWidget extends StatelessWidget {
               ),
               Container(
                 decoration: decorator.copyWith(
-                    color: themeData ? Colors.grey[300] : Colors.grey[900],
+                    color: Theme.of(context).backgroundColor,
                     border: Border.all(color: Colors.black54),
                     borderRadius: BorderRadius.circular(7)),
                 height: size.height * 0.4,

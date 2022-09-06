@@ -18,36 +18,19 @@ class _WalletPageState extends State<WalletPage> {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     Size size = MediaQuery.of(context).size;
     return DefaultTabController(
       length: 2,
@@ -60,7 +43,7 @@ class _WalletPageState extends State<WalletPage> {
               style: GoogleFonts.prompt(
                   fontWeight: FontWeight.w500,
                   fontSize: 23,
-                  color: themeData ? Colors.black : Colors.white),
+                  color: Colors.black),
             ),
           ),
           backgroundColor: Colors.transparent,
@@ -72,70 +55,31 @@ class _WalletPageState extends State<WalletPage> {
             children: [
               Container(
                 height: 60,
-                decoration: themeData
-                    ? SecondDecoration(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        depression: 10,
-                        colors: [
-                            Color.fromRGBO(216, 213, 208, 1),
-                            Colors.white
-                          ])
-                    : ConcaveDecoration(
-                        colors: [Colors.black, Colors.grey.shade800],
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        depression: 10),
+                decoration: decorator.copyWith(
+                    color: Theme.of(context).backgroundColor),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TabBar(
-                      labelColor: themeData ? Colors.black : Colors.white,
+                      labelColor: Colors.black,
                       labelStyle:
                           GoogleFonts.nunitoSans(fontWeight: FontWeight.w600),
                       indicator: BoxDecoration(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
-                          borderRadius: BorderRadius.circular(5),
-                          boxShadow: themeData
-                              ? [
-                                  BoxShadow(
-                                      color: Colors.grey[500]!,
-                                      offset: Offset(
-                                        4,
-                                        4,
-                                      ),
-                                      blurRadius: 15,
-                                      spreadRadius: 1),
-                                  BoxShadow(
-                                      color: Colors.white,
-                                      offset: Offset(
-                                        -4,
-                                        -4,
-                                      ),
-                                      blurRadius: 15,
-                                      spreadRadius: 1)
-                                ]
-                              : [
-                                  BoxShadow(
-                                      color: Colors.black,
-                                      //  Colors.grey[500]!,
-                                      offset: Offset(
-                                        4,
-                                        4,
-                                      ),
-                                      blurRadius: 15,
-                                      // spreadRadius: 1
-                                      spreadRadius: 5),
-                                  BoxShadow(
-                                      color: Colors.grey.shade800,
-                                      // Colors.white,
-                                      offset: Offset(
-                                        -4,
-                                        -4,
-                                      ),
-                                      blurRadius: 15,
-                                      spreadRadius: 1)
-                                ]),
+                        color: Theme.of(context).backgroundColor,
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Theme.of(context).cardColor,
+                              offset: Offset(5, 5),
+                              blurRadius: 15,
+                              spreadRadius: 5),
+                          BoxShadow(
+                            spreadRadius: 1,
+                            color: Theme.of(context).canvasColor,
+                            offset: Offset(-5, -5),
+                            blurRadius: 15,
+                          )
+                        ],
+                      ),
                       tabs: const [
                         Tab(
                           text: 'Weekly expenses',

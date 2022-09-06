@@ -40,36 +40,19 @@ class ColorOverlayState extends State<ColorOverlay>
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     Size size = MediaQuery.of(context).size;
 
     return Platform.isIOS
@@ -102,9 +85,7 @@ class ColorOverlayState extends State<ColorOverlay>
                               decoration: decorator.copyWith(
                                   color: widget.color == Colors.pink.shade200
                                       ? Colors.pink.shade200
-                                      : themeData
-                                          ? Colors.grey[300]
-                                          : Colors.grey[900],
+                                      : Theme.of(context).backgroundColor,
                                   borderRadius: BorderRadius.circular(30))),
                         ),
                         SizedBox(
@@ -128,9 +109,7 @@ class ColorOverlayState extends State<ColorOverlay>
                               decoration: decorator.copyWith(
                                   color: widget.color == Colors.purple.shade200
                                       ? Colors.purple.shade200
-                                      : themeData
-                                          ? Colors.grey[300]
-                                          : Colors.grey[900],
+                                      : Theme.of(context).backgroundColor,
                                   borderRadius: BorderRadius.circular(30))),
                         ),
                         SizedBox(
@@ -154,9 +133,7 @@ class ColorOverlayState extends State<ColorOverlay>
                               decoration: decorator.copyWith(
                                   color: widget.color == Colors.blue.shade200
                                       ? Colors.blue.shade200
-                                      : themeData
-                                          ? Colors.grey[300]
-                                          : Colors.grey[900],
+                                      : Theme.of(context).backgroundColor,
                                   borderRadius: BorderRadius.circular(30))),
                         ),
                       ],
@@ -185,9 +162,7 @@ class ColorOverlayState extends State<ColorOverlay>
                               decoration: decorator.copyWith(
                                   color: widget.color == Colors.orange.shade200
                                       ? Colors.orange.shade200
-                                      : themeData
-                                          ? Colors.grey[300]
-                                          : Colors.grey[900],
+                                      : Theme.of(context).backgroundColor,
                                   borderRadius: BorderRadius.circular(30))),
                         ),
                         SizedBox(
@@ -211,9 +186,7 @@ class ColorOverlayState extends State<ColorOverlay>
                               decoration: decorator.copyWith(
                                   color: widget.color == Colors.green.shade200
                                       ? Colors.green.shade200
-                                      : themeData
-                                          ? Colors.grey[300]
-                                          : Colors.grey[900],
+                                      : Theme.of(context).backgroundColor,
                                   borderRadius: BorderRadius.circular(30))),
                         ),
                       ],
@@ -224,8 +197,7 @@ class ColorOverlayState extends State<ColorOverlay>
                   CupertinoDialogAction(
                       child: Text(
                         'Cancel',
-                        style: GoogleFonts.prompt(
-                            color: themeData ? Colors.black : Colors.white),
+                        style: GoogleFonts.prompt(color: Colors.black),
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -233,8 +205,7 @@ class ColorOverlayState extends State<ColorOverlay>
                   CupertinoDialogAction(
                     child: Text(
                       'Confirm',
-                      style: GoogleFonts.prompt(
-                          color: themeData ? Colors.black : Colors.white),
+                      style: GoogleFonts.prompt(color: Colors.black),
                     ),
                     onPressed: () {
                       Navigator.of(context).pop(widget.color);
@@ -254,7 +225,7 @@ class ColorOverlayState extends State<ColorOverlay>
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 60),
                   child: Container(
                     decoration: ShapeDecoration(
-                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        color: Theme.of(context).backgroundColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0))),
                     child: Padding(
@@ -282,12 +253,10 @@ class ColorOverlayState extends State<ColorOverlay>
                                           shape: BoxShape.circle),
                                     )),
                                     decoration: decorator.copyWith(
-                                        color:
-                                            widget.color == Colors.pink.shade200
-                                                ? Colors.pink.shade200
-                                                : themeData
-                                                    ? Colors.grey[300]
-                                                    : Colors.grey[900],
+                                        color: widget.color ==
+                                                Colors.pink.shade200
+                                            ? Colors.pink.shade200
+                                            : Theme.of(context).backgroundColor,
                                         borderRadius:
                                             BorderRadius.circular(30))),
                               ),
@@ -310,9 +279,7 @@ class ColorOverlayState extends State<ColorOverlay>
                                         color: widget.color ==
                                                 Colors.purple.shade200
                                             ? Colors.purple.shade200
-                                            : themeData
-                                                ? Colors.grey[300]
-                                                : Colors.grey[900],
+                                            : Theme.of(context).backgroundColor,
                                         borderRadius:
                                             BorderRadius.circular(30))),
                               ),
@@ -332,12 +299,10 @@ class ColorOverlayState extends State<ColorOverlay>
                                           shape: BoxShape.circle),
                                     )),
                                     decoration: decorator.copyWith(
-                                        color:
-                                            widget.color == Colors.blue.shade200
-                                                ? Colors.blue.shade200
-                                                : themeData
-                                                    ? Colors.grey[300]
-                                                    : Colors.grey[900],
+                                        color: widget.color ==
+                                                Colors.blue.shade200
+                                            ? Colors.blue.shade200
+                                            : Theme.of(context).backgroundColor,
                                         borderRadius:
                                             BorderRadius.circular(30))),
                               ),
@@ -360,9 +325,7 @@ class ColorOverlayState extends State<ColorOverlay>
                                         color: widget.color ==
                                                 Colors.orange.shade200
                                             ? Colors.orange.shade200
-                                            : themeData
-                                                ? Colors.grey[300]
-                                                : Colors.grey[900],
+                                            : Theme.of(context).backgroundColor,
                                         borderRadius:
                                             BorderRadius.circular(30))),
                               ),
@@ -385,9 +348,7 @@ class ColorOverlayState extends State<ColorOverlay>
                                         color: widget.color ==
                                                 Colors.green.shade200
                                             ? Colors.green.shade200
-                                            : themeData
-                                                ? Colors.grey[300]
-                                                : Colors.grey[900],
+                                            : Theme.of(context).backgroundColor,
                                         borderRadius:
                                             BorderRadius.circular(30))),
                               ),

@@ -44,36 +44,19 @@ class _SigninScreenState extends State<SigninScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     Size size = MediaQuery.of(context).size;
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     bool isLoading = false;
@@ -91,7 +74,7 @@ class _SigninScreenState extends State<SigninScreen> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   width: size.width * 0.8,
                   decoration: decorator.copyWith(
-                      color: themeData ? Colors.grey[300] : Colors.grey[900],
+                      color: Theme.of(context).backgroundColor,
                       borderRadius: BorderRadius.circular(10.0)),
                   child: TextFormField(
                     controller: emailNameController,
@@ -121,7 +104,7 @@ class _SigninScreenState extends State<SigninScreen> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   width: size.width * 0.8,
                   decoration: decorator.copyWith(
-                      color: themeData ? Colors.grey[300] : Colors.grey[900],
+                      color: Theme.of(context).backgroundColor,
                       borderRadius: BorderRadius.circular(10.0)),
                   child: TextFormField(
                     controller: passwordController,
@@ -165,14 +148,13 @@ class _SigninScreenState extends State<SigninScreen> {
                         ),
                         Text(
                           'Sign in with Google',
-                          style: TextStyle(
-                              color: themeData ? Colors.white : Colors.black),
+                          style: TextStyle(color: Colors.white),
                         )
                       ],
                     ),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(40),
-                        color: themeData ? Colors.black : Colors.white),
+                        color: Colors.black),
                   ),
                 ),
 
@@ -238,7 +220,7 @@ class _SigninScreenState extends State<SigninScreen> {
                             )
                           : NextneonBtn(size: size, label: 'Sign in'),
                     )
-                  : NextBtn(size: size, themeData: themeData, label: 'Sign in'),
+                  : NextBtn(size: size, label: 'Sign in'),
               SizedBox(
                 height: size.height * 0.05,
               ),

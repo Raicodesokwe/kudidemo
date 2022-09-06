@@ -124,42 +124,27 @@ class _TimerWidgetState extends State<TimerWidget>
   @override
   Widget build(BuildContext context) {
     isRunning = _timer == null ? false : _timer!.isActive;
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         body: Column(
           children: [
-            BackArrow(decorator: decorator, themeData: themeData),
+            BackArrow(
+              decorator: decorator,
+            ),
             Center(
               child: Container(
                 child: Row(
@@ -192,8 +177,7 @@ class _TimerWidgetState extends State<TimerWidget>
                             Icon(
                               FontAwesomeIcons.clock,
                               size: 15,
-                              color:
-                                  themeData ? Colors.black54 : Colors.white54,
+                              color: Colors.black54,
                             ),
                             SizedBox(
                               width: 5,
@@ -201,8 +185,7 @@ class _TimerWidgetState extends State<TimerWidget>
                             Text(
                               'Finishing ${DateFormat('Hm').format(now)}',
                               style: TextStyle(
-                                color:
-                                    themeData ? Colors.black54 : Colors.white54,
+                                color: Colors.black54,
                               ),
                             )
                           ],
@@ -215,7 +198,7 @@ class _TimerWidgetState extends State<TimerWidget>
                 width: size.width * 0.6,
                 decoration: decorator.copyWith(
                   borderRadius: BorderRadius.circular(10),
-                  color: themeData ? Colors.grey[300] : Colors.grey[900],
+                  color: Theme.of(context).backgroundColor,
                 ),
               ),
             ),
@@ -242,7 +225,7 @@ class _TimerWidgetState extends State<TimerWidget>
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: themeData ? Colors.grey[300] : Colors.grey[900]),
+                      color: Theme.of(context).backgroundColor),
                   child: Text(
                       "${(value ~/ 60).toInt().toString().padLeft(2, '0')}:${(value % 60).toInt().toString().padLeft(2, '0')}"),
                 ),
@@ -272,8 +255,7 @@ class _TimerWidgetState extends State<TimerWidget>
                         ),
                       ),
                       decoration: decorator.copyWith(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
+                          color: Theme.of(context).backgroundColor,
                           shape: BoxShape.circle),
                     ),
                   )

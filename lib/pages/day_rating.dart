@@ -51,43 +51,29 @@ class _DayRatingState extends State<DayRating>
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     return SafeArea(
       child: Scaffold(
         body: FadeTransition(
           opacity: fadeAnimation,
           child: Column(
             children: [
-              BackArrow(decorator: decorator, themeData: themeData),
+              BackArrow(
+                decorator: decorator,
+              ),
               SizedBox(
                 height: size.height * 0.05,
               ),
@@ -105,28 +91,26 @@ class _DayRatingState extends State<DayRating>
               _currentValue >= 0 && _currentValue < 2
                   ? Image.asset(
                       'assets/images/sadaf.png',
-                      color: themeData ? Colors.black : Colors.white,
+                      color: Colors.black54,
                     )
                   : _currentValue >= 2 && _currentValue < 4
                       ? Image.asset(
                           'assets/images/sademoji.png',
-                          color: themeData ? Colors.black : Colors.white,
+                          color: Colors.black54,
                         )
                       : _currentValue >= 4 && _currentValue < 6
                           ? Image.asset(
                               'assets/images/second.png',
-                              color: themeData ? Colors.black : Colors.white,
+                              color: Colors.black54,
                             )
                           : _currentValue >= 6 && _currentValue < 8
                               ? Image.asset(
                                   'assets/images/happyemoji.png',
-                                  color:
-                                      themeData ? Colors.black : Colors.white,
+                                  color: Colors.black54,
                                 )
                               : Image.asset(
                                   'assets/images/happyaf.png',
-                                  color:
-                                      themeData ? Colors.black : Colors.white,
+                                  color: Colors.black54,
                                 ),
               SizedBox(
                 height: size.height * 0.1,
@@ -139,13 +123,11 @@ class _DayRatingState extends State<DayRating>
                         width: double.infinity,
                         decoration: decorator.copyWith(
                           borderRadius: BorderRadius.circular(40),
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
+                          color: Theme.of(context).backgroundColor,
                         ),
                         child: CupertinoSlider(
-                            thumbColor: themeData ? Colors.black : Colors.white,
-                            activeColor:
-                                themeData ? Colors.black45 : Colors.white54,
+                            thumbColor: Colors.black54,
+                            activeColor: Colors.black45,
                             max: 10,
                             min: 0,
                             value: _currentValue,
@@ -168,16 +150,13 @@ class _DayRatingState extends State<DayRating>
                         width: double.infinity,
                         decoration: decorator.copyWith(
                           borderRadius: BorderRadius.circular(30),
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
+                          color: Theme.of(context).backgroundColor,
                         ),
                         child: Center(
                           child: Slider(
                               inactiveColor: Colors.grey,
-                              thumbColor:
-                                  themeData ? Colors.black : Colors.white,
-                              activeColor:
-                                  themeData ? Colors.black45 : Colors.white54,
+                              thumbColor: Colors.black54,
+                              activeColor: Colors.black54,
                               max: 10,
                               min: 0,
                               value: _currentValue,
@@ -233,7 +212,6 @@ class _DayRatingState extends State<DayRating>
                         )
                       : NextBtn(
                           size: size,
-                          themeData: themeData,
                           label: 'Next',
                         ))
             ],

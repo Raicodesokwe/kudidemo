@@ -40,37 +40,20 @@ class _HomePageState extends State<HomePage> {
   DateTime now = DateTime.now();
   final keyone = GlobalKey();
   _bottomSheet() {
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
-    return TaskModal(themeData: themeData);
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
+    return TaskModal();
   }
 
   String? month;
@@ -199,36 +182,20 @@ class _HomePageState extends State<HomePage> {
     }
 
     final tasks = Provider.of<TaskProvider>(context).tasks;
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     Size size = MediaQuery.of(context).size;
 
     openWhatsapp() async {
@@ -283,7 +250,20 @@ class _HomePageState extends State<HomePage> {
                   )),
             ),
           ),
-          actions: [ChangeThemeButtonWidget()],
+          actions: [
+            GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ChangeThemeButtonWidget()));
+                },
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  color: Colors.red,
+                ))
+          ],
           elevation: 0,
           backgroundColor: Colors.transparent,
         ),
@@ -374,7 +354,6 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       DateContainer(
                         decorator: decorator,
-                        themeData: themeData,
                         date:
                             '${DateFormat("EEEE").format(now.subtract(Duration(days: 2))).substring(0, 3)}',
                         day:
@@ -383,7 +362,6 @@ class _HomePageState extends State<HomePage> {
                       Spacer(),
                       DateContainer(
                         decorator: decorator,
-                        themeData: themeData,
                         date:
                             '${DateFormat("EEEE").format(now.subtract(Duration(days: 1))).substring(0, 3)}',
                         day:
@@ -413,7 +391,6 @@ class _HomePageState extends State<HomePage> {
                       Spacer(),
                       DateContainer(
                         decorator: decorator,
-                        themeData: themeData,
                         date:
                             '${DateFormat("EEEE").format(now.add(Duration(days: 1))).substring(0, 3)}',
                         day:
@@ -422,7 +399,6 @@ class _HomePageState extends State<HomePage> {
                       Spacer(),
                       DateContainer(
                         decorator: decorator,
-                        themeData: themeData,
                         date:
                             '${DateFormat("EEEE").format(now.add(Duration(days: 2))).substring(0, 3)}',
                         day:
@@ -437,7 +413,7 @@ class _HomePageState extends State<HomePage> {
                 width: size.width * 0.9,
                 padding: const EdgeInsets.all(20),
                 decoration: decorator.copyWith(
-                    color: themeData ? Colors.grey[300] : Colors.grey[900],
+                    color: Theme.of(context).backgroundColor,
                     borderRadius: BorderRadius.circular(10.0)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -456,9 +432,7 @@ class _HomePageState extends State<HomePage> {
                         Text('Recent tasks',
                             style: GoogleFonts.prompt(
                                 fontWeight: FontWeight.w300,
-                                color: themeData
-                                    ? Colors.black38
-                                    : Colors.white38))
+                                color: Colors.black54))
                       ],
                     ),
                     SizedBox(
@@ -473,9 +447,7 @@ class _HomePageState extends State<HomePage> {
                                   '${DateFormat('Hm').format(now)}',
                                   style: TextStyle(
                                       fontWeight: FontWeight.w300,
-                                      color: themeData
-                                          ? Colors.black38
-                                          : Colors.white38),
+                                      color: Colors.black54),
                                 ),
                               ),
                               SizedBox(
@@ -486,9 +458,7 @@ class _HomePageState extends State<HomePage> {
                                 width: size.width * 0.65,
                                 child: Text('None at the moment'),
                                 decoration: decorator.copyWith(
-                                    color: themeData
-                                        ? Colors.grey[300]
-                                        : Colors.grey[900],
+                                    color: Theme.of(context).backgroundColor,
                                     borderRadius: BorderRadius.circular(10.0)),
                               )
                             ],
@@ -511,32 +481,24 @@ class _HomePageState extends State<HomePage> {
                                         children: [
                                           Icon(
                                             Icons.watch,
-                                            color: themeData
-                                                ? Colors.black54
-                                                : Colors.white54,
+                                            color: Colors.black54,
                                           ),
                                           Text(
                                             Utils.toTime(tasks[index].from!),
                                             style: TextStyle(
                                                 fontSize: 10,
-                                                color: themeData
-                                                    ? Colors.black54
-                                                    : Colors.white54),
+                                                color: Colors.black54),
                                           ),
                                           Text(
                                             '-',
                                             style: TextStyle(
-                                                color: themeData
-                                                    ? Colors.black54
-                                                    : Colors.white54),
+                                                color: Colors.black54),
                                           ),
                                           Text(
                                             Utils.toTime(tasks[index].to!),
                                             style: TextStyle(
                                                 fontSize: 10,
-                                                color: themeData
-                                                    ? Colors.black54
-                                                    : Colors.white54),
+                                                color: Colors.black54),
                                           ),
                                         ],
                                       ),
@@ -554,9 +516,7 @@ class _HomePageState extends State<HomePage> {
                                         tasks[index].notes!,
                                         style: TextStyle(
                                             fontSize: 12,
-                                            color: themeData
-                                                ? Colors.black87
-                                                : Colors.white70),
+                                            color: Colors.black87),
                                       ),
                                     ],
                                   ),

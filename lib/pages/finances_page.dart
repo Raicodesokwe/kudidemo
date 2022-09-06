@@ -59,36 +59,19 @@ class _FinancesPageState extends State<FinancesPage>
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     Size size = MediaQuery.of(context).size;
 
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
@@ -101,7 +84,9 @@ class _FinancesPageState extends State<FinancesPage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (!isKeyboard)
-                BackArrow(decorator: decorator, themeData: themeData),
+                BackArrow(
+                  decorator: decorator,
+                ),
               if (!isKeyboard)
                 Center(
                   child: SizedBox(
@@ -114,7 +99,7 @@ class _FinancesPageState extends State<FinancesPage>
               if (!isKeyboard)
                 Text('Finances',
                     style: TextStyle(
-                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        color: Theme.of(context).backgroundColor,
                         fontSize: 50,
                         shadows: const [
                           Shadow(
@@ -179,8 +164,7 @@ class _FinancesPageState extends State<FinancesPage>
                             Image.asset(
                               'assets/images/budget.png',
                               scale: 6,
-                              color:
-                                  themeData ? Colors.black54 : Colors.white54,
+                              color: Colors.black54,
                             ),
                             SizedBox(
                               width: 5,
@@ -188,9 +172,7 @@ class _FinancesPageState extends State<FinancesPage>
                             Text(
                               'Budget',
                               style: TextStyle(
-                                  color: themeData
-                                      ? Colors.black45
-                                      : Colors.white54,
+                                  color: Colors.black45,
                                   fontSize: 10,
                                   fontWeight: FontWeight.w300),
                             ),
@@ -198,8 +180,7 @@ class _FinancesPageState extends State<FinancesPage>
                         ),
                       ),
                       decoration: decorator.copyWith(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
+                          color: Theme.of(context).backgroundColor,
                           borderRadius: BorderRadius.circular(30))),
                 ],
               ),

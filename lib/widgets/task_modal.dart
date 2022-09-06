@@ -16,10 +16,7 @@ import 'image_modal.dart';
 class TaskModal extends StatelessWidget {
   const TaskModal({
     Key? key,
-    required this.themeData,
   }) : super(key: key);
-
-  final bool themeData;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +31,6 @@ class TaskModal extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => TaskView()));
                   },
                   child: ImageModal(
-                    themeData: themeData,
                     image: "assets/images/tasks.png",
                     task: 'Tasks',
                   ),
@@ -45,7 +41,6 @@ class TaskModal extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => HabitsPage()));
                   },
                   child: ImageModal(
-                    themeData: themeData,
                     task: 'Habits',
                     image: "assets/images/habits.png",
                   ),
@@ -56,7 +51,6 @@ class TaskModal extends StatelessWidget {
                         builder: (context) => FinancesPage()));
                   },
                   child: ImageModal(
-                    themeData: themeData,
                     task: 'Finances',
                     image: "assets/images/finances.png",
                   ),
@@ -67,7 +61,6 @@ class TaskModal extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => JournalPage()));
                   },
                   child: ImageModal(
-                    themeData: themeData,
                     task: 'Journal',
                     image: "assets/images/journal.png",
                   ),
@@ -78,7 +71,6 @@ class TaskModal extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => GroupTask()));
                   },
                   child: ImageModal(
-                    themeData: themeData,
                     task: 'Group tasks',
                     image: "assets/images/group.png",
                   ),
@@ -93,7 +85,7 @@ class TaskModal extends StatelessWidget {
                   style: GoogleFonts.prompt(
                       fontWeight: FontWeight.w600,
                       fontSize: 20,
-                      color: themeData ? Colors.black : Colors.white),
+                      color: Colors.black),
                 ),
               ),
             ),
@@ -110,7 +102,6 @@ class TaskModal extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => TaskView()));
                   },
                   child: ImageModal(
-                    themeData: themeData,
                     image: "assets/images/tasks.png",
                     task: 'Tasks',
                   ),
@@ -123,7 +114,6 @@ class TaskModal extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: ImageModal(
-                    themeData: themeData,
                     image: "assets/images/habits.png",
                     task: 'Habits',
                   ),
@@ -138,7 +128,6 @@ class TaskModal extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: ImageModal(
-                    themeData: themeData,
                     image: "assets/images/finances.png",
                     task: 'Finances',
                   ),
@@ -153,7 +142,6 @@ class TaskModal extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: ImageModal(
-                    themeData: themeData,
                     image: "assets/images/journal.png",
                     task: 'Journal',
                   ),
@@ -168,7 +156,6 @@ class TaskModal extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => GroupTask()));
                   },
                   child: ImageModal(
-                    themeData: themeData,
                     image: "assets/images/group.png",
                     task: 'Group tasks',
                   ),

@@ -12,45 +12,75 @@ final appThemeData = {
       visualDensity: VisualDensity.adaptivePlatformDensity,
       scaffoldBackgroundColor: const Color(0xFFd6d912),
       backgroundColor: const Color(0xFFd6d912),
+      canvasColor: const Color(0xFFf6fa15),
+      cardColor: const Color(0xFFb6b80f),
       appBarTheme: appBarTheme,
       iconTheme: const IconThemeData(color: Colors.black),
       textTheme: TextTheme(
-          bodyText2:
-              TextStyle(color: Colors.black, fontFamily: 'grifterbold'))),
+          bodyText2: TextStyle(
+        color: Colors.black,
+      ))),
   AppTheme.Dark: ThemeData.dark().copyWith(
       visualDensity: VisualDensity.adaptivePlatformDensity,
       scaffoldBackgroundColor: Colors.grey[900],
       backgroundColor: Colors.grey[900],
+      canvasColor: Colors.grey.shade800,
+      cardColor: Colors.black,
       appBarTheme: appBarTheme,
       iconTheme: const IconThemeData(color: Colors.white),
       textTheme: TextTheme(
-          bodyText2:
-              TextStyle(color: Colors.white, fontFamily: 'grifterbold'))),
+          bodyText2: TextStyle(
+        color: Colors.white,
+      ))),
   AppTheme.Blue: ThemeData.light().copyWith(
       visualDensity: VisualDensity.adaptivePlatformDensity,
       scaffoldBackgroundColor: const Color(0xFF1512d9),
       backgroundColor: const Color(0xFF1512d9),
+      canvasColor: const Color(0xFF1815fa),
+      cardColor: const Color(0xFF120fb8),
       appBarTheme: appBarTheme,
       iconTheme: const IconThemeData(color: Colors.black),
       textTheme: TextTheme(
-          bodyText2:
-              TextStyle(color: Colors.black, fontFamily: 'grifterbold'))),
+          bodyText2: TextStyle(
+        color: Colors.black,
+      ))),
   AppTheme.Light: ThemeData.light().copyWith(
       visualDensity: VisualDensity.adaptivePlatformDensity,
       scaffoldBackgroundColor: Colors.grey[300],
       backgroundColor: Colors.grey[300],
+      canvasColor: Colors.white,
+      cardColor: Colors.grey.shade500,
       appBarTheme: appBarTheme,
       iconTheme: const IconThemeData(color: Colors.black),
       textTheme: TextTheme(
-          bodyText2:
-              TextStyle(color: Colors.black, fontFamily: 'grifterbold'))),
+          bodyText2: TextStyle(
+        color: Colors.black,
+      ))),
   AppTheme.Pink: ThemeData.light().copyWith(
       visualDensity: VisualDensity.adaptivePlatformDensity,
       scaffoldBackgroundColor: const Color(0xFFd912b4),
       backgroundColor: const Color(0xFFd912b4),
+      canvasColor: const Color(0xFFfa15cf),
+      cardColor: const Color(0xFFb80f99),
       appBarTheme: appBarTheme,
       iconTheme: const IconThemeData(color: Colors.black),
       textTheme: TextTheme(
-          bodyText2: TextStyle(color: Colors.black, fontFamily: 'grifterbold')))
+          bodyText2: TextStyle(
+        color: Colors.black,
+      ))),
+  AppTheme.Orange: ThemeData.light().copyWith(
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      scaffoldBackgroundColor: const Color(0xFFd5642c),
+      canvasColor: const Color(0xFFf57333),
+      //chini
+      cardColor: const Color(0xFFb55525),
+      //juu
+      backgroundColor: const Color(0xFFd5642c),
+      appBarTheme: appBarTheme,
+      iconTheme: const IconThemeData(color: Colors.black),
+      textTheme: TextTheme(
+          bodyText2: TextStyle(
+        color: Colors.black,
+      )))
 };
 const appBarTheme = AppBarTheme(centerTitle: false, elevation: 0);

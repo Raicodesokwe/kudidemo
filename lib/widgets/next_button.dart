@@ -4,12 +4,11 @@ class NextBtn extends StatelessWidget {
   const NextBtn({
     Key? key,
     required this.size,
-    required this.themeData,
     required this.label,
   }) : super(key: key);
 
   final Size size;
-  final bool themeData;
+
   final String label;
 
   @override
@@ -20,13 +19,12 @@ class NextBtn extends StatelessWidget {
       child: Center(
         child: Text(
           label,
-          style: TextStyle(color: themeData ? Colors.black : Colors.white),
+          style: TextStyle(color: Colors.black54),
         ),
       ),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-              width: 4, color: themeData ? Colors.black54 : Colors.white54)),
+          border: Border.all(width: 4, color: Colors.black54)),
     );
   }
 }

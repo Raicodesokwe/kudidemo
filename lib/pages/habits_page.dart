@@ -61,36 +61,19 @@ class _HabitsPageState extends State<HabitsPage>
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     Size size = MediaQuery.of(context).size;
 
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
@@ -103,7 +86,9 @@ class _HabitsPageState extends State<HabitsPage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (!isKeyboard)
-                BackArrow(decorator: decorator, themeData: themeData),
+                BackArrow(
+                  decorator: decorator,
+                ),
               if (!isKeyboard)
                 Center(
                   child: SizedBox(
@@ -116,7 +101,7 @@ class _HabitsPageState extends State<HabitsPage>
               if (!isKeyboard)
                 Text('Habits',
                     style: TextStyle(
-                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        color: Theme.of(context).backgroundColor,
                         fontSize: 50,
                         shadows: const [
                           Shadow(
@@ -155,8 +140,7 @@ class _HabitsPageState extends State<HabitsPage>
                               shape: BoxShape.circle),
                         )),
                         decoration: decorator.copyWith(
-                            color:
-                                themeData ? Colors.grey[300] : Colors.grey[900],
+                            color: Theme.of(context).backgroundColor,
                             borderRadius: BorderRadius.circular(30))),
                     OvalContainer(text: 'Daily goal'),
                     OvalIconContainer(

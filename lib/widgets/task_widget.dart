@@ -20,89 +20,19 @@ class TaskWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ?
-          //  [
-          //     BoxShadow(
-          //         color: const Color(0xFF120fb8),
-          //         offset: Offset(5, 5),
-          //         blurRadius: 15,
-          //         spreadRadius: 5),
-          //     BoxShadow(
-          //       spreadRadius: 1,
-          //       color: const Color(0xFF1815fa),
-          //       offset: Offset(-5, -5),
-          //       blurRadius: 15,
-          //     )
-          //   ]
-          // [
-          //     BoxShadow(
-          //         color: const Color(0xFFb6b80f),
-          //         offset: Offset(5, 5),
-          //         blurRadius: 15,
-          //         spreadRadius: 5),
-          //     BoxShadow(
-          //       spreadRadius: 1,
-          //       color: const Color(0xFFf6fa15),
-          //       offset: Offset(-5, -5),
-          //       blurRadius: 15,
-          //     )
-          //   ]
-          // [
-          //     BoxShadow(
-          //         color: const Color(0xFFb80f99),
-          //         offset: Offset(5, 5),
-          //         blurRadius: 15,
-          //         spreadRadius: 5),
-          //     BoxShadow(
-          //       spreadRadius: 1,
-          //       color: const Color(0xFFfa15cf),
-          //       offset: Offset(-5, -5),
-          //       blurRadius: 15,
-          //     )
-          //   ]
-          // [
-          //     BoxShadow(
-          //         color: Colors.grey.shade500,
-          //         offset: Offset(4, 4),
-          //         blurRadius: 15,
-          //         spreadRadius: 1),
-          //     BoxShadow(
-          //       spreadRadius: 1,
-          //       color: Colors.white,
-          //       offset: Offset(-4, -4),
-          //       blurRadius: 15,
-          //     )
-          //   ]
-          [
-              BoxShadow(
-                  color: const Color(0xFFb55525),
-                  offset: Offset(11, 11),
-                  blurRadius: 25,
-                  spreadRadius: -1),
-              BoxShadow(
-                spreadRadius: -1,
-                color: const Color(0xFFf57333),
-                offset: Offset(-11, -11),
-                blurRadius: 25,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30),
       child: Container(
@@ -124,7 +54,7 @@ class TaskWidget extends StatelessWidget {
           ],
         ),
         decoration: decorator.copyWith(
-            color: themeData ? const Color(0xFFd5642c) : Colors.grey[900],
+            color: Theme.of(context).backgroundColor,
             borderRadius: BorderRadius.circular(10.0)),
       ),
     );

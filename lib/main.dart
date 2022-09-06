@@ -54,9 +54,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,
-          theme: notifier.darkTheme
-              ? lightThemeData(context)
-              : darkThemeData(context),
+          theme: notifier.themeData,
           home: AuthService.handleAuth(),
           routes: {'chat': (_) => ChatPage(), 'group': (_) => GroupTask()},
         );

@@ -17,36 +17,19 @@ class JournalPage extends StatelessWidget {
   Widget build(BuildContext context) {
     String date = DateFormat('yMMMMd').format(now);
     String time = DateFormat('jm').format(now);
-    final themeData = Provider.of<ThemeProvider>(context).darkTheme;
-    final BoxDecoration decorator = BoxDecoration(
-      boxShadow: themeData
-          ? [
-              BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(4, 4),
-                  blurRadius: 15,
-                  spreadRadius: 1),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.white,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ]
-          : [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(5, 5),
-                  blurRadius: 15,
-                  spreadRadius: 5),
-              BoxShadow(
-                spreadRadius: 1,
-                color: Colors.grey.shade800,
-                offset: Offset(-4, -4),
-                blurRadius: 15,
-              )
-            ],
-    );
+    final decorator = BoxDecoration(boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).cardColor,
+          offset: Offset(5, 5),
+          blurRadius: 15,
+          spreadRadius: 5),
+      BoxShadow(
+        spreadRadius: 1,
+        color: Theme.of(context).canvasColor,
+        offset: Offset(-5, -5),
+        blurRadius: 15,
+      )
+    ]);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Padding(
@@ -80,15 +63,12 @@ class JournalPage extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
-                                color: themeData
-                                    ? Colors.grey[300]
-                                    : Colors.grey[900],
+                                color: Theme.of(context).backgroundColor,
                                 borderRadius: BorderRadius.circular(7)),
                             child: Center(
                               child: Icon(
                                 Icons.camera_alt_sharp,
-                                color:
-                                    themeData ? Colors.black87 : Colors.white70,
+                                color: Colors.black87,
                                 size: 12,
                               ),
                             ),
@@ -117,8 +97,7 @@ class JournalPage extends StatelessWidget {
                           children: [
                             Icon(
                               FontAwesomeIcons.floppyDisk,
-                              color:
-                                  themeData ? Colors.black87 : Colors.white70,
+                              color: Colors.black87,
                               size: 17,
                             ),
                             SizedBox(
@@ -127,9 +106,7 @@ class JournalPage extends StatelessWidget {
                             Text(
                               'Save',
                               style: TextStyle(
-                                  color: themeData
-                                      ? Colors.black87
-                                      : Colors.white70,
+                                  color: Colors.black87,
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700),
                             ),
@@ -137,8 +114,7 @@ class JournalPage extends StatelessWidget {
                         ),
                       ),
                       decoration: decorator.copyWith(
-                          color:
-                              themeData ? Colors.grey[300] : Colors.grey[900],
+                          color: Theme.of(context).backgroundColor,
                           borderRadius: BorderRadius.circular(30))),
                 ],
               ),
@@ -151,12 +127,12 @@ class JournalPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(5),
                     decoration: decorator.copyWith(
-                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        color: Theme.of(context).backgroundColor,
                         borderRadius: BorderRadius.circular(7)),
                     child: Center(
                       child: Icon(
                         Icons.camera,
-                        color: themeData ? Colors.black54 : Colors.white60,
+                        color: Colors.black54,
                         size: 25,
                       ),
                     ),
@@ -164,12 +140,12 @@ class JournalPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(5),
                     decoration: decorator.copyWith(
-                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        color: Theme.of(context).backgroundColor,
                         shape: BoxShape.circle),
                     child: Center(
                       child: Icon(
                         Icons.emoji_emotions,
-                        color: themeData ? Colors.black54 : Colors.white60,
+                        color: Colors.black54,
                         size: 25,
                       ),
                     ),
@@ -177,36 +153,36 @@ class JournalPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(5),
                     decoration: decorator.copyWith(
-                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        color: Theme.of(context).backgroundColor,
                         borderRadius: BorderRadius.circular(7)),
                     child: Center(
                         child: Image.asset(
                       'assets/images/fonts.png',
                       scale: 4,
-                      color: themeData ? Colors.black54 : Colors.white54,
+                      color: Colors.black54,
                     )),
                   ),
                   Container(
                     padding: const EdgeInsets.all(5),
                     decoration: decorator.copyWith(
-                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        color: Theme.of(context).backgroundColor,
                         borderRadius: BorderRadius.circular(7)),
                     child: Center(
                         child: Icon(
                       Icons.mic_sharp,
-                      color: themeData ? Colors.black54 : Colors.white60,
+                      color: Colors.black54,
                       size: 25,
                     )),
                   ),
                   Container(
                     padding: const EdgeInsets.all(5),
                     decoration: decorator.copyWith(
-                        color: themeData ? Colors.grey[300] : Colors.grey[900],
+                        color: Theme.of(context).backgroundColor,
                         borderRadius: BorderRadius.circular(7)),
                     child: Center(
                         child: Icon(
                       FontAwesomeIcons.tag,
-                      color: themeData ? Colors.black54 : Colors.white60,
+                      color: Colors.black54,
                       size: 25,
                     )),
                   ),
@@ -221,7 +197,7 @@ class JournalPage extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   width: double.infinity,
                   decoration: decorator.copyWith(
-                      color: themeData ? Colors.grey[300] : Colors.grey[900],
+                      color: Theme.of(context).backgroundColor,
                       borderRadius: BorderRadius.circular(10.0)),
                   child: TextFormField(
                     validator: (value) =>
@@ -243,7 +219,7 @@ class JournalPage extends StatelessWidget {
                   height: size.height * 0.5,
                   width: double.infinity,
                   decoration: decorator.copyWith(
-                      color: themeData ? Colors.grey[300] : Colors.grey[900],
+                      color: Theme.of(context).backgroundColor,
                       borderRadius: BorderRadius.circular(10.0)),
                   child: TextFormField(
                     validator: (value) =>
