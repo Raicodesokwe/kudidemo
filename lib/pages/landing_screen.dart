@@ -144,8 +144,7 @@ class _LandingScreenState extends State<LandingScreen>
                   child: Text(
                     'your productivity and wellness',
                     style: GoogleFonts.prompt(
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).backgroundColor),
+                        fontWeight: FontWeight.w600, color: Colors.black54),
                   ),
                 ),
               ),
@@ -189,7 +188,10 @@ class _LandingScreenState extends State<LandingScreen>
                     },
                     child: Text(
                       'Already have an account',
-                      style: TextStyle(color: Colors.black),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2!
+                          .copyWith(fontSize: 16),
                     )),
               ))
             ],

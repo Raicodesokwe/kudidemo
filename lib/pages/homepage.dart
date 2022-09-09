@@ -4,18 +4,16 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:kudidemo/pages/calendar_widget.dart';
-import 'package:kudidemo/pages/group_task.dart';
-import 'package:kudidemo/pages/journal_page.dart';
-import 'package:kudidemo/pages/task_view.dart';
+
 import 'package:kudidemo/services/notification_service.dart';
 
-import 'package:kudidemo/theme/changethemebtn.dart';
-import 'package:kudidemo/providers/theme_provider.dart';
 import 'package:kudidemo/utils/utils.dart';
-import 'package:kudidemo/widgets/custom_showcase.dart';
+
+import 'package:kudidemo/widgets/theme_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -39,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   String? time;
   DateTime now = DateTime.now();
   final keyone = GlobalKey();
+  final keytwo = GlobalKey();
   _bottomSheet() {
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
@@ -68,9 +67,6 @@ class _HomePageState extends State<HomePage> {
       NotifyService().requestIOSPermissions();
     }
     listenNotifications();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ShowCaseWidget.of(context).startShowCase([keyone]);
-    });
   }
 
   void listenNotifications() {
@@ -253,16 +249,20 @@ class _HomePageState extends State<HomePage> {
           actions: [
             GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ChangeThemeButtonWidget()));
+                  showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (context) {
+                        return ThemeOverlay();
+                      });
                 },
-                child: Container(
-                  height: 50,
-                  width: 50,
-                  color: Colors.red,
-                ))
+                child: Image.asset(
+                  'assets/images/sun.png',
+                  color: Theme.of(context).textTheme.bodyText2!.color,
+                )),
+            SizedBox(
+              width: 10,
+            )
           ],
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -279,31 +279,27 @@ class _HomePageState extends State<HomePage> {
               ),
               GestureDetector(
                 onTap: () => _selectTask(),
-                child: CustomShowcaseWidget(
-                  globalKey: keyone,
-                  description: 'Create task or journal',
-                  child: Container(
-                    height: size.height * 0.07,
-                    width: size.width * 0.4,
-                    decoration: decorator.copyWith(
-                        borderRadius: BorderRadius.circular(30.0),
-                        color: Colors.greenAccent),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Create task',
-                          style: GoogleFonts.prompt(color: Colors.black),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.02,
-                        ),
-                        const Icon(
-                          Icons.add,
-                          color: Colors.black,
-                        )
-                      ],
-                    ),
+                child: Container(
+                  height: size.height * 0.07,
+                  width: size.width * 0.4,
+                  decoration: decorator.copyWith(
+                      borderRadius: BorderRadius.circular(30.0),
+                      color: Colors.greenAccent),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Create task',
+                        style: GoogleFonts.prompt(color: Colors.black),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.02,
+                      ),
+                      const Icon(
+                        Icons.add,
+                        color: Colors.black,
+                      )
+                    ],
                   ),
                 ),
               ),

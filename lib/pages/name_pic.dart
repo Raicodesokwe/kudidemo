@@ -94,6 +94,7 @@ class _NamePicScreenState extends State<NamePicScreen> {
                     return null;
                   },
                   keyboardType: TextInputType.emailAddress,
+                  style: GoogleFonts.prompt(color: Colors.black),
                   onChanged: (value) {
                     this.name = value;
                   },

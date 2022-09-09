@@ -91,6 +91,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       this.email = value;
                     },
                     cursorColor: Colors.black45,
+                    style: GoogleFonts.prompt(color: Colors.black),
                     decoration: InputDecoration(
                         hintText: 'email',
                         hintStyle: GoogleFonts.prompt(),
@@ -109,6 +110,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(10.0)),
                   child: TextFormField(
                     controller: passwordController,
+                    style: GoogleFonts.prompt(color: Colors.black),
                     validator: (value) {
                       if (value!.isEmpty || value.length < 6) {
                         return 'Password must be at least 6 characters long';
@@ -136,6 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       color: Theme.of(context).backgroundColor,
                       borderRadius: BorderRadius.circular(10.0)),
                   child: TextFormField(
+                    style: GoogleFonts.prompt(color: Colors.black),
                     controller: confirmPasswordController,
                     validator: (value) {
                       if (value!.isEmpty || value.length < 6) {

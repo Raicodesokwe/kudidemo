@@ -18,6 +18,7 @@ final appThemeData = {
       iconTheme: const IconThemeData(color: Colors.black),
       textTheme: TextTheme(
           bodyText2: TextStyle(
+        fontFamily: 'grifterbold',
         color: Colors.black,
       ))),
   AppTheme.Dark: ThemeData.dark().copyWith(
@@ -30,9 +31,10 @@ final appThemeData = {
       iconTheme: const IconThemeData(color: Colors.white),
       textTheme: TextTheme(
           bodyText2: TextStyle(
+        fontFamily: 'grifterbold',
         color: Colors.white,
       ))),
-  AppTheme.Blue: ThemeData.light().copyWith(
+  AppTheme.Blue: ThemeData.dark().copyWith(
       visualDensity: VisualDensity.adaptivePlatformDensity,
       scaffoldBackgroundColor: const Color(0xFF1512d9),
       backgroundColor: const Color(0xFF1512d9),
@@ -42,7 +44,8 @@ final appThemeData = {
       iconTheme: const IconThemeData(color: Colors.black),
       textTheme: TextTheme(
           bodyText2: TextStyle(
-        color: Colors.black,
+        fontFamily: 'grifterbold',
+        color: Colors.white,
       ))),
   AppTheme.Light: ThemeData.light().copyWith(
       visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -54,6 +57,7 @@ final appThemeData = {
       iconTheme: const IconThemeData(color: Colors.black),
       textTheme: TextTheme(
           bodyText2: TextStyle(
+        fontFamily: 'grifterbold',
         color: Colors.black,
       ))),
   AppTheme.Pink: ThemeData.light().copyWith(
@@ -66,6 +70,7 @@ final appThemeData = {
       iconTheme: const IconThemeData(color: Colors.black),
       textTheme: TextTheme(
           bodyText2: TextStyle(
+        fontFamily: 'grifterbold',
         color: Colors.black,
       ))),
   AppTheme.Orange: ThemeData.light().copyWith(
@@ -80,6 +85,7 @@ final appThemeData = {
       iconTheme: const IconThemeData(color: Colors.black),
       textTheme: TextTheme(
           bodyText2: TextStyle(
+        fontFamily: 'grifterbold',
         color: Colors.black,
       )))
 };

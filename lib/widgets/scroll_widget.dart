@@ -49,9 +49,9 @@ class ScrollWidget extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              AuthService.signOut(context);
-              // Navigator.of(context)
-              //     .push(MaterialPageRoute(builder: (context) => TaskView()));
+              // AuthService.signOut(context);
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => TaskView()));
             },
             child: TaskWidget(
               size: size,

@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/pages/pospage.dart';
-import 'package:kudidemo/providers/theme_provider.dart';
+
 import 'package:kudidemo/pages/walletpage.dart';
-import 'package:provider/provider.dart';
 
 import 'bouncetabbar.dart';
 import '../pages/homepage.dart';
@@ -62,7 +61,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               Image.asset(
                 "assets/images/homepage.png",
                 scale: 20,
-                color: Colors.black87,
+                color: Colors.white,
               ),
               Text(
                 'home',
@@ -76,7 +75,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               Icon(
                 FontAwesomeIcons.clipboard,
                 size: 28,
-                color: Colors.black87,
+                color: Colors.white,
               ),
               Text(
                 'tasks',
@@ -90,7 +89,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               Image.asset(
                 "assets/images/funds.png",
                 scale: 20,
-                color: Colors.black87,
+                color: Colors.white,
               ),
               Text(
                 'finances',
