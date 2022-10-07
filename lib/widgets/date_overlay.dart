@@ -4,6 +4,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/models/task_model.dart';
+import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/utils/utils.dart';
 import 'package:kudidemo/widgets/oval_container.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +15,14 @@ import '../providers/theme_provider.dart';
 class DateOverlay extends StatefulWidget {
   DateTime? fromDate;
   DateTime? toDateString;
-  DateOverlay({Key? key, required this.fromDate, required this.toDateString});
+  int? reminder;
+  String? repeat;
+  DateOverlay(
+      {Key? key,
+      required this.fromDate,
+      required this.toDateString,
+      required this.reminder,
+      required this.repeat});
   @override
   State<StatefulWidget> createState() => DateOverlayState();
 }
@@ -48,6 +57,12 @@ class DateOverlayState extends State<DateOverlay>
 
   @override
   Widget build(BuildContext context) {
+    final task = TaskModel(
+        from: widget.fromDate,
+        to: widget.toDateString,
+        reminder: widget.reminder,
+        repeat: widget.repeat);
+
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -220,70 +235,98 @@ class DateOverlayState extends State<DateOverlay>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Center(
-                              child: Text(
-                                '5 mins',
-                                style: GoogleFonts.prompt(
-                                    color: Colors.black45,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.reminder = 5;
+                            });
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.all(15),
+                              child: Center(
+                                child: Text(
+                                  '5 mins',
+                                  style: GoogleFonts.prompt(
+                                      color: Colors.black45,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                            decoration: decorator.copyWith(
-                                color: Theme.of(context).backgroundColor,
-                                borderRadius: BorderRadius.circular(30))),
-                        Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Center(
-                              child: Text(
-                                '10 mins',
-                                style: GoogleFonts.prompt(
-                                    color: Colors.black45,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600),
+                              decoration: decorator.copyWith(
+                                  color: Theme.of(context).backgroundColor,
+                                  borderRadius: BorderRadius.circular(30))),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.reminder = 10;
+                            });
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.all(15),
+                              child: Center(
+                                child: Text(
+                                  '10 mins',
+                                  style: GoogleFonts.prompt(
+                                      color: Colors.black45,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                            decoration: decorator.copyWith(
-                                color: Theme.of(context).backgroundColor,
-                                borderRadius: BorderRadius.circular(30))),
+                              decoration: decorator.copyWith(
+                                  color: Theme.of(context).backgroundColor,
+                                  borderRadius: BorderRadius.circular(30))),
+                        ),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Center(
-                              child: Text(
-                                '15 mins',
-                                style: GoogleFonts.prompt(
-                                    color: Colors.black45,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.reminder = 15;
+                            });
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.all(15),
+                              child: Center(
+                                child: Text(
+                                  '15 mins',
+                                  style: GoogleFonts.prompt(
+                                      color: Colors.black45,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                            decoration: decorator.copyWith(
-                                color: Theme.of(context).backgroundColor,
-                                borderRadius: BorderRadius.circular(30))),
+                              decoration: decorator.copyWith(
+                                  color: Theme.of(context).backgroundColor,
+                                  borderRadius: BorderRadius.circular(30))),
+                        ),
                         SizedBox(
                           width: 15,
                         ),
-                        Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Center(
-                              child: Text(
-                                '20 mins',
-                                style: GoogleFonts.prompt(
-                                    color: Colors.black45,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.reminder = 20;
+                            });
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.all(15),
+                              child: Center(
+                                child: Text(
+                                  '20 mins',
+                                  style: GoogleFonts.prompt(
+                                      color: Colors.black45,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                            decoration: decorator.copyWith(
-                                color: Theme.of(context).backgroundColor,
-                                borderRadius: BorderRadius.circular(30))),
+                              decoration: decorator.copyWith(
+                                  color: Theme.of(context).backgroundColor,
+                                  borderRadius: BorderRadius.circular(30))),
+                        ),
                       ],
                     ),
                     SizedBox(
@@ -299,70 +342,98 @@ class DateOverlayState extends State<DateOverlay>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Center(
-                              child: Text(
-                                'None',
-                                style: GoogleFonts.prompt(
-                                    color: Colors.black45,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.repeat = 'None';
+                            });
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.all(15),
+                              child: Center(
+                                child: Text(
+                                  'None',
+                                  style: GoogleFonts.prompt(
+                                      color: Colors.black45,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                            decoration: decorator.copyWith(
-                                color: Theme.of(context).backgroundColor,
-                                borderRadius: BorderRadius.circular(30))),
-                        Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Center(
-                              child: Text(
-                                'Daily',
-                                style: GoogleFonts.prompt(
-                                    color: Colors.black45,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600),
+                              decoration: decorator.copyWith(
+                                  color: Theme.of(context).backgroundColor,
+                                  borderRadius: BorderRadius.circular(30))),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.repeat = 'Daily';
+                            });
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.all(15),
+                              child: Center(
+                                child: Text(
+                                  'Daily',
+                                  style: GoogleFonts.prompt(
+                                      color: Colors.black45,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                            decoration: decorator.copyWith(
-                                color: Theme.of(context).backgroundColor,
-                                borderRadius: BorderRadius.circular(30))),
+                              decoration: decorator.copyWith(
+                                  color: Theme.of(context).backgroundColor,
+                                  borderRadius: BorderRadius.circular(30))),
+                        ),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Center(
-                              child: Text(
-                                'Weekly',
-                                style: GoogleFonts.prompt(
-                                    color: Colors.black45,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.repeat = 'Weekly';
+                            });
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.all(15),
+                              child: Center(
+                                child: Text(
+                                  'Weekly',
+                                  style: GoogleFonts.prompt(
+                                      color: Colors.black45,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                            decoration: decorator.copyWith(
-                                color: Theme.of(context).backgroundColor,
-                                borderRadius: BorderRadius.circular(30))),
+                              decoration: decorator.copyWith(
+                                  color: Theme.of(context).backgroundColor,
+                                  borderRadius: BorderRadius.circular(30))),
+                        ),
                         SizedBox(
                           width: 15,
                         ),
-                        Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Center(
-                              child: Text(
-                                'Monthly',
-                                style: GoogleFonts.prompt(
-                                    color: Colors.black45,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.repeat = 'Monthly';
+                            });
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.all(15),
+                              child: Center(
+                                child: Text(
+                                  'Monthly',
+                                  style: GoogleFonts.prompt(
+                                      color: Colors.black45,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                            decoration: decorator.copyWith(
-                                color: Theme.of(context).backgroundColor,
-                                borderRadius: BorderRadius.circular(30))),
+                              decoration: decorator.copyWith(
+                                  color: Theme.of(context).backgroundColor,
+                                  borderRadius: BorderRadius.circular(30))),
+                        ),
                       ],
                     ),
                   ],
@@ -382,8 +453,14 @@ class DateOverlayState extends State<DateOverlay>
                       style: GoogleFonts.prompt(color: Colors.black),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pop(
-                          {"from": widget.fromDate, "to": widget.toDateString});
+                      Provider.of<TaskProvider>(context).addTaskDetails(task);
+                      Navigator.of(context).pop();
+                      // Navigator.of(context).pop({
+                      //   "from": widget.fromDate,
+                      //   "to": widget.toDateString,
+                      //   'reminder': widget.reminder,
+                      //   'repeat': widget.repeat
+                      // });
                     },
                   )
                 ],
@@ -498,10 +575,34 @@ class DateOverlayState extends State<DateOverlay>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              OvalContainer(text: '5 mins'),
-                              OvalContainer(text: '10 mins'),
-                              OvalContainer(text: '15 mins'),
-                              OvalContainer(text: '20 mins')
+                              GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      widget.reminder = 5;
+                                    });
+                                  },
+                                  child: OvalContainer(text: '5 mins')),
+                              GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      widget.reminder = 10;
+                                    });
+                                  },
+                                  child: OvalContainer(text: '10 mins')),
+                              GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      widget.reminder = 15;
+                                    });
+                                  },
+                                  child: OvalContainer(text: '15 mins')),
+                              GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      widget.reminder = 20;
+                                    });
+                                  },
+                                  child: OvalContainer(text: '20 mins'))
                             ],
                           ),
                           SizedBox(
@@ -515,10 +616,34 @@ class DateOverlayState extends State<DateOverlay>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              OvalContainer(text: 'None'),
-                              OvalContainer(text: 'Daily'),
-                              OvalContainer(text: 'Weekly'),
-                              OvalContainer(text: 'Monthly')
+                              GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      widget.repeat = 'None';
+                                    });
+                                  },
+                                  child: OvalContainer(text: 'None')),
+                              GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      widget.repeat = 'Daily';
+                                    });
+                                  },
+                                  child: OvalContainer(text: 'Daily')),
+                              GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      widget.repeat = 'Weekly';
+                                    });
+                                  },
+                                  child: OvalContainer(text: 'Weekly')),
+                              GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      widget.repeat = 'Monthly';
+                                    });
+                                  },
+                                  child: OvalContainer(text: 'Monthly'))
                             ],
                           ),
                           SizedBox(
@@ -534,10 +659,14 @@ class DateOverlayState extends State<DateOverlay>
                                   child: Text('Cancel')),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pop({
-                                    "from": widget.fromDate,
-                                    "to": widget.toDateString
-                                  });
+                                  Provider.of<TaskProvider>(context,
+                                          listen: false)
+                                      .addTaskDetails(task);
+                                  Navigator.of(context).pop();
+                                  // Navigator.of(context).pop({
+                                  //   "from": widget.fromDate,
+                                  //   "to": widget.toDateString
+                                  // });
                                 },
                                 child: Container(
                                   child: Center(

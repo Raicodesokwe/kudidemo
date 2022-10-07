@@ -15,7 +15,6 @@ import 'package:kudidemo/utils/utils.dart';
 
 import 'package:kudidemo/widgets/theme_overlay.dart';
 import 'package:provider/provider.dart';
-import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../providers/task_provider.dart';
@@ -434,95 +433,112 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: size.height * 0.03,
                     ),
-                    tasks.isEmpty
-                        ? Row(
-                            children: [
-                              RotatedBox(
-                                quarterTurns: 3,
-                                child: Text(
-                                  '${DateFormat('Hm').format(now)}',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.black54),
-                                ),
-                              ),
-                              SizedBox(
-                                width: size.width * 0.07,
-                              ),
-                              Container(
-                                padding: const EdgeInsets.all(25),
-                                width: size.width * 0.65,
-                                child: Text('None at the moment'),
-                                decoration: decorator.copyWith(
-                                    color: Theme.of(context).backgroundColor,
-                                    borderRadius: BorderRadius.circular(10.0)),
-                              )
-                            ],
-                          )
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: tasks.length,
-                            itemBuilder: (ctx, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 15),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 10),
-                                  width: double.infinity,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.watch,
-                                            color: Colors.black54,
-                                          ),
-                                          Text(
-                                            Utils.toTime(tasks[index].from!),
-                                            style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.black54),
-                                          ),
-                                          Text(
-                                            '-',
-                                            style: TextStyle(
-                                                color: Colors.black54),
-                                          ),
-                                          Text(
-                                            Utils.toTime(tasks[index].to!),
-                                            style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.black54),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        tasks[index].name!,
-                                        style: TextStyle(fontSize: 19),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        tasks[index].notes!,
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.black87),
-                                      ),
-                                    ],
+                    FutureBuilder(
+                        future:
+                            Provider.of<TaskProvider>(context, listen: false)
+                                .getTasks(),
+                        builder: (context, snapshot) {
+                          return Consumer<TaskProvider>(
+                              child: Row(
+                                children: [
+                                  RotatedBox(
+                                    quarterTurns: 3,
+                                    child: Text(
+                                      '${DateFormat('Hm').format(now)}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w300,
+                                          color: Colors.black54),
+                                    ),
                                   ),
-                                  decoration: decorator.copyWith(
-                                      color: tasks[index].color,
-                                      borderRadius:
-                                          BorderRadius.circular(10.0)),
-                                ),
-                              );
-                            })
+                                  SizedBox(
+                                    width: size.width * 0.07,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.all(25),
+                                    width: size.width * 0.65,
+                                    child: Text('None at the moment'),
+                                    decoration: decorator.copyWith(
+                                        color:
+                                            Theme.of(context).backgroundColor,
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                  )
+                                ],
+                              ),
+                              builder: (context, notifier, ch) {
+                                if (notifier.tasks.length <= 0) {
+                                  return ch!;
+                                }
+                                return ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: tasks.length,
+                                    itemBuilder: (ctx, index) {
+                                      return Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 15),
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 10),
+                                          width: double.infinity,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.watch,
+                                                    color: Colors.black54,
+                                                  ),
+                                                  Text(
+                                                    Utils.toTime(
+                                                        tasks[index].from!),
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        color: Colors.black54),
+                                                  ),
+                                                  Text(
+                                                    '-',
+                                                    style: TextStyle(
+                                                        color: Colors.black54),
+                                                  ),
+                                                  Text(
+                                                    Utils.toTime(
+                                                        tasks[index].to!),
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        color: Colors.black54),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                tasks[index].name!,
+                                                style: TextStyle(fontSize: 19),
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                tasks[index].notes!,
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black87),
+                                              ),
+                                            ],
+                                          ),
+                                          decoration: decorator.copyWith(
+                                              color: Color(tasks[index].color!),
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0)),
+                                        ),
+                                      );
+                                    });
+                              });
+                        }),
                   ],
                 ),
               ),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/models/task_model.dart';
+import 'package:kudidemo/providers/color_provider.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/widgets/circle_button.dart';
 import 'package:kudidemo/widgets/neon_button.dart';
@@ -13,8 +14,6 @@ import 'package:kudidemo/widgets/text_field.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/theme_provider.dart';
-import '../utils/utils.dart';
 import '../widgets/back_arrow.dart';
 import '../widgets/color_overlay.dart';
 import '../widgets/date_overlay.dart';
@@ -33,8 +32,10 @@ class _TaskViewState extends State<TaskView>
   late String notes = '';
   final DateTime now = DateTime.now();
   late DateTime fromDate;
-  late Color color = Colors.green.shade200;
+  late Color color;
   late DateTime toDate;
+  int? reminder;
+  late String repeat;
 
   TextEditingController taskNameController = TextEditingController();
 
@@ -57,8 +58,8 @@ class _TaskViewState extends State<TaskView>
     // TODO: implement initState
     super.initState();
     if (widget.task == null) {
-      fromDate = now;
-      toDate = now.add(Duration(hours: 1));
+      // fromDate = now;
+      // toDate = now.add(Duration(hours: 1));
     }
 
     controller =
@@ -102,6 +103,8 @@ class _TaskViewState extends State<TaskView>
               builder: (_) => DateOverlay(
                 fromDate: fromDate,
                 toDateString: toDate,
+                reminder: reminder,
+                repeat: repeat,
               ),
             )
           : showDialog(
@@ -109,6 +112,8 @@ class _TaskViewState extends State<TaskView>
               builder: (_) => DateOverlay(
                 fromDate: fromDate,
                 toDateString: toDate,
+                reminder: reminder,
+                repeat: repeat,
               ),
             );
     }
@@ -141,6 +146,12 @@ class _TaskViewState extends State<TaskView>
             );
     }
 
+    fromDate = Provider.of<TaskProvider>(context).from!;
+    toDate = Provider.of<TaskProvider>(context).to!;
+    reminder = Provider.of<TaskProvider>(context).reminder!;
+    repeat = Provider.of<TaskProvider>(context).repeat!;
+    color = Provider.of<ColorProvider>(context).selectedColor!;
+
     Future saveForm() async {
       final isValid = _taskForm.currentState!.validate();
       if (isValid) {
@@ -149,9 +160,12 @@ class _TaskViewState extends State<TaskView>
             from: fromDate,
             to: toDate,
             notes: notes,
-            color: color);
+            color: color.value,
+            reminder: reminder,
+            repeat: repeat);
         final taskProvider = Provider.of<TaskProvider>(context, listen: false);
         taskProvider.addTask(task);
+
         Navigator.of(context).pop();
       }
     }
@@ -212,10 +226,11 @@ class _TaskViewState extends State<TaskView>
                     GestureDetector(
                       onTap: () {
                         FocusScope.of(context).unfocus();
-                        selectColorDialog(context).then((value) {
-                          color = value;
-                          setState(() {});
-                        });
+                        selectColorDialog(context);
+                        // .then((value) {
+                        //   color = value;
+                        //   setState(() {});
+                        // });
                       },
                       child: Container(
                           padding: const EdgeInsets.all(7),
@@ -233,11 +248,14 @@ class _TaskViewState extends State<TaskView>
                     GestureDetector(
                       onTap: () {
                         FocusScope.of(context).unfocus();
-                        createAlertDialog(context).then((value) {
-                          fromDate = value['from'];
-                          toDate = value['to'];
-                          setState(() {});
-                        });
+                        createAlertDialog(context);
+                        // .then((value) {
+                        //   fromDate = value['from'];
+                        //   toDate = value['to'];
+                        //   reminder = value['reminder'];
+                        //   repeat = value['repeat'];
+                        //   setState(() {});
+                        // });
                       },
                       child: Container(
                         height: 35,

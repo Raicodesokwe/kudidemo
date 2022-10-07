@@ -2,17 +2,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:kudidemo/pages/chat_page.dart';
 import 'package:kudidemo/pages/group_task.dart';
-import 'package:kudidemo/pages/homepage.dart';
-import 'package:kudidemo/navbar/navbar.dart';
-import 'package:kudidemo/pages/splash_screen.dart';
+
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kudidemo/providers/color_provider.dart';
 import 'package:kudidemo/providers/google_signin.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/providers/theme_provider.dart';
 import 'package:kudidemo/services/auth_service.dart';
 import 'package:kudidemo/services/notification_service.dart';
 import 'package:provider/provider.dart';
+
+import 'models/task_model.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Handling a background message ${message.data.toString()}');
@@ -28,6 +31,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  await Hive.initFlutter();
+  Hive.registerAdapter(TaskModelAdapter());
   runApp(const MyApp());
 }
 
@@ -39,14 +44,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        // ListenableProvider(create: (_) => TaskProvider()),
         ChangeNotifierProvider(
           create: (_) => ThemeProvider(),
         ),
-        ChangeNotifierProvider(
+        ListenableProvider(
           create: (_) => TaskProvider(),
         ),
         ChangeNotifierProvider(
           create: (_) => GoogleSignInProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ColorProvider(),
         ),
       ],
       child: Consumer<ThemeProvider>(
