@@ -8,17 +8,19 @@ import '../models/task_model.dart';
 import '../providers/task_provider.dart';
 import '../providers/theme_provider.dart';
 
-class NotesOverlay extends StatefulWidget {
-  NotesOverlay({Key? key});
+class SubtaskOverlay extends StatefulWidget {
+  SubtaskOverlay({
+    Key? key,
+  });
   @override
-  State<StatefulWidget> createState() => NotesOverlayState();
+  State<StatefulWidget> createState() => SubtaskOverlayState();
 }
 
-class NotesOverlayState extends State<NotesOverlay>
+class SubtaskOverlayState extends State<SubtaskOverlay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
-  TextEditingController notesController = TextEditingController();
+  TextEditingController subtaskController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -52,8 +54,53 @@ class NotesOverlayState extends State<NotesOverlay>
     ]);
 
     Size size = MediaQuery.of(context).size;
-    final task = TaskModel(notes: notesController.text);
-    return Center(
+    final task = TaskModel(subtask: subtaskController.text);
+    return
+        // ScaleTransition(
+        //   scale: scaleAnimation,
+        //   child: AlertDialog(
+        //     title: Text(
+        //       'Add subtask',
+        //       textAlign: TextAlign.center,
+        //       style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 18),
+        //     ),
+        //     content: Padding(
+        //       padding: const EdgeInsets.all(20),
+        //       child: CustomTextField(
+        //           controller: subtaskController,
+        //           emptytext: 'Additional notes',
+        //           hintText: 'Additional notes'),
+        //     ),
+        //     actions: [
+        //       TextButton(
+        //           onPressed: () {
+        //             Navigator.of(context).pop();
+        //           },
+        //           child: Text('Cancel')),
+        //       GestureDetector(
+        //         onTap: () {
+        //           Provider.of<TaskProvider>(context, listen: false)
+        //               .addTaskDetails(task);
+        //           Navigator.of(context).pop();
+        //         },
+        //         child: Container(
+        //           child: Center(
+        //             child: Text(
+        //               'Confirm',
+        //               style: TextStyle(color: Colors.white),
+        //             ),
+        //           ),
+        //           height: 50,
+        //           width: 120,
+        //           decoration: decorator.copyWith(
+        //               borderRadius: BorderRadius.circular(7),
+        //               color: Color.fromARGB(255, 12, 99, 212)),
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // );
+        Center(
       child: Material(
         color: Colors.transparent,
         child: ScaleTransition(
@@ -71,10 +118,21 @@ class NotesOverlayState extends State<NotesOverlay>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    Text(
+                      'Add subtask',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2!
+                          .copyWith(fontSize: 18),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     CustomTextField(
-                        controller: notesController,
-                        emptytext: 'Additional notes',
-                        hintText: 'Additional notes'),
+                        controller: subtaskController,
+                        emptytext: 'Add subtask',
+                        hintText: 'Add subtask'),
                     SizedBox(
                       height: size.height * 0.05,
                     ),

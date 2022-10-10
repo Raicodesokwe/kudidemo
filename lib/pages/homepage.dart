@@ -427,7 +427,11 @@ class _HomePageState extends State<HomePage> {
                         Text('Recent tasks',
                             style: GoogleFonts.prompt(
                                 fontWeight: FontWeight.w300,
-                                color: Colors.black54))
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .color!
+                                    .withOpacity(0.5)))
                       ],
                     ),
                     SizedBox(

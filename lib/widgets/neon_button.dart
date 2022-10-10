@@ -51,9 +51,12 @@ class NeonButton extends StatelessWidget {
               begin: Alignment.centerRight,
               end: Alignment.centerLeft),
           border: Border.all(
-            width: 10,
-            color: Colors.black54,
-          ),
+              width: 10,
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyText2!
+                  .color!
+                  .withOpacity(0.5)),
           shape: BoxShape.circle),
     );
   }

@@ -28,7 +28,11 @@ class CircleButton extends StatelessWidget {
           child: Center(
             child: Icon(
               Icons.send,
-              color: Colors.black54,
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyText2!
+                  .color!
+                  .withOpacity(0.5),
               size: 50,
             ),
           ),
@@ -38,7 +42,13 @@ class CircleButton extends StatelessWidget {
       width: 100,
       decoration: decorator.copyWith(
           color: Theme.of(context).backgroundColor,
-          border: Border.all(width: 10, color: Colors.black54),
+          border: Border.all(
+              width: 10,
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyText2!
+                  .color!
+                  .withOpacity(0.5)),
           shape: BoxShape.circle),
     );
   }

@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String emptytext;
   final String hintText;
+
   const CustomTextField(
       {Key? key,
       required this.controller,
@@ -42,8 +43,9 @@ class CustomTextField extends StatelessWidget {
           controller: controller,
           validator: (value) => value!.isEmpty ? emptytext : null,
           keyboardType: TextInputType.text,
-          onChanged: (value) {},
           cursorColor: Colors.black45,
+          style: GoogleFonts.prompt(
+              color: Theme.of(context).textTheme.bodyText2!.color),
           decoration: InputDecoration(
               hintText: hintText,
               hintStyle: GoogleFonts.prompt(),

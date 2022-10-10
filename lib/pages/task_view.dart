@@ -10,6 +10,7 @@ import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/widgets/circle_button.dart';
 import 'package:kudidemo/widgets/neon_button.dart';
 import 'package:kudidemo/widgets/notes_overlay.dart';
+import 'package:kudidemo/widgets/subtask_overlay.dart';
 import 'package:kudidemo/widgets/text_field.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -261,43 +262,58 @@ class _TaskViewState extends State<TaskView>
                         height: 35,
                         width: 35,
                         child: Center(
-                            child: Icon(
-                          Icons.calendar_month,
-                          color: Colors.black54,
-                        )),
+                            child: Icon(Icons.calendar_month,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .color)),
                         decoration: decorator.copyWith(
                             color: Theme.of(context).backgroundColor,
                             borderRadius: BorderRadius.circular(5)),
                       ),
                     ),
-                    Container(
-                      height: 35,
-                      width: 35,
-                      decoration: decorator.copyWith(
-                          color: Theme.of(context).backgroundColor,
-                          shape: BoxShape.circle),
-                      child: Icon(
-                        FontAwesomeIcons.codeBranch,
-                        color: Colors.black54,
-                        size: 15,
+                    GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                        showDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (context) {
+                              return SubtaskOverlay();
+                            });
+                      },
+                      child: Container(
+                        height: 35,
+                        width: 35,
+                        decoration: decorator.copyWith(
+                            color: Theme.of(context).backgroundColor,
+                            shape: BoxShape.circle),
+                        child: Icon(
+                          FontAwesomeIcons.codeBranch,
+                          color: Theme.of(context).textTheme.bodyText2!.color,
+                          size: 15,
+                        ),
                       ),
                     ),
                     GestureDetector(
                       onTap: () {
                         FocusScope.of(context).unfocus();
-                        createNotesDialog(context).then((value) {
-                          notes = value;
-                          setState(() {});
-                        });
+                        showDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (context) {
+                              return NotesOverlay();
+                            });
                       },
                       child: Container(
                         height: 35,
                         width: 35,
                         child: Center(
-                            child: Icon(
-                          Icons.note_alt,
-                          color: Colors.black54,
-                        )),
+                            child: Icon(Icons.note_alt,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .color)),
                         decoration: decorator.copyWith(
                             color: Theme.of(context).backgroundColor,
                             borderRadius: BorderRadius.circular(5)),

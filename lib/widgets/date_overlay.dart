@@ -81,6 +81,14 @@ class DateOverlayState extends State<DateOverlay>
         {required bool pickDate, DateTime? firstDate}) async {
       if (pickDate) {
         final date = await showDatePicker(
+          builder: (BuildContext context, Widget? child) {
+            return Theme(
+              data: ThemeData(
+                fontFamily: 'grifterbold',
+              ),
+              child: child!,
+            );
+          },
           context: context,
           initialDate: initialDate,
           firstDate: firstDate ?? DateTime.now(),
@@ -92,7 +100,14 @@ class DateOverlayState extends State<DateOverlay>
         return date.add(time);
       } else {
         final timeOfDay = await showTimePicker(
-            context: context, initialTime: TimeOfDay.fromDateTime(initialDate));
+            builder: (BuildContext context, Widget? child) {
+              return Theme(
+                data: ThemeData(fontFamily: 'grifterbold'),
+                child: child!,
+              );
+            },
+            context: context,
+            initialTime: TimeOfDay.fromDateTime(initialDate));
         if (timeOfDay == null) return null;
         final date =
             DateTime(initialDate.year, initialDate.month, initialDate.day);
@@ -505,7 +520,12 @@ class DateOverlayState extends State<DateOverlay>
                                         pickFromDateTime(pickDate: true),
                                     title: Text(
                                       Utils.toDate(widget.fromDate!),
-                                      style: TextStyle(fontSize: 12),
+                                      style: GoogleFonts.prompt(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2!
+                                              .color,
+                                          fontSize: 12),
                                     ),
                                     trailing: Icon(Icons.arrow_drop_down),
                                   ),
@@ -517,7 +537,12 @@ class DateOverlayState extends State<DateOverlay>
                                       pickFromDateTime(pickDate: false),
                                   title: Text(
                                     Utils.toTime(widget.fromDate!),
-                                    style: TextStyle(fontSize: 10),
+                                    style: GoogleFonts.prompt(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2!
+                                            .color,
+                                        fontSize: 10),
                                   ),
                                   trailing: Icon(Icons.arrow_drop_down),
                                 ),
@@ -546,7 +571,12 @@ class DateOverlayState extends State<DateOverlay>
                                     onTap: () => pickToDateTime(pickDate: true),
                                     title: Text(
                                       Utils.toDate(widget.toDateString!),
-                                      style: TextStyle(fontSize: 12),
+                                      style: GoogleFonts.prompt(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2!
+                                              .color,
+                                          fontSize: 12),
                                     ),
                                     trailing: Icon(Icons.arrow_drop_down),
                                   ),
@@ -557,7 +587,12 @@ class DateOverlayState extends State<DateOverlay>
                                   onTap: () => pickToDateTime(pickDate: false),
                                   title: Text(
                                     Utils.toTime(widget.toDateString!),
-                                    style: TextStyle(fontSize: 10),
+                                    style: GoogleFonts.prompt(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2!
+                                            .color,
+                                        fontSize: 10),
                                   ),
                                   trailing: Icon(Icons.arrow_drop_down),
                                 ),
@@ -656,7 +691,11 @@ class DateOverlayState extends State<DateOverlay>
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Text('Cancel')),
+                                  child: Text('Cancel',
+                                      style: GoogleFonts.prompt(
+                                          color:
+                                              Color.fromARGB(255, 12, 99, 212),
+                                          fontWeight: FontWeight.w600))),
                               GestureDetector(
                                 onTap: () {
                                   Provider.of<TaskProvider>(context,

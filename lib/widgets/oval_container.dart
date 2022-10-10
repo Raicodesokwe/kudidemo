@@ -29,7 +29,11 @@ class OvalContainer extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
-                color: Colors.black45,
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyText2!
+                    .color!
+                    .withOpacity(0.5),
                 fontSize: 10,
                 fontWeight: FontWeight.w300),
           ),
