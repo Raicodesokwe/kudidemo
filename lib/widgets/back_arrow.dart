@@ -24,7 +24,11 @@ class BackArrow extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0)),
               height: 50,
               width: 50,
-              child: Center(child: Icon(Icons.arrow_back_ios)),
+              child: Center(
+                  child: Icon(
+                Icons.arrow_back_ios,
+                color: Theme.of(context).textTheme.bodyText2!.color,
+              )),
             ),
           )),
     );

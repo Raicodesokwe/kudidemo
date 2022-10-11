@@ -34,7 +34,11 @@ class OvalIconContainer extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: Colors.black54,
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyText2!
+                    .color!
+                    .withOpacity(0.5),
                 size: size,
               ),
               SizedBox(
@@ -43,7 +47,11 @@ class OvalIconContainer extends StatelessWidget {
               Text(
                 text,
                 style: TextStyle(
-                    color: Colors.black45,
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyText2!
+                        .color!
+                        .withOpacity(0.5),
                     fontSize: 10,
                     fontWeight: FontWeight.w300),
               ),

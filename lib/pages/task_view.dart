@@ -228,10 +228,6 @@ class _TaskViewState extends State<TaskView>
                       onTap: () {
                         FocusScope.of(context).unfocus();
                         selectColorDialog(context);
-                        // .then((value) {
-                        //   color = value;
-                        //   setState(() {});
-                        // });
                       },
                       child: Container(
                           padding: const EdgeInsets.all(7),
@@ -250,13 +246,6 @@ class _TaskViewState extends State<TaskView>
                       onTap: () {
                         FocusScope.of(context).unfocus();
                         createAlertDialog(context);
-                        // .then((value) {
-                        //   fromDate = value['from'];
-                        //   toDate = value['to'];
-                        //   reminder = value['reminder'];
-                        //   repeat = value['repeat'];
-                        //   setState(() {});
-                        // });
                       },
                       child: Container(
                         height: 35,

@@ -1,13 +1,21 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/widgets/circle_button.dart';
+import 'package:kudidemo/widgets/dailygoal_overlay.dart';
 import 'package:kudidemo/widgets/oval_container.dart';
 import 'package:kudidemo/widgets/oval_icon_container.dart';
+import 'package:kudidemo/widgets/repeat_overlay.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/color_provider.dart';
 import '../providers/theme_provider.dart';
 import '../widgets/back_arrow.dart';
+import '../widgets/color_overlay.dart';
 import '../widgets/text_field.dart';
 
 class HabitsPage extends StatefulWidget {
@@ -20,7 +28,7 @@ class HabitsPage extends StatefulWidget {
 class _HabitsPageState extends State<HabitsPage>
     with SingleTickerProviderStateMixin {
   late String habitsName;
-
+  late Color color;
   TextEditingController habitsNameController = TextEditingController();
 
   final _habitsForm = GlobalKey<FormState>();
@@ -61,6 +69,7 @@ class _HabitsPageState extends State<HabitsPage>
 
   @override
   Widget build(BuildContext context) {
+    color = Provider.of<ColorProvider>(context).selectedColor!;
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -129,24 +138,55 @@ class _HabitsPageState extends State<HabitsPage>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
-                        padding: const EdgeInsets.all(7),
-                        child: Center(
-                            child: Container(
-                          height: 30,
-                          width: 30,
-                          decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 92, 202, 96),
-                              shape: BoxShape.circle),
-                        )),
-                        decoration: decorator.copyWith(
-                            color: Theme.of(context).backgroundColor,
-                            borderRadius: BorderRadius.circular(30))),
-                    OvalContainer(text: 'Daily goal'),
-                    OvalIconContainer(
-                      text: 'Repeat',
-                      icon: Icons.repeat_on_sharp,
-                      size: 12,
+                    GestureDetector(
+                      onTap: () {
+                        Platform.isIOS
+                            ? showCupertinoDialog(
+                                context: context,
+                                builder: (_) => ColorOverlay(
+                                  color: color,
+                                ),
+                              )
+                            : showDialog(
+                                context: context,
+                                builder: (_) => ColorOverlay(
+                                  color: color,
+                                ),
+                              );
+                      },
+                      child: Container(
+                          padding: const EdgeInsets.all(7),
+                          child: Center(
+                              child: Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                                color: color, shape: BoxShape.circle),
+                          )),
+                          decoration: decorator.copyWith(
+                              color: Theme.of(context).backgroundColor,
+                              borderRadius: BorderRadius.circular(30))),
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => DailyGoalOvelay(),
+                          );
+                        },
+                        child: OvalContainer(text: 'Daily goal')),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) => RepeatOverlay(),
+                        );
+                      },
+                      child: OvalIconContainer(
+                        text: 'Repeat',
+                        icon: Icons.repeat_on_sharp,
+                        size: 12,
+                      ),
                     ),
                     OvalContainer(text: 'Routine')
                   ],

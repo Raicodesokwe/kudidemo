@@ -521,14 +521,16 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                               Text(
                                                 tasks[index].name!,
-                                                style: TextStyle(fontSize: 19),
+                                                style: TextStyle(
+                                                    fontSize: 19,
+                                                    color: Colors.black),
                                               ),
                                               SizedBox(
                                                 height: 5,
                                               ),
                                               Text(
                                                 tasks[index].notes!,
-                                                style: TextStyle(
+                                                style: GoogleFonts.prompt(
                                                     fontSize: 12,
                                                     color: Colors.black87),
                                               ),
