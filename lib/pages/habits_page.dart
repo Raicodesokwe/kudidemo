@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/providers/habits_provider.dart';
 import 'package:kudidemo/widgets/circle_button.dart';
 import 'package:kudidemo/widgets/dailygoal_overlay.dart';
 import 'package:kudidemo/widgets/oval_container.dart';
@@ -29,6 +30,8 @@ class _HabitsPageState extends State<HabitsPage>
     with SingleTickerProviderStateMixin {
   late String habitsName;
   late Color color;
+  late int count;
+  late TimeOfDay selectedTime;
   TextEditingController habitsNameController = TextEditingController();
 
   final _habitsForm = GlobalKey<FormState>();
@@ -70,6 +73,8 @@ class _HabitsPageState extends State<HabitsPage>
   @override
   Widget build(BuildContext context) {
     color = Provider.of<ColorProvider>(context).selectedColor!;
+    count = Provider.of<HabitsProvider>(context).dailyGoal!;
+    selectedTime = Provider.of<HabitsProvider>(context).reminder!;
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -171,7 +176,9 @@ class _HabitsPageState extends State<HabitsPage>
                         onTap: () {
                           showDialog(
                             context: context,
-                            builder: (_) => DailyGoalOvelay(),
+                            builder: (_) => DailyGoalOvelay(
+                              count: count,
+                            ),
                           );
                         },
                         child: OvalContainer(text: 'Daily goal')),
@@ -179,7 +186,9 @@ class _HabitsPageState extends State<HabitsPage>
                       onTap: () {
                         showDialog(
                           context: context,
-                          builder: (_) => RepeatOverlay(),
+                          builder: (_) => RepeatOverlay(
+                            selectedTime: selectedTime,
+                          ),
                         );
                       },
                       child: OvalIconContainer(

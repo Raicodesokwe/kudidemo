@@ -4,6 +4,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/models/reminder_model.dart';
+import 'package:kudidemo/models/repeat_model.dart';
 import 'package:kudidemo/models/task_model.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/utils/utils.dart';
@@ -57,6 +59,9 @@ class DateOverlayState extends State<DateOverlay>
 
   @override
   Widget build(BuildContext context) {
+    final reminderProvider = Provider.of<TaskProvider>(context);
+    widget.reminder = reminderProvider.reminder;
+    widget.repeat = reminderProvider.repeat;
     final task = TaskModel(
         from: widget.fromDate,
         to: widget.toDateString,
@@ -470,12 +475,6 @@ class DateOverlayState extends State<DateOverlay>
                     onPressed: () {
                       Provider.of<TaskProvider>(context).addTaskDetails(task);
                       Navigator.of(context).pop();
-                      // Navigator.of(context).pop({
-                      //   "from": widget.fromDate,
-                      //   "to": widget.toDateString,
-                      //   'reminder': widget.reminder,
-                      //   'repeat': widget.repeat
-                      // });
                     },
                   )
                 ],
@@ -607,38 +606,49 @@ class DateOverlayState extends State<DateOverlay>
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 18),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      widget.reminder = 5;
-                                    });
-                                  },
-                                  child: OvalContainer(text: '5 mins')),
-                              GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      widget.reminder = 10;
-                                    });
-                                  },
-                                  child: OvalContainer(text: '10 mins')),
-                              GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      widget.reminder = 15;
-                                    });
-                                  },
-                                  child: OvalContainer(text: '15 mins')),
-                              GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      widget.reminder = 20;
-                                    });
-                                  },
-                                  child: OvalContainer(text: '20 mins'))
-                            ],
+                          SizedBox(
+                            height: 40,
+                            child: Expanded(
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: reminderList.length,
+                                  itemBuilder: (context, index) {
+                                    final reminderTime = reminderList[index];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        reminderProvider.selectReminder(index);
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 5),
+                                        child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 15),
+                                            child: Center(
+                                              child: Text(
+                                                '${reminderTime.reminder} mins',
+                                                style: GoogleFonts.prompt(
+                                                    color: Colors.black45,
+                                                    fontSize: 10,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                            decoration: decorator.copyWith(
+                                                color: reminderProvider
+                                                            .reminder ==
+                                                        reminderTime.reminder
+                                                    ? Colors.green
+                                                    : Theme.of(context)
+                                                        .backgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(30))),
+                                      ),
+                                    );
+                                  }),
+                            ),
                           ),
                           SizedBox(
                             height: size.height * 0.03,
@@ -648,38 +658,49 @@ class DateOverlayState extends State<DateOverlay>
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 18),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      widget.repeat = 'None';
-                                    });
-                                  },
-                                  child: OvalContainer(text: 'None')),
-                              GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      widget.repeat = 'Daily';
-                                    });
-                                  },
-                                  child: OvalContainer(text: 'Daily')),
-                              GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      widget.repeat = 'Weekly';
-                                    });
-                                  },
-                                  child: OvalContainer(text: 'Weekly')),
-                              GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      widget.repeat = 'Monthly';
-                                    });
-                                  },
-                                  child: OvalContainer(text: 'Monthly'))
-                            ],
+                          SizedBox(
+                            height: 40,
+                            child: Expanded(
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: repeatList.length,
+                                  itemBuilder: (context, index) {
+                                    final repeatName = repeatList[index];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        reminderProvider.selectRepeat(index);
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 5),
+                                        child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 15),
+                                            child: Center(
+                                              child: Text(
+                                                repeatName.repeat,
+                                                style: GoogleFonts.prompt(
+                                                    color: Colors.black45,
+                                                    fontSize: 10,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                            decoration: decorator.copyWith(
+                                                color:
+                                                    reminderProvider.repeat ==
+                                                            repeatName.repeat
+                                                        ? Colors.green
+                                                        : Theme.of(context)
+                                                            .backgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(30))),
+                                      ),
+                                    );
+                                  }),
+                            ),
                           ),
                           SizedBox(
                             height: size.height * 0.05,
@@ -702,10 +723,6 @@ class DateOverlayState extends State<DateOverlay>
                                           listen: false)
                                       .addTaskDetails(task);
                                   Navigator.of(context).pop();
-                                  // Navigator.of(context).pop({
-                                  //   "from": widget.fromDate,
-                                  //   "to": widget.toDateString
-                                  // });
                                 },
                                 child: Container(
                                   child: Center(

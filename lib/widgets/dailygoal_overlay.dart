@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/models/habits_model.dart';
+import 'package:kudidemo/providers/habits_provider.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/task_provider.dart';
 
 class DailyGoalOvelay extends StatefulWidget {
-  const DailyGoalOvelay({Key? key}) : super(key: key);
+  int count;
+  DailyGoalOvelay({Key? key, required this.count}) : super(key: key);
 
   @override
   State<DailyGoalOvelay> createState() => _DailyGoalOvelayState();
@@ -12,7 +18,7 @@ class _DailyGoalOvelayState extends State<DailyGoalOvelay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
-  int count = 1;
+
   @override
   void initState() {
     super.initState();
@@ -33,18 +39,20 @@ class _DailyGoalOvelayState extends State<DailyGoalOvelay>
   Widget build(BuildContext context) {
     void addCount() {
       setState(() {
-        count++;
+        widget.count++;
       });
     }
 
     void reduceCount() {
-      if (count > 1) {
+      if (widget.count > 1) {
         setState(() {
-          count--;
+          widget.count--;
         });
       }
     }
 
+    final habit = HabitsModel(dailyGoal: widget.count);
+    Provider.of<HabitsProvider>(context).addHabitDetails(habit);
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -99,7 +107,7 @@ class _DailyGoalOvelayState extends State<DailyGoalOvelay>
                   width: 15,
                 ),
                 Text(
-                  count.toString(),
+                  widget.count.toString(),
                   style: TextStyle(
                       fontSize: 25,
                       color: Theme.of(context).textTheme.bodyText2!.color),

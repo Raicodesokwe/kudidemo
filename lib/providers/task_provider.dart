@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
+import 'package:kudidemo/models/reminder_model.dart';
+import 'package:kudidemo/models/repeat_model.dart';
 import 'package:kudidemo/models/task_model.dart';
 
 class TaskProvider with ChangeNotifier {
@@ -40,11 +42,23 @@ class TaskProvider with ChangeNotifier {
 
   int? reminder = 0;
   String? repeat = '';
+  String? notes = '';
+  String? subtask = '';
   void addTaskDetails(TaskModel task) {
     from = task.from;
     to = task.to;
     reminder = task.reminder;
     repeat = task.repeat;
+    notes = task.notes;
+    subtask = task.subtask;
     notifyListeners();
+  }
+
+  void selectReminder(int reminderindex) {
+    reminder = reminderList[reminderindex].reminder;
+  }
+
+  void selectRepeat(int repeatindex) {
+    repeat = repeatList[repeatindex].repeat;
   }
 }

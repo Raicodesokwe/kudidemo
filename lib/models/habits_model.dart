@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class HabitsModel {
   final int? id;
   final String? name;
@@ -5,7 +7,7 @@ class HabitsModel {
   final int? dailyGoal;
   final String? repeat;
   final String? routine;
-  final DateTime? reminder;
+  final TimeOfDay? reminder;
   HabitsModel(
       {this.color,
       this.dailyGoal,
