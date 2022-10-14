@@ -1,3 +1,4 @@
+import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,7 +35,7 @@ class _FinancesPageState extends State<FinancesPage>
 
   late AnimationController controller;
   late Animation<double> fadeAnimation;
-
+  String currency = 'Select currency';
   @override
   void initState() {
     super.initState();
@@ -115,10 +116,60 @@ class _FinancesPageState extends State<FinancesPage>
               SizedBox(
                 height: size.height * 0.03,
               ),
-              CustomTextField(
-                  controller: currencyNameController,
-                  emptytext: 'currency is required',
-                  hintText: 'Currency name'),
+              GestureDetector(
+                  onTap: () {
+                    showCurrencyPicker(
+                      context: context,
+                      showFlag: true,
+                      showCurrencyName: true,
+                      showCurrencyCode: true,
+                      onSelect: (Currency curr) {
+                        print('Select currency: ${curr.name}');
+                        setState(() {
+                          currency = curr.name;
+                        });
+                      },
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    height: 50,
+                    width: size.width * 0.8,
+                    decoration: decorator.copyWith(
+                        color: Theme.of(context).backgroundColor,
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            currency,
+                            style: GoogleFonts.prompt(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .color!
+                                    .withOpacity(0.5)),
+                          ),
+                          Icon(
+                            Icons.arrow_drop_down,
+                            color: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .color!
+                                .withOpacity(0.5),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                  //  CustomTextField(
+                  //     controller: currencyNameController,
+                  //     emptytext: 'currency is required',
+                  //     hintText: 'Currency name'),
+                  ),
               SizedBox(
                 height: size.height * 0.03,
               ),
@@ -127,10 +178,73 @@ class _FinancesPageState extends State<FinancesPage>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    OvalIconContainer(
-                      text: 'Expenses',
-                      icon: Icons.money_outlined,
-                      size: 15,
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            backgroundColor: Theme.of(context).backgroundColor,
+                            context: context,
+                            builder: (context) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 5),
+                                      width: size.width * 0.8,
+                                      decoration: decorator.copyWith(
+                                          color:
+                                              Theme.of(context).backgroundColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                      child: TextFormField(
+                                        // controller: controller,
+                                        validator: (value) =>
+                                            value!.isEmpty ? 'no text' : null,
+                                        keyboardType: TextInputType.text,
+                                        cursorColor: Colors.black45,
+                                        style: GoogleFonts.prompt(
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2!
+                                                .color),
+                                        decoration: InputDecoration(
+                                            hintText: 'fuck',
+                                            hintStyle: GoogleFonts.prompt(),
+                                            border: InputBorder.none),
+                                      )),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Center(
+                                    child: Container(
+                                      child: Center(
+                                        child: Text('Add custom'),
+                                      ),
+                                      height: 50,
+                                      width: size.width * 0.4,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(width: 2),
+                                          color: Colors.greenAccent),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                ],
+                              );
+                            });
+                      },
+                      child: OvalIconContainer(
+                        text: 'Expenses',
+                        icon: Icons.money_outlined,
+                        size: 15,
+                      ),
                     ),
                     OvalIconContainer(
                       text: 'Income',

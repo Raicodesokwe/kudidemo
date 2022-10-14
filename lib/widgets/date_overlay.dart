@@ -606,49 +606,48 @@ class DateOverlayState extends State<DateOverlay>
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 18),
                           ),
-                          SizedBox(
-                            height: 40,
-                            child: Expanded(
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: reminderList.length,
-                                  itemBuilder: (context, index) {
-                                    final reminderTime = reminderList[index];
-                                    return GestureDetector(
-                                      onTap: () {
-                                        reminderProvider.selectReminder(index);
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 5),
-                                        child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15),
-                                            child: Center(
-                                              child: Text(
-                                                '${reminderTime.reminder} mins',
-                                                style: GoogleFonts.prompt(
-                                                    color: Colors.black45,
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                            ),
-                                            decoration: decorator.copyWith(
-                                                color: reminderProvider
-                                                            .reminder ==
-                                                        reminderTime.reminder
-                                                    ? Colors.green
-                                                    : Theme.of(context)
-                                                        .backgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(30))),
+                          Wrap(
+                            spacing: 5,
+                            runSpacing: 15,
+                            alignment: WrapAlignment.start,
+                            crossAxisAlignment: WrapCrossAlignment.start,
+                            direction: Axis.horizontal,
+                            runAlignment: WrapAlignment.start,
+                            verticalDirection: VerticalDirection.down,
+                            clipBehavior: Clip.none,
+                            children:
+                                List.generate(reminderList.length, (index) {
+                              final reminderTime = reminderList[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  reminderProvider.selectReminder(index);
+                                },
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Container(
+                                      height: 40,
+                                      width: 60,
+                                      child: Center(
+                                        child: Text(
+                                          '${reminderTime.reminder} mins',
+                                          style: GoogleFonts.prompt(
+                                              color: Colors.black45,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w600),
+                                        ),
                                       ),
-                                    );
-                                  }),
-                            ),
+                                      decoration: decorator.copyWith(
+                                          color: reminderProvider.reminder ==
+                                                  reminderTime.reminder
+                                              ? Colors.green
+                                              : Theme.of(context)
+                                                  .backgroundColor,
+                                          borderRadius:
+                                              BorderRadius.circular(30))),
+                                ),
+                              );
+                            }),
                           ),
                           SizedBox(
                             height: size.height * 0.03,
@@ -658,49 +657,47 @@ class DateOverlayState extends State<DateOverlay>
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 18),
                           ),
-                          SizedBox(
-                            height: 40,
-                            child: Expanded(
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: repeatList.length,
-                                  itemBuilder: (context, index) {
-                                    final repeatName = repeatList[index];
-                                    return GestureDetector(
-                                      onTap: () {
-                                        reminderProvider.selectRepeat(index);
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 5),
-                                        child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15),
-                                            child: Center(
-                                              child: Text(
-                                                repeatName.repeat,
-                                                style: GoogleFonts.prompt(
-                                                    color: Colors.black45,
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                            ),
-                                            decoration: decorator.copyWith(
-                                                color:
-                                                    reminderProvider.repeat ==
-                                                            repeatName.repeat
-                                                        ? Colors.green
-                                                        : Theme.of(context)
-                                                            .backgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(30))),
+                          Wrap(
+                            spacing: 5,
+                            runSpacing: 15,
+                            alignment: WrapAlignment.start,
+                            crossAxisAlignment: WrapCrossAlignment.start,
+                            direction: Axis.horizontal,
+                            runAlignment: WrapAlignment.start,
+                            verticalDirection: VerticalDirection.down,
+                            clipBehavior: Clip.none,
+                            children: List.generate(repeatList.length, (index) {
+                              final repeatName = repeatList[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  reminderProvider.selectRepeat(index);
+                                },
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Container(
+                                      height: 40,
+                                      width: 60,
+                                      child: Center(
+                                        child: Text(
+                                          repeatName.repeat,
+                                          style: GoogleFonts.prompt(
+                                              color: Colors.black45,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w600),
+                                        ),
                                       ),
-                                    );
-                                  }),
-                            ),
+                                      decoration: decorator.copyWith(
+                                          color: reminderProvider.repeat ==
+                                                  repeatName.repeat
+                                              ? Colors.green
+                                              : Theme.of(context)
+                                                  .backgroundColor,
+                                          borderRadius:
+                                              BorderRadius.circular(30))),
+                                ),
+                              );
+                            }),
                           ),
                           SizedBox(
                             height: size.height * 0.05,

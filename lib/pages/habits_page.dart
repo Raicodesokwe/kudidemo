@@ -10,6 +10,7 @@ import 'package:kudidemo/widgets/dailygoal_overlay.dart';
 import 'package:kudidemo/widgets/oval_container.dart';
 import 'package:kudidemo/widgets/oval_icon_container.dart';
 import 'package:kudidemo/widgets/repeat_overlay.dart';
+import 'package:kudidemo/widgets/routine_overlay.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,7 @@ class HabitsPage extends StatefulWidget {
 class _HabitsPageState extends State<HabitsPage>
     with SingleTickerProviderStateMixin {
   late String habitsName;
+  late String routine;
   late Color color;
   late int count;
   late TimeOfDay selectedTime;
@@ -75,6 +77,7 @@ class _HabitsPageState extends State<HabitsPage>
     color = Provider.of<ColorProvider>(context).selectedColor!;
     count = Provider.of<HabitsProvider>(context).dailyGoal!;
     selectedTime = Provider.of<HabitsProvider>(context).reminder!;
+    routine = Provider.of<HabitsProvider>(context).routine!;
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -197,7 +200,16 @@ class _HabitsPageState extends State<HabitsPage>
                         size: 12,
                       ),
                     ),
-                    OvalContainer(text: 'Routine')
+                    GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => RoutineOverlay(
+                              routine: routine,
+                            ),
+                          );
+                        },
+                        child: OvalContainer(text: 'Routine'))
                   ],
                 ),
               ),

@@ -30,8 +30,8 @@ class TaskView extends StatefulWidget {
 
 class _TaskViewState extends State<TaskView>
     with SingleTickerProviderStateMixin {
-  late String notes = '';
-  final DateTime now = DateTime.now();
+  late String notes;
+  late String subtask;
   late DateTime fromDate;
   late Color color;
   late DateTime toDate;
@@ -152,6 +152,8 @@ class _TaskViewState extends State<TaskView>
     reminder = Provider.of<TaskProvider>(context).reminder!;
     repeat = Provider.of<TaskProvider>(context).repeat!;
     color = Provider.of<ColorProvider>(context).selectedColor!;
+    notes = Provider.of<TaskProvider>(context).notes!;
+    subtask = Provider.of<TaskProvider>(context).subtask!;
 
     Future saveForm() async {
       final isValid = _taskForm.currentState!.validate();

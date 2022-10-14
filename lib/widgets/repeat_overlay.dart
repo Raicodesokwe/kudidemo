@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/models/habits_model.dart';
+import 'package:kudidemo/models/week_model.dart';
 import 'package:kudidemo/widgets/date_circle.dart';
 import 'package:provider/provider.dart';
 
@@ -19,14 +20,7 @@ class _RepeatOverlayState extends State<RepeatOverlay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
-  bool alldays = false;
-  bool mondaySelected = true;
-  bool tuesdaySelected = true;
-  bool wednesdaySelected = true;
-  bool thursdaySelected = true;
-  bool fridaySelected = true;
-  bool saturdaySelected = true;
-  bool sundaySelected = true;
+  bool alldays = true;
 
   @override
   void initState() {
@@ -117,107 +111,55 @@ class _RepeatOverlayState extends State<RepeatOverlay>
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              children: [
-                GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        mondaySelected = !mondaySelected;
-                      });
-                    },
-                    child: DateCircle(
-                        day: 'Mon',
-                        alldays: alldays,
-                        dayselected: mondaySelected)),
-                SizedBox(
-                  width: 15,
-                ),
-                GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        tuesdaySelected = !tuesdaySelected;
-                      });
-                    },
-                    child: DateCircle(
-                        day: 'Tue',
-                        alldays: alldays,
-                        dayselected: tuesdaySelected)),
-                SizedBox(
-                  width: 15,
-                ),
-                GestureDetector(
+            Wrap(
+              spacing: 5,
+              runSpacing: 15,
+              alignment: WrapAlignment.start,
+              crossAxisAlignment: WrapCrossAlignment.start,
+              direction: Axis.horizontal,
+              runAlignment: WrapAlignment.start,
+              verticalDirection: VerticalDirection.down,
+              clipBehavior: Clip.none,
+              children: List.generate(weekDays.length, (index) {
+                final dayName = weekDays[index];
+
+                return GestureDetector(
                   onTap: () {
                     setState(() {
-                      wednesdaySelected = !wednesdaySelected;
+                      Provider.of<HabitsProvider>(context, listen: false)
+                          .selectDay(index);
+                      print('day is ${dayName.day}');
+                      print('bool is ${dayName.daySelected}');
                     });
                   },
-                  child: DateCircle(
-                      day: 'Wed',
-                      alldays: alldays,
-                      dayselected: wednesdaySelected),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      thursdaySelected = !thursdaySelected;
-                    });
-                  },
-                  child: DateCircle(
-                      day: 'Thu',
-                      alldays: alldays,
-                      dayselected: thursdaySelected),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      fridaySelected = !fridaySelected;
-                    });
-                  },
-                  child: DateCircle(
-                      day: 'Fri',
-                      alldays: alldays,
-                      dayselected: fridaySelected),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      saturdaySelected = !saturdaySelected;
-                    });
-                  },
-                  child: DateCircle(
-                      day: 'Sat',
-                      alldays: alldays,
-                      dayselected: saturdaySelected),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      sundaySelected = !sundaySelected;
-                    });
-                  },
-                  child: DateCircle(
-                      day: 'Sun',
-                      alldays: alldays,
-                      dayselected: sundaySelected),
-                )
-              ],
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        child: Center(
+                          child: Text(
+                            dayName.day,
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .fontFamily,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .color),
+                          ),
+                        ),
+                        decoration: decorator.copyWith(
+                            shape: BoxShape.circle,
+                            color: alldays || dayName.daySelected
+                                ? Colors.green
+                                : Theme.of(context).backgroundColor),
+                      )),
+                );
+              }),
             ),
             SizedBox(
               height: 20,
