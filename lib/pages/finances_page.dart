@@ -2,6 +2,9 @@ import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/models/expense_model.dart';
+import 'package:kudidemo/providers/habits_provider.dart';
+
 import 'package:kudidemo/widgets/circle_button.dart';
 import 'package:kudidemo/widgets/oval_icon_container.dart';
 import 'package:lottie/lottie.dart';
@@ -47,7 +50,13 @@ class _FinancesPageState extends State<FinancesPage>
     controller.addListener(() {
       setState(() {});
     });
-
+    _controller.addListener(
+      () {
+        setState(() {
+          _searchText = _controller.text;
+        });
+      },
+    );
     controller.forward();
   }
 
@@ -56,8 +65,12 @@ class _FinancesPageState extends State<FinancesPage>
     // TODO: implement dispose
     super.dispose();
     controller.dispose();
+    _controller.dispose();
   }
 
+  final _controller = TextEditingController();
+
+  late String _searchText = _controller.text;
   @override
   Widget build(BuildContext context) {
     final decorator = BoxDecoration(boxShadow: [
@@ -188,55 +201,130 @@ class _FinancesPageState extends State<FinancesPage>
                             backgroundColor: Theme.of(context).backgroundColor,
                             context: context,
                             builder: (context) {
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 5),
-                                      width: size.width * 0.8,
-                                      decoration: decorator.copyWith(
-                                          color:
-                                              Theme.of(context).backgroundColor,
-                                          borderRadius:
-                                              BorderRadius.circular(10.0)),
-                                      child: TextFormField(
-                                        // controller: controller,
-                                        validator: (value) =>
-                                            value!.isEmpty ? 'no text' : null,
-                                        keyboardType: TextInputType.text,
-                                        cursorColor: Colors.black45,
-                                        style: GoogleFonts.prompt(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2!
-                                                .color),
-                                        decoration: InputDecoration(
-                                            hintText: 'fuck',
-                                            hintStyle: GoogleFonts.prompt(),
-                                            border: InputBorder.none),
-                                      )),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Center(
-                                    child: Container(
-                                      child: Center(
-                                        child: Text('Add custom'),
+                              return SizedBox(
+                                height: size.height * 0.7,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 5),
+                                          width: size.width * 0.8,
+                                          decoration: decorator.copyWith(
+                                              color: Theme.of(context)
+                                                  .backgroundColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0)),
+                                          child: TextFormField(
+                                            controller: _controller,
+                                            onChanged: ((value) {
+                                              Provider.of<HabitsProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .changeSearchString(value);
+                                            }),
+                                            validator: (value) => value!.isEmpty
+                                                ? 'no text'
+                                                : null,
+                                            keyboardType: TextInputType.text,
+                                            cursorColor: Colors.black45,
+                                            style: GoogleFonts.prompt(
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText2!
+                                                    .color),
+                                            decoration: InputDecoration(
+                                                hintText: 'Search',
+                                                hintStyle: GoogleFonts.prompt(),
+                                                border: InputBorder.none),
+                                          )),
+                                      SizedBox(
+                                        height: 20,
                                       ),
-                                      height: 50,
-                                      width: size.width * 0.4,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(width: 2),
-                                          color: Colors.greenAccent),
-                                    ),
+                                      Center(
+                                        child: Container(
+                                          child: Center(
+                                            child: Text('Add custom'),
+                                          ),
+                                          height: 50,
+                                          width: size.width * 0.4,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  width: 2,
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText2!
+                                                      .color!),
+                                              color: Colors.greenAccent),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Consumer<HabitsProvider>(builder:
+                                          (context, expenseList, child) {
+                                        return ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount:
+                                              expenseList.expenses.length,
+                                          itemBuilder: (context, index) {
+                                            final expenseItem =
+                                                expenseList.expenses[index];
+                                            return Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                ListTile(
+                                                  leading: Container(
+                                                    height: 50,
+                                                    width: 50,
+                                                    child: Image.asset(
+                                                      expenseItem.image,
+                                                      scale: 2,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            width: 2,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyText2!
+                                                                .color!),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                        color:
+                                                            expenseItem.color),
+                                                  ),
+                                                  title: Text(
+                                                    expenseItem.name,
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            Theme.of(context)
+                                                                .textTheme
+                                                                .bodyText2!
+                                                                .fontFamily,
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText2!
+                                                            .color),
+                                                  ),
+                                                  trailing: Icon(
+                                                      Icons.arrow_forward_ios),
+                                                ),
+                                                Divider()
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      })
+                                    ],
                                   ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                ],
+                                ),
                               );
                             });
                       },
