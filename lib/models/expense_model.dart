@@ -64,4 +64,30 @@ List<ExpenseModel> expenseList = [
       image: 'assets/images/debt.png',
       name: 'Debt',
       color: Colors.yellowAccent),
+  ExpenseModel(
+      image: 'assets/images/personal.png',
+      name: 'Personal',
+      color: Colors.lightGreenAccent),
+  ExpenseModel(
+      image: 'assets/images/miscellaneous.png',
+      name: 'Miscellaneous',
+      color: Colors.lightBlueAccent),
+  ExpenseModel(
+      image: 'assets/images/car.png', name: 'Car', color: Colors.redAccent),
+  ExpenseModel(
+      image: 'assets/images/fuel.png', name: 'Fuel', color: Colors.pinkAccent),
+  ExpenseModel(
+      image: 'assets/images/flowers.png',
+      name: 'Flowers',
+      color: Colors.orange),
+  ExpenseModel(
+      image: 'assets/images/greetingcard.png',
+      name: 'Greeting card',
+      color: Colors.pink),
+  ExpenseModel(
+      image: 'assets/images/repellant.png',
+      name: 'Insect repellant',
+      color: Colors.yellowAccent),
+  ExpenseModel(
+      image: 'assets/images/bulb.png', name: 'Light bulb', color: Colors.blue),
 ];
