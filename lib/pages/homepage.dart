@@ -8,10 +8,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:kudidemo/pages/calendar_widget.dart';
+import 'package:kudidemo/pages/edit_task.dart';
 
 import 'package:kudidemo/services/notification_service.dart';
 
 import 'package:kudidemo/utils/utils.dart';
+import 'package:kudidemo/widgets/icon_circle.dart';
 
 import 'package:kudidemo/widgets/theme_overlay.dart';
 import 'package:provider/provider.dart';
@@ -177,6 +179,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     final tasks = Provider.of<TaskProvider>(context).tasks;
+    final deleteTask = Provider.of<TaskProvider>(context);
 
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
@@ -481,65 +484,241 @@ class _HomePageState extends State<HomePage> {
                                       return Padding(
                                         padding:
                                             const EdgeInsets.only(bottom: 15),
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 15, vertical: 10),
-                                          width: double.infinity,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.watch,
-                                                    color: Colors.black54,
-                                                  ),
-                                                  Text(
-                                                    Utils.toTime(
-                                                        tasks[index].from!),
-                                                    style: TextStyle(
-                                                        fontSize: 10,
-                                                        color: Colors.black54),
-                                                  ),
-                                                  Text(
-                                                    '-',
-                                                    style: TextStyle(
-                                                        color: Colors.black54),
-                                                  ),
-                                                  Text(
-                                                    Utils.toTime(
-                                                        tasks[index].to!),
-                                                    style: TextStyle(
-                                                        fontSize: 10,
-                                                        color: Colors.black54),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(
-                                                tasks[index].name!,
-                                                style: TextStyle(
-                                                    fontSize: 19,
-                                                    color: Colors.black),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(
-                                                tasks[index].notes!,
-                                                style: GoogleFonts.prompt(
-                                                    fontSize: 12,
-                                                    color: Colors.black87),
-                                              ),
-                                            ],
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            showModalBottomSheet(
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .backgroundColor,
+                                                isScrollControlled: true,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                                context: context,
+                                                builder: (context) {
+                                                  return Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      ListTile(
+                                                        leading: IconCircle(
+                                                          icon: Icons.check,
+                                                        ),
+                                                        title: Text(
+                                                          'Mark as done',
+                                                          style: TextStyle(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .bodyText2!
+                                                                  .color,
+                                                              fontFamily: Theme
+                                                                      .of(context)
+                                                                  .textTheme
+                                                                  .bodyText2!
+                                                                  .fontFamily),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 20),
+                                                        child: Divider(),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      ListTile(
+                                                        leading: IconCircle(
+                                                          icon: Icons.timer,
+                                                        ),
+                                                        title: Text(
+                                                          'Start timer',
+                                                          style: TextStyle(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .bodyText2!
+                                                                  .color,
+                                                              fontFamily: Theme
+                                                                      .of(context)
+                                                                  .textTheme
+                                                                  .bodyText2!
+                                                                  .fontFamily),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 20),
+                                                        child: Divider(),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      ListTile(
+                                                        leading: IconCircle(
+                                                          icon: Icons.edit,
+                                                        ),
+                                                        onTap: () {
+                                                          Navigator.of(context).push(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          EditTask(
+                                                                            taskName:
+                                                                                tasks[index].name,
+                                                                            fromDate:
+                                                                                tasks[index].from,
+                                                                            toDate:
+                                                                                tasks[index].to,
+                                                                          )));
+                                                        },
+                                                        title: Text(
+                                                          'Edit task',
+                                                          style: TextStyle(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .bodyText2!
+                                                                  .color,
+                                                              fontFamily: Theme
+                                                                      .of(context)
+                                                                  .textTheme
+                                                                  .bodyText2!
+                                                                  .fontFamily),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 20),
+                                                        child: Divider(),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      ListTile(
+                                                        leading: IconCircle(
+                                                          icon: Icons.delete,
+                                                        ),
+                                                        onTap: () {
+                                                          deleteTask.removeTask(
+                                                              tasks[index]);
+                                                        },
+                                                        title: Text(
+                                                          'Delete',
+                                                          style: TextStyle(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .bodyText2!
+                                                                  .color,
+                                                              fontFamily: Theme
+                                                                      .of(context)
+                                                                  .textTheme
+                                                                  .bodyText2!
+                                                                  .fontFamily),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 20),
+                                                        child: Divider(),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                    ],
+                                                  );
+                                                });
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 15, vertical: 10),
+                                            width: double.infinity,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.watch,
+                                                      color: Colors.black54,
+                                                    ),
+                                                    Text(
+                                                      Utils.toTime(
+                                                          tasks[index].from!),
+                                                      style: TextStyle(
+                                                          fontSize: 10,
+                                                          color:
+                                                              Colors.black54),
+                                                    ),
+                                                    Text(
+                                                      '-',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.black54),
+                                                    ),
+                                                    Text(
+                                                      Utils.toTime(
+                                                          tasks[index].to!),
+                                                      style: TextStyle(
+                                                          fontSize: 10,
+                                                          color:
+                                                              Colors.black54),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  tasks[index].name!,
+                                                  style: TextStyle(
+                                                      fontSize: 19,
+                                                      color: Colors.black),
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  tasks[index].notes!,
+                                                  style: GoogleFonts.prompt(
+                                                      fontSize: 12,
+                                                      color: Colors.black87),
+                                                ),
+                                              ],
+                                            ),
+                                            decoration: decorator.copyWith(
+                                                color:
+                                                    Color(tasks[index].color!),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        10.0)),
                                           ),
-                                          decoration: decorator.copyWith(
-                                              color: Color(tasks[index].color!),
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0)),
                                         ),
                                       );
                                     });

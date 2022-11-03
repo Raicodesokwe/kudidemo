@@ -8,6 +8,7 @@ import 'package:kudidemo/pages/group_task.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kudidemo/providers/color_provider.dart';
+import 'package:kudidemo/providers/expense_provider.dart';
 import 'package:kudidemo/providers/google_signin.dart';
 import 'package:kudidemo/providers/habits_provider.dart';
 import 'package:kudidemo/providers/task_provider.dart';
@@ -60,6 +61,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => HabitsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ExpenseProvider(),
         ),
       ],
       child: Consumer<ThemeProvider>(

@@ -283,8 +283,19 @@ class _FinancesPageState extends State<FinancesPage>
                                                   onTap: () {
                                                     Navigator.of(context).push(
                                                         MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ExpensePage()));
+                                                            builder:
+                                                                (context) =>
+                                                                    ExpensePage(
+                                                                      expenseImage:
+                                                                          expenseItem
+                                                                              .image,
+                                                                      expenseName:
+                                                                          expenseItem
+                                                                              .name,
+                                                                      tileColor:
+                                                                          expenseItem
+                                                                              .color,
+                                                                    )));
                                                   },
                                                   leading: Container(
                                                     height: 50,

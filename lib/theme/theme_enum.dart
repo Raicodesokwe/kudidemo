@@ -36,10 +36,10 @@ final appThemeData = {
       ))),
   AppTheme.Blue: ThemeData.dark().copyWith(
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      scaffoldBackgroundColor: const Color(0xFF1512d9),
-      backgroundColor: const Color(0xFF1512d9),
-      canvasColor: const Color(0xFF1815fa),
-      cardColor: const Color(0xFF120fb8),
+      scaffoldBackgroundColor: const Color(0xFF12d6d9),
+      backgroundColor: const Color(0xFF12d6d9),
+      canvasColor: const Color(0xFF0fb6b8),
+      cardColor: const Color(0xFF15f6fa),
       appBarTheme: appBarTheme,
       iconTheme: const IconThemeData(color: Colors.black),
       textTheme: TextTheme(
