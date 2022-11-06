@@ -4,8 +4,9 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:kudidemo/pages/calendar_widget.dart';
 import 'package:kudidemo/pages/edit_task.dart';
@@ -75,6 +76,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onClickedNotification(String? payload) {}
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    Hive.box('task-box').close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -473,13 +480,14 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                               builder: (context, notifier, ch) {
+                                final taskItem = notifier.tasks;
                                 if (notifier.tasks.length <= 0) {
                                   return ch!;
                                 }
                                 return ListView.builder(
                                     physics: NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
-                                    itemCount: tasks.length,
+                                    itemCount: taskItem.length,
                                     itemBuilder: (ctx, index) {
                                       return Padding(
                                         padding:
@@ -578,12 +586,8 @@ class _HomePageState extends State<HomePage> {
                                                                   builder:
                                                                       (context) =>
                                                                           EditTask(
-                                                                            taskName:
-                                                                                tasks[index].name,
-                                                                            fromDate:
-                                                                                tasks[index].from,
-                                                                            toDate:
-                                                                                tasks[index].to,
+                                                                            task:
+                                                                                tasks[index],
                                                                           )));
                                                         },
                                                         title: Text(
@@ -621,6 +625,8 @@ class _HomePageState extends State<HomePage> {
                                                         onTap: () {
                                                           deleteTask.removeTask(
                                                               tasks[index]);
+                                                          Navigator.of(context)
+                                                              .pop();
                                                         },
                                                         title: Text(
                                                           'Delete',
@@ -670,7 +676,8 @@ class _HomePageState extends State<HomePage> {
                                                     ),
                                                     Text(
                                                       Utils.toTime(
-                                                          tasks[index].from!),
+                                                          taskItem[index]
+                                                              .from!),
                                                       style: TextStyle(
                                                           fontSize: 10,
                                                           color:
@@ -684,7 +691,7 @@ class _HomePageState extends State<HomePage> {
                                                     ),
                                                     Text(
                                                       Utils.toTime(
-                                                          tasks[index].to!),
+                                                          taskItem[index].to!),
                                                       style: TextStyle(
                                                           fontSize: 10,
                                                           color:
@@ -696,7 +703,7 @@ class _HomePageState extends State<HomePage> {
                                                   height: 5,
                                                 ),
                                                 Text(
-                                                  tasks[index].name!,
+                                                  taskItem[index].name!,
                                                   style: TextStyle(
                                                       fontSize: 19,
                                                       color: Colors.black),
@@ -705,7 +712,7 @@ class _HomePageState extends State<HomePage> {
                                                   height: 5,
                                                 ),
                                                 Text(
-                                                  tasks[index].notes!,
+                                                  taskItem[index].notes!,
                                                   style: GoogleFonts.prompt(
                                                       fontSize: 12,
                                                       color: Colors.black87),
@@ -713,8 +720,8 @@ class _HomePageState extends State<HomePage> {
                                               ],
                                             ),
                                             decoration: decorator.copyWith(
-                                                color:
-                                                    Color(tasks[index].color!),
+                                                color: Color(
+                                                    taskItem[index].color!),
                                                 borderRadius:
                                                     BorderRadius.circular(
                                                         10.0)),
@@ -723,7 +730,7 @@ class _HomePageState extends State<HomePage> {
                                       );
                                     });
                               });
-                        }),
+                        })
                   ],
                 ),
               ),

@@ -38,14 +38,14 @@ final appThemeData = {
       visualDensity: VisualDensity.adaptivePlatformDensity,
       scaffoldBackgroundColor: const Color(0xFF12d6d9),
       backgroundColor: const Color(0xFF12d6d9),
-      canvasColor: const Color(0xFF0fb6b8),
-      cardColor: const Color(0xFF15f6fa),
+      canvasColor: const Color(0xFF15f6fa),
+      cardColor: const Color(0xFF0fb6b8),
       appBarTheme: appBarTheme,
       iconTheme: const IconThemeData(color: Colors.black),
       textTheme: TextTheme(
           bodyText2: TextStyle(
         fontFamily: 'grifterbold',
-        color: Colors.white,
+        color: Colors.black,
       ))),
   AppTheme.Light: ThemeData.light().copyWith(
       visualDensity: VisualDensity.adaptivePlatformDensity,

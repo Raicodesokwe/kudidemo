@@ -62,7 +62,7 @@ class DateOverlayState extends State<DateOverlay>
     final reminderProvider = Provider.of<TaskProvider>(context);
     widget.reminder = reminderProvider.reminder;
     widget.repeat = reminderProvider.repeat;
-    final task = TaskModel(
+    TaskModel task = TaskModel(
         from: widget.fromDate,
         to: widget.toDateString,
         reminder: widget.reminder,

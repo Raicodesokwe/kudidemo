@@ -8,6 +8,8 @@ import 'package:kudidemo/models/task_model.dart';
 import 'package:kudidemo/providers/color_provider.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/widgets/circle_button.dart';
+import 'package:kudidemo/widgets/edit_notes_overlay.dart';
+import 'package:kudidemo/widgets/edit_text_field.dart';
 import 'package:kudidemo/widgets/neon_button.dart';
 import 'package:kudidemo/widgets/notes_overlay.dart';
 import 'package:kudidemo/widgets/subtask_overlay.dart';
@@ -20,11 +22,12 @@ import '../widgets/color_overlay.dart';
 import '../widgets/date_overlay.dart';
 
 class EditTask extends StatefulWidget {
-  final String? taskName;
-  final DateTime? fromDate;
-  final DateTime? toDate;
-  EditTask({Key? key, this.taskName, this.fromDate, this.toDate})
-      : super(key: key);
+  TaskModel? task;
+
+  EditTask({
+    Key? key,
+    this.task,
+  }) : super(key: key);
 
   @override
   State<EditTask> createState() => _EditTaskState();
@@ -32,16 +35,14 @@ class EditTask extends StatefulWidget {
 
 class _EditTaskState extends State<EditTask>
     with SingleTickerProviderStateMixin {
-  TaskModel? task;
+  String name = '';
   late String notes;
   late String subtask;
-
+  late DateTime fromDate;
   late Color color;
-
+  late DateTime toDate;
   int? reminder;
   late String repeat;
-
-  TextEditingController taskNameController = TextEditingController();
 
   final _taskForm = GlobalKey<FormState>();
 
@@ -101,8 +102,8 @@ class _EditTaskState extends State<EditTask>
           ? showCupertinoDialog(
               context: context,
               builder: (_) => DateOverlay(
-                fromDate: widget.fromDate,
-                toDateString: widget.toDate,
+                fromDate: fromDate,
+                toDateString: toDate,
                 reminder: reminder,
                 repeat: repeat,
               ),
@@ -110,8 +111,8 @@ class _EditTaskState extends State<EditTask>
           : showDialog(
               context: context,
               builder: (_) => DateOverlay(
-                fromDate: widget.fromDate,
-                toDateString: widget.toDate,
+                fromDate: fromDate,
+                toDateString: toDate,
                 reminder: reminder,
                 repeat: repeat,
               ),
@@ -135,19 +136,19 @@ class _EditTaskState extends State<EditTask>
           ? showCupertinoDialog(
               context: context,
               builder: (_) => ColorOverlay(
-                color: color,
+                color: Color(widget.task!.color!),
               ),
             )
           : showDialog(
               context: context,
               builder: (_) => ColorOverlay(
-                color: color,
+                color: Color(widget.task!.color!),
               ),
             );
     }
 
-    // widget.fromDate = Provider.of<TaskProvider>(context).from!;
-    // widget.toDate = Provider.of<TaskProvider>(context).to!;
+    fromDate = Provider.of<TaskProvider>(context).from!;
+    toDate = Provider.of<TaskProvider>(context).to!;
     reminder = Provider.of<TaskProvider>(context).reminder!;
     repeat = Provider.of<TaskProvider>(context).repeat!;
     color = Provider.of<ColorProvider>(context).selectedColor!;
@@ -158,21 +159,23 @@ class _EditTaskState extends State<EditTask>
       final isValid = _taskForm.currentState!.validate();
       if (isValid) {
         final task = TaskModel(
-            name: taskNameController.text,
-            from: widget.fromDate,
-            to: widget.toDate,
+            id: widget.task!.id!,
+            name: name,
+            from: fromDate,
+            to: toDate,
             notes: notes,
             color: color.value,
             reminder: reminder,
             repeat: repeat);
         final taskProvider = Provider.of<TaskProvider>(context, listen: false);
-        taskProvider.addTask(task);
+        taskProvider.changeTask(task);
 
         Navigator.of(context).pop();
       }
     }
 
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
+
     return Scaffold(
       body: Form(
         key: _taskForm,
@@ -213,10 +216,12 @@ class _EditTaskState extends State<EditTask>
               SizedBox(
                 height: size.height * 0.03,
               ),
-              CustomTextField(
-                  controller: taskNameController,
-                  emptytext: 'task name is required',
-                  hintText: widget.taskName!),
+              EditTextField(
+                  onChanged: (value) {
+                    name = value;
+                  },
+                  initialValue: widget.task!.name!,
+                  emptytext: 'task name is empty'),
               SizedBox(
                 height: size.height * 0.03,
               ),
@@ -292,7 +297,9 @@ class _EditTaskState extends State<EditTask>
                             context: context,
                             barrierDismissible: true,
                             builder: (context) {
-                              return NotesOverlay();
+                              return EditNotesOverlay(
+                                notes: widget.task!.notes!,
+                              );
                             });
                       },
                       child: Container(
@@ -317,9 +324,7 @@ class _EditTaskState extends State<EditTask>
               ),
               GestureDetector(
                   onTap: () => saveForm(),
-                  child: taskNameController.text.isNotEmpty
-                      ? NeonButton()
-                      : CircleButton())
+                  child: name != '' ? NeonButton() : CircleButton())
             ],
           ),
         ),

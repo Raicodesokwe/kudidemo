@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/utils/utils.dart';
+import 'package:kudidemo/widgets/edit_text_field.dart';
 import 'package:kudidemo/widgets/text_field.dart';
 import 'package:provider/provider.dart';
 
@@ -8,13 +9,14 @@ import '../models/task_model.dart';
 import '../providers/task_provider.dart';
 import '../providers/theme_provider.dart';
 
-class NotesOverlay extends StatefulWidget {
-  NotesOverlay({Key? key});
+class EditNotesOverlay extends StatefulWidget {
+  final String notes;
+  EditNotesOverlay({Key? key, required this.notes});
   @override
-  State<StatefulWidget> createState() => NotesOverlayState();
+  State<StatefulWidget> createState() => EditNotesOverlayState();
 }
 
-class NotesOverlayState extends State<NotesOverlay>
+class EditNotesOverlayState extends State<EditNotesOverlay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
@@ -35,6 +37,7 @@ class NotesOverlayState extends State<NotesOverlay>
     controller.forward();
   }
 
+  String noteText = '';
   @override
   Widget build(BuildContext context) {
     final decorator = BoxDecoration(boxShadow: [
@@ -52,7 +55,7 @@ class NotesOverlayState extends State<NotesOverlay>
     ]);
 
     Size size = MediaQuery.of(context).size;
-    final task = TaskModel(notes: notesController.text);
+    final task = TaskModel(notes: noteText);
     return Center(
       child: Material(
         color: Colors.transparent,
@@ -71,10 +74,21 @@ class NotesOverlayState extends State<NotesOverlay>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CustomTextField(
-                        controller: notesController,
-                        emptytext: 'Additional notes',
-                        hintText: 'Additional notes'),
+                    Text(
+                      'Additional notes',
+                      style: TextStyle(
+                          color: Theme.of(context).textTheme.bodyText2!.color,
+                          fontSize: 15),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    EditTextField(
+                        initialValue: widget.notes,
+                        emptytext: 'Add additional notes',
+                        onChanged: (value) {
+                          noteText = value;
+                        }),
                     SizedBox(
                       height: size.height * 0.05,
                     ),
@@ -90,11 +104,16 @@ class NotesOverlayState extends State<NotesOverlay>
                                     color: Color.fromARGB(255, 12, 99, 212),
                                     fontWeight: FontWeight.w600))),
                         GestureDetector(
-                          onTap: () {
-                            Provider.of<TaskProvider>(context, listen: false)
-                                .addNotes(task);
-                            Navigator.of(context).pop();
-                          },
+                          onTap: noteText != ''
+                              ? () {
+                                  Provider.of<TaskProvider>(context,
+                                          listen: false)
+                                      .addNotes(task);
+                                  Navigator.of(context).pop();
+                                }
+                              : () {
+                                  Navigator.of(context).pop();
+                                },
                           child: Container(
                             child: Center(
                               child: Text(

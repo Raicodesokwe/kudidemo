@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
-import '../providers/theme_provider.dart';
-
-class CustomTextField extends StatelessWidget {
-  final TextEditingController controller;
+class EditTextField extends StatelessWidget {
+  final String initialValue;
   final String emptytext;
-  final String hintText;
-  final String? initialValue;
-
-  const CustomTextField(
+  final void Function(String)? onChanged;
+  const EditTextField(
       {Key? key,
-      this.initialValue,
-      required this.controller,
+      required this.initialValue,
       required this.emptytext,
-      required this.hintText})
+      required this.onChanged})
       : super(key: key);
 
   @override
@@ -42,17 +36,15 @@ class CustomTextField extends StatelessWidget {
             color: Theme.of(context).backgroundColor,
             borderRadius: BorderRadius.circular(10.0)),
         child: TextFormField(
+          onChanged: onChanged,
           initialValue: initialValue,
-          controller: controller,
           validator: (value) => value!.isEmpty ? emptytext : null,
           keyboardType: TextInputType.text,
           cursorColor: Colors.black45,
           style: GoogleFonts.prompt(
               color: Theme.of(context).textTheme.bodyText2!.color),
-          decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: GoogleFonts.prompt(),
-              border: InputBorder.none),
+          decoration: InputDecoration(border: InputBorder.none),
         ));
+    ;
   }
 }

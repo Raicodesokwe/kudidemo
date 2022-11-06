@@ -6,5 +6,6 @@ class ColorProvider with ChangeNotifier {
   Color? selectedColor = Colors.green.shade200;
   void selectColor(int chosenColor) {
     selectedColor = colorList[chosenColor].color;
+    notifyListeners();
   }
 }

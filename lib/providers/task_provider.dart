@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kudidemo/models/reminder_model.dart';
 import 'package:kudidemo/models/repeat_model.dart';
 import 'package:kudidemo/models/task_model.dart';
@@ -15,8 +16,8 @@ class TaskProvider with ChangeNotifier {
   DateTime? to = DateTime.now().add(Duration(hours: 1));
   Future<void> addTask(TaskModel task) async {
     Box<TaskModel> box = await Hive.openBox<TaskModel>(taskHiveBox);
-    await box.add(task);
-    _tasks.add(task);
+    await box.put(task.id, task);
+    // _tasks.add(task);
     _tasks = box.values.toList();
     notifyListeners();
   }
@@ -35,8 +36,10 @@ class TaskProvider with ChangeNotifier {
   }
 
   Future<void> changeTask(TaskModel task) async {
-    Box box = Hive.box(taskHiveBox);
-    box.put("title", "Study Flutter");
+    Box<TaskModel> box = await Hive.openBox<TaskModel>(taskHiveBox);
+
+    await box.put(task.id, task);
+    _tasks = box.values.toList();
     notifyListeners();
   }
 
@@ -49,8 +52,13 @@ class TaskProvider with ChangeNotifier {
     to = task.to;
     reminder = task.reminder;
     repeat = task.repeat;
+    // notes = task.notes;
+    // subtask = task.subtask;
+    notifyListeners();
+  }
+
+  void addNotes(TaskModel task) {
     notes = task.notes;
-    subtask = task.subtask;
     notifyListeners();
   }
 

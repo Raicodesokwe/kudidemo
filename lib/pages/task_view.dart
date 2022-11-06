@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -159,6 +160,7 @@ class _TaskViewState extends State<TaskView>
       final isValid = _taskForm.currentState!.validate();
       if (isValid) {
         final task = TaskModel(
+            id: Random().nextInt(10000),
             name: taskNameController.text,
             from: fromDate,
             to: toDate,

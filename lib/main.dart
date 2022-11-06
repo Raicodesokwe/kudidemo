@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => ThemeProvider(),
         ),
-        ListenableProvider(
+        ChangeNotifierProvider(
           create: (_) => TaskProvider(),
         ),
         ChangeNotifierProvider(
