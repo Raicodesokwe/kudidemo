@@ -150,7 +150,7 @@ class SubtaskOverlayState extends State<SubtaskOverlay>
                         GestureDetector(
                           onTap: () {
                             Provider.of<TaskProvider>(context, listen: false)
-                                .addTaskDetails(task);
+                                .addSubtask(task);
                             Navigator.of(context).pop();
                           },
                           child: Container(

@@ -10,4 +10,9 @@ class Utils {
     final time = DateFormat.Hm().format(dateTime);
     return '$time';
   }
+
+  static String toDay(DateTime dateTime) {
+    final day = DateFormat.EEEE().format(dateTime);
+    return '$day';
+  }
 }

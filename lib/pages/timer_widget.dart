@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:kudidemo/providers/timer_provider.dart';
+import 'package:kudidemo/widgets/minutes_overlay.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +12,8 @@ import '../providers/theme_provider.dart';
 import '../widgets/back_arrow.dart';
 
 class TimerWidget extends StatefulWidget {
-  TimerWidget({Key? key}) : super(key: key);
+  final String? task;
+  TimerWidget({Key? key, this.task}) : super(key: key);
 
   @override
   State<TimerWidget> createState() => _TimerWidgetState();
@@ -19,13 +22,13 @@ class TimerWidget extends StatefulWidget {
 class _TimerWidgetState extends State<TimerWidget>
     with TickerProviderStateMixin {
   double percent = 0;
-  double defaultValue = 1500;
-  double value = 1500.0;
+  int? defaultValue;
+  int? value;
   bool isStarted = false;
   bool isRunning = false;
   bool _active = false;
   int focusedMins = 0;
-  DateTime now = DateTime.now();
+  DateTime finishTime = DateTime.now().add(Duration(minutes: 25));
   late AnimationController controller;
   late AnimationController colorController;
   Animation? iconColorAnimation;
@@ -71,27 +74,6 @@ class _TimerWidgetState extends State<TimerWidget>
     super.initState();
   }
 
-  void startTimer() {
-    focusedMins = value.toInt();
-    const oneSec = Duration(seconds: 1);
-    _timer = Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        if (value <= 1) {
-          setState(() {
-            timer.cancel();
-            value = defaultValue;
-            isStarted = false;
-          });
-        } else {
-          setState(() {
-            value--;
-          });
-        }
-      },
-    );
-  }
-
   void _startBgColorAnimationTimer() {
     ///Animating for the first time.
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
@@ -123,6 +105,29 @@ class _TimerWidgetState extends State<TimerWidget>
 
   @override
   Widget build(BuildContext context) {
+    defaultValue = Provider.of<TimerProvider>(context).time;
+    value = Provider.of<TimerProvider>(context).time;
+    void startTimer() {
+      focusedMins = value!;
+      const oneSec = Duration(seconds: 1);
+      _timer = Timer.periodic(
+        oneSec,
+        (Timer timer) {
+          if (value! <= 1) {
+            setState(() {
+              timer.cancel();
+              value = defaultValue;
+              isStarted = false;
+            });
+          } else {
+            setState(() {
+              value = value! - 1;
+            });
+          }
+        },
+      );
+    }
+
     isRunning = _timer == null ? false : _timer!.isActive;
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
@@ -183,7 +188,7 @@ class _TimerWidgetState extends State<TimerWidget>
                               width: 5,
                             ),
                             Text(
-                              'Finishing ${DateFormat('Hm').format(now)}',
+                              'Finishing ${DateFormat('Hm').format(finishTime)}',
                               style: TextStyle(
                                 color: Colors.black54,
                               ),
@@ -226,8 +231,9 @@ class _TimerWidgetState extends State<TimerWidget>
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Theme.of(context).backgroundColor),
-                  child: Text(
-                      "${(value ~/ 60).toInt().toString().padLeft(2, '0')}:${(value % 60).toInt().toString().padLeft(2, '0')}"),
+                  child: Text('kunyi'
+                      // "${(value! ~/ 60).toInt().toString().padLeft(2, '0')}:${(value! % 60).toInt().toString().padLeft(2, '0')}"
+                      ),
                 ),
                 percent: percent,
                 animation: true,
@@ -235,7 +241,34 @@ class _TimerWidgetState extends State<TimerWidget>
               ),
             ),
             SizedBox(
-              height: size.height * 0.2,
+              height: size.height * 0.08,
+            ),
+            Text(widget.task ?? ''),
+            SizedBox(
+              height: size.height * 0.05,
+            ),
+            GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => MinutesOverlay(
+                    minutes: value!,
+                  ),
+                );
+              },
+              child: Container(
+                height: 50,
+                child: Center(
+                  child: Text('Change time'),
+                ),
+                width: size.width * 0.5,
+                decoration: decorator.copyWith(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Theme.of(context).backgroundColor),
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.05,
             ),
             isRunning
                 ? GestureDetector(
@@ -261,6 +294,10 @@ class _TimerWidgetState extends State<TimerWidget>
                   )
                 : GestureDetector(
                     onTap: () {
+                      setState(() {
+                        finishTime = DateTime.now().add(Duration(minutes: 25));
+                      });
+
                       startTimer();
                       controller.forward().then((value) {
                         _active

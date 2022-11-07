@@ -162,6 +162,7 @@ class _TaskViewState extends State<TaskView>
         final task = TaskModel(
             id: Random().nextInt(10000),
             name: taskNameController.text,
+            subtask: subtask,
             from: fromDate,
             to: toDate,
             notes: notes,
@@ -169,7 +170,7 @@ class _TaskViewState extends State<TaskView>
             reminder: reminder,
             repeat: repeat);
         final taskProvider = Provider.of<TaskProvider>(context, listen: false);
-        taskProvider.addTask(task);
+        taskProvider.addTask(task).then((value) => taskProvider.reset());
 
         Navigator.of(context).pop();
       }

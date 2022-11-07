@@ -19,6 +19,7 @@ class TaskProvider with ChangeNotifier {
     await box.put(task.id, task);
     // _tasks.add(task);
     _tasks = box.values.toList();
+
     notifyListeners();
   }
 
@@ -40,6 +41,7 @@ class TaskProvider with ChangeNotifier {
 
     await box.put(task.id, task);
     _tasks = box.values.toList();
+
     notifyListeners();
   }
 
@@ -52,13 +54,17 @@ class TaskProvider with ChangeNotifier {
     to = task.to;
     reminder = task.reminder;
     repeat = task.repeat;
-    // notes = task.notes;
-    // subtask = task.subtask;
+
     notifyListeners();
   }
 
   void addNotes(TaskModel task) {
     notes = task.notes;
+    notifyListeners();
+  }
+
+  void addSubtask(TaskModel task) {
+    subtask = task.subtask;
     notifyListeners();
   }
 
@@ -68,5 +74,14 @@ class TaskProvider with ChangeNotifier {
 
   void selectRepeat(int repeatindex) {
     repeat = repeatList[repeatindex].repeat;
+  }
+
+  void reset() {
+    reminder = 0;
+    repeat = '';
+    notes = '';
+    subtask = '';
+    from = DateTime.now();
+    to = DateTime.now().add(Duration(hours: 1));
   }
 }

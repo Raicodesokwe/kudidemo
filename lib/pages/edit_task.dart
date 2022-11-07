@@ -9,6 +9,7 @@ import 'package:kudidemo/providers/color_provider.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/widgets/circle_button.dart';
 import 'package:kudidemo/widgets/edit_notes_overlay.dart';
+import 'package:kudidemo/widgets/edit_subtask.dart';
 import 'package:kudidemo/widgets/edit_text_field.dart';
 import 'package:kudidemo/widgets/neon_button.dart';
 import 'package:kudidemo/widgets/notes_overlay.dart';
@@ -163,12 +164,13 @@ class _EditTaskState extends State<EditTask>
             name: name,
             from: fromDate,
             to: toDate,
+            subtask: subtask,
             notes: notes,
             color: color.value,
             reminder: reminder,
             repeat: repeat);
         final taskProvider = Provider.of<TaskProvider>(context, listen: false);
-        taskProvider.changeTask(task);
+        taskProvider.changeTask(task).then((value) => taskProvider.reset());
 
         Navigator.of(context).pop();
       }
@@ -274,7 +276,9 @@ class _EditTaskState extends State<EditTask>
                             context: context,
                             barrierDismissible: true,
                             builder: (context) {
-                              return SubtaskOverlay();
+                              return EditSubtaskOverlay(
+                                subTask: widget.task!.subtask!,
+                              );
                             });
                       },
                       child: Container(
@@ -323,7 +327,11 @@ class _EditTaskState extends State<EditTask>
                 height: size.height * 0.2,
               ),
               GestureDetector(
-                  onTap: () => saveForm(),
+                  onTap: name != ''
+                      ? () {
+                          saveForm();
+                        }
+                      : () {},
                   child: name != '' ? NeonButton() : CircleButton())
             ],
           ),

@@ -13,6 +13,7 @@ import 'package:kudidemo/providers/google_signin.dart';
 import 'package:kudidemo/providers/habits_provider.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/providers/theme_provider.dart';
+import 'package:kudidemo/providers/timer_provider.dart';
 import 'package:kudidemo/services/auth_service.dart';
 import 'package:kudidemo/services/notification_service.dart';
 import 'package:provider/provider.dart';
@@ -64,6 +65,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => ExpenseProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => TimerProvider(),
         ),
       ],
       child: Consumer<ThemeProvider>(
