@@ -168,7 +168,8 @@ class _EditTaskState extends State<EditTask>
             notes: notes,
             color: color.value,
             reminder: reminder,
-            repeat: repeat);
+            repeat: repeat,
+            isComplete: widget.task!.isComplete!);
         final taskProvider = Provider.of<TaskProvider>(context, listen: false);
         taskProvider.changeTask(task).then((value) => taskProvider.reset());
 

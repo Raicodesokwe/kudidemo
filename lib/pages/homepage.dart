@@ -823,6 +823,9 @@ class _HomePageState extends State<HomePage> {
                                                 )
                                               : Container();
                                         }),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
                                     !checkDate
                                         ? Column(
                                             crossAxisAlignment:
@@ -1023,6 +1026,10 @@ class _HomePageState extends State<HomePage> {
                                                                           style: TextStyle(
                                                                               fontSize: 10,
                                                                               color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.5)),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              5,
                                                                         ),
                                                                         Text(
                                                                           Utils.toTime(

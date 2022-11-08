@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kudidemo/models/habits_model.dart';
-import 'package:kudidemo/providers/habits_provider.dart';
+
+import 'package:kudidemo/providers/timer_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/task_provider.dart';
-
 class MinutesOverlay extends StatefulWidget {
-  int minutes;
-  MinutesOverlay({Key? key, required this.minutes}) : super(key: key);
+  MinutesOverlay({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<MinutesOverlay> createState() => _MinutesOverlayState();
@@ -18,7 +17,7 @@ class _MinutesOverlayState extends State<MinutesOverlay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
-
+  int? value;
   @override
   void initState() {
     super.initState();
@@ -39,20 +38,22 @@ class _MinutesOverlayState extends State<MinutesOverlay>
   Widget build(BuildContext context) {
     void addCount() {
       setState(() {
-        widget.minutes++;
+        // widget.minutes += 60;
+
+        Provider.of<TimerProvider>(context, listen: false).increaseTime();
       });
     }
 
     void reduceCount() {
-      if (widget.minutes > 1) {
+      if (value! > 1) {
         setState(() {
-          widget.minutes--;
+          // widget.minutes -= 60;
+
+          Provider.of<TimerProvider>(context, listen: false).increaseTime();
         });
       }
     }
 
-    final habit = HabitsModel(dailyGoal: widget.minutes);
-    Provider.of<HabitsProvider>(context).addHabitDetails(habit);
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -73,14 +74,14 @@ class _MinutesOverlayState extends State<MinutesOverlay>
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         backgroundColor: Theme.of(context).backgroundColor,
         title: Text(
-          'Daily goal',
+          'Change time',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 18),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('How many times a day does your habit happen?',
+            Text('How many minutes does your task take?',
                 style: GoogleFonts.prompt(
                     fontSize: 12,
                     color: Theme.of(context).textTheme.bodyText2!.color)),
@@ -91,7 +92,9 @@ class _MinutesOverlayState extends State<MinutesOverlay>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: () => addCount(),
+                  onTap: () {
+                    addCount();
+                  },
                   child: Container(
                     height: 50,
                     width: 50,
@@ -106,17 +109,22 @@ class _MinutesOverlayState extends State<MinutesOverlay>
                 SizedBox(
                   width: 15,
                 ),
-                Text(
-                  widget.minutes.toString(),
-                  style: TextStyle(
-                      fontSize: 25,
-                      color: Theme.of(context).textTheme.bodyText2!.color),
-                ),
+                Consumer<TimerProvider>(builder: (context, timerValue, child) {
+                  value = timerValue.time;
+                  return Text(
+                    '${(timerValue.time / 60).toInt()}',
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Theme.of(context).textTheme.bodyText2!.color),
+                  );
+                }),
                 SizedBox(
                   width: 15,
                 ),
                 GestureDetector(
-                  onTap: () => reduceCount(),
+                  onTap: () {
+                    reduceCount();
+                  },
                   child: Container(
                     height: 50,
                     width: 50,

@@ -26,13 +26,14 @@ class TaskModelAdapter extends TypeAdapter<TaskModel> {
       reminder: fields[7] as int?,
       repeat: fields[8] as String?,
       subtask: fields[6] as String?,
+      isComplete: fields[9] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, TaskModel obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -50,7 +51,9 @@ class TaskModelAdapter extends TypeAdapter<TaskModel> {
       ..writeByte(7)
       ..write(obj.reminder)
       ..writeByte(8)
-      ..write(obj.repeat);
+      ..write(obj.repeat)
+      ..writeByte(9)
+      ..write(obj.isComplete);
   }
 
   @override

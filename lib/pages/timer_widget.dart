@@ -21,14 +21,14 @@ class TimerWidget extends StatefulWidget {
 
 class _TimerWidgetState extends State<TimerWidget>
     with TickerProviderStateMixin {
+  DateTime now = DateTime.now();
   double percent = 0;
-  int? defaultValue;
-  int? value;
+
   bool isStarted = false;
   bool isRunning = false;
   bool _active = false;
   int focusedMins = 0;
-  DateTime finishTime = DateTime.now().add(Duration(minutes: 25));
+  // DateTime finishTime = DateTime.now().add(Duration(minutes: 25));
   late AnimationController controller;
   late AnimationController colorController;
   Animation? iconColorAnimation;
@@ -74,9 +74,17 @@ class _TimerWidgetState extends State<TimerWidget>
     super.initState();
   }
 
+  // @override
+  // void didChangeDependencies() {
+  //   // TODO: implement didChangeDependencies
+  //   super.didChangeDependencies();
+  //   defaultValue = Provider.of<TimerProvider>(context, listen: false).time;
+  //   value = Provider.of<TimerProvider>(context, listen: false).time;
+  // }
+
   void _startBgColorAnimationTimer() {
     ///Animating for the first time.
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       counter++;
       setState(() {});
     });
@@ -105,29 +113,6 @@ class _TimerWidgetState extends State<TimerWidget>
 
   @override
   Widget build(BuildContext context) {
-    defaultValue = Provider.of<TimerProvider>(context).time;
-    value = Provider.of<TimerProvider>(context).time;
-    void startTimer() {
-      focusedMins = value!;
-      const oneSec = Duration(seconds: 1);
-      _timer = Timer.periodic(
-        oneSec,
-        (Timer timer) {
-          if (value! <= 1) {
-            setState(() {
-              timer.cancel();
-              value = defaultValue;
-              isStarted = false;
-            });
-          } else {
-            setState(() {
-              value = value! - 1;
-            });
-          }
-        },
-      );
-    }
-
     isRunning = _timer == null ? false : _timer!.isActive;
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
@@ -145,188 +130,214 @@ class _TimerWidgetState extends State<TimerWidget>
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: [
-            BackArrow(
-              decorator: decorator,
-            ),
-            Center(
-              child: Container(
-                child: Row(
-                  children: [
-                    Container(
-                      height: 40,
-                      width: 40,
-                      child: Center(
-                          child: Image.asset(
-                        'assets/images/tomato.png',
-                        scale: 3,
-                      )),
-                      decoration: BoxDecoration(
-                          color: Colors.redAccent.shade100,
-                          shape: BoxShape.circle),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+        body: Consumer<TimerProvider>(builder: (context, timerValue, child) {
+          int value = timerValue.time;
+          int defaultValue = timerValue.time;
+          void startTimer() {
+            focusedMins = value;
+            const oneSec = Duration(seconds: 1);
+            _timer = Timer.periodic(
+              oneSec,
+              (Timer timer) {
+                if (value <= 1) {
+                  setState(() {
+                    timer.cancel();
+                    value = defaultValue;
+                    isStarted = false;
+                  });
+                } else {
+                  setState(() {
+                    // if (value != null) value = value! - 1;
+                    // value--;
+                    Provider.of<TimerProvider>(context, listen: false)
+                        .decreaseOneSec();
+                  });
+                }
+              },
+            );
+          }
+
+          return Column(
+            children: [
+              BackArrow(
+                decorator: decorator,
+              ),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    print('malcolm in the $value');
+                  },
+                  child: Container(
+                    child: Row(
                       children: [
-                        Text(
-                          'Pomodoro',
-                          style:
-                              TextStyle(color: Colors.redAccent, fontSize: 17),
+                        Container(
+                          height: 40,
+                          width: 40,
+                          child: Center(
+                              child: Image.asset(
+                            'assets/images/tomato.png',
+                            scale: 3,
+                          )),
+                          decoration: BoxDecoration(
+                              color: Colors.redAccent.shade100,
+                              shape: BoxShape.circle),
                         ),
-                        Row(
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              FontAwesomeIcons.clock,
-                              size: 15,
-                              color: Colors.black54,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
                             Text(
-                              'Finishing ${DateFormat('Hm').format(finishTime)}',
+                              'Pomodoro',
                               style: TextStyle(
-                                color: Colors.black54,
-                              ),
+                                  color: Colors.redAccent, fontSize: 17),
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.clock,
+                                  size: 15,
+                                  color: Colors.black54,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  'Finishing ${DateFormat('Hm').format(now.add(Duration(seconds: timerValue.time)))}',
+                                  style: TextStyle(
+                                    color: Colors.black54,
+                                  ),
+                                )
+                              ],
                             )
                           ],
                         )
                       ],
-                    )
-                  ],
-                ),
-                padding: const EdgeInsets.all(10),
-                width: size.width * 0.6,
-                decoration: decorator.copyWith(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Theme.of(context).backgroundColor,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: size.height * 0.05,
-            ),
-            AnimatedContainer(
-              duration: const Duration(seconds: 2),
-              padding: const EdgeInsets.all(10),
-              decoration: decorator.copyWith(
-                  gradient: LinearGradient(
-                    begin: getAlignments[counter % getAlignments.length],
-                    end: getAlignments[(counter + 2) % getAlignments.length],
-                    colors: getColorsList,
-                    tileMode: TileMode.clamp,
-                  ),
-                  shape: BoxShape.circle),
-              child: CircularPercentIndicator(
-                arcType: ArcType.FULL,
-                radius: 250,
-                lineWidth: 20,
-                progressColor: Colors.redAccent,
-                center: Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Theme.of(context).backgroundColor),
-                  child: Text('kunyi'
-                      // "${(value! ~/ 60).toInt().toString().padLeft(2, '0')}:${(value! % 60).toInt().toString().padLeft(2, '0')}"
-                      ),
-                ),
-                percent: percent,
-                animation: true,
-                animateFromLastPercent: true,
-              ),
-            ),
-            SizedBox(
-              height: size.height * 0.08,
-            ),
-            Text(widget.task ?? ''),
-            SizedBox(
-              height: size.height * 0.05,
-            ),
-            GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => MinutesOverlay(
-                    minutes: value!,
-                  ),
-                );
-              },
-              child: Container(
-                height: 50,
-                child: Center(
-                  child: Text('Change time'),
-                ),
-                width: size.width * 0.5,
-                decoration: decorator.copyWith(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Theme.of(context).backgroundColor),
-              ),
-            ),
-            SizedBox(
-              height: size.height * 0.05,
-            ),
-            isRunning
-                ? GestureDetector(
-                    onTap: () {
-                      stopTimer();
-                      setState(() {
-                        isRunning = !isRunning;
-                      });
-                    },
-                    child: Container(
-                      height: 70,
-                      width: 70,
-                      child: Center(
-                        child: Icon(
-                          FontAwesomeIcons.pause,
-                          color: Colors.redAccent,
-                        ),
-                      ),
-                      decoration: decorator.copyWith(
-                          color: Theme.of(context).backgroundColor,
-                          shape: BoxShape.circle),
                     ),
-                  )
-                : GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        finishTime = DateTime.now().add(Duration(minutes: 25));
-                      });
-
-                      startTimer();
-                      controller.forward().then((value) {
-                        _active
-                            ? colorController.forward()
-                            : colorController.reverse();
-                        controller.reverse();
-                      });
-                      _active = !_active;
-                      _startBgColorAnimationTimer();
-                    },
-                    child: Container(
-                      height: 70,
-                      width: 70,
-                      child: Center(
-                        child: ScaleTransition(
-                          scale: controller,
+                    padding: const EdgeInsets.all(10),
+                    width: size.width * 0.6,
+                    decoration: decorator.copyWith(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Theme.of(context).backgroundColor,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: size.height * 0.05,
+              ),
+              AnimatedContainer(
+                duration: const Duration(seconds: 2),
+                padding: const EdgeInsets.all(10),
+                decoration: decorator.copyWith(
+                    gradient: LinearGradient(
+                      begin: getAlignments[counter % getAlignments.length],
+                      end: getAlignments[(counter + 2) % getAlignments.length],
+                      colors: getColorsList,
+                      tileMode: TileMode.clamp,
+                    ),
+                    shape: BoxShape.circle),
+                child: CircularPercentIndicator(
+                  arcType: ArcType.FULL,
+                  radius: 250,
+                  lineWidth: 20,
+                  progressColor: Colors.redAccent,
+                  center: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).backgroundColor),
+                    child: Text(
+                        "${(value ~/ 60).toInt().toString().padLeft(2, '0')}:${(value % 60).toInt().toString().padLeft(2, '0')}"),
+                  ),
+                  percent: percent,
+                  animation: true,
+                  animateFromLastPercent: true,
+                ),
+              ),
+              SizedBox(
+                height: size.height * 0.08,
+              ),
+              Text(widget.task ?? ''),
+              SizedBox(
+                height: size.height * 0.05,
+              ),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => MinutesOverlay(),
+                  );
+                },
+                child: Container(
+                  height: 50,
+                  child: Center(
+                    child: Text('Change time'),
+                  ),
+                  width: size.width * 0.5,
+                  decoration: decorator.copyWith(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Theme.of(context).backgroundColor),
+                ),
+              ),
+              SizedBox(
+                height: size.height * 0.05,
+              ),
+              isRunning
+                  ? GestureDetector(
+                      onTap: () {
+                        stopTimer();
+                        setState(() {
+                          isRunning = !isRunning;
+                        });
+                      },
+                      child: Container(
+                        height: 70,
+                        width: 70,
+                        child: Center(
                           child: Icon(
-                            FontAwesomeIcons.play,
-                            color: Colors.white,
+                            FontAwesomeIcons.pause,
+                            color: Colors.redAccent,
                           ),
                         ),
+                        decoration: decorator.copyWith(
+                            color: Theme.of(context).backgroundColor,
+                            shape: BoxShape.circle),
                       ),
-                      decoration: decorator.copyWith(
-                          color: iconColorAnimation!.value,
-                          shape: BoxShape.circle),
-                    ),
-                  )
-          ],
-        ),
+                    )
+                  : GestureDetector(
+                      onTap: () {
+                        startTimer();
+                        controller.forward().then((value) {
+                          _active
+                              ? colorController.forward()
+                              : colorController.reverse();
+                          controller.reverse();
+                        });
+                        _active = !_active;
+                        _startBgColorAnimationTimer();
+                      },
+                      child: Container(
+                        height: 70,
+                        width: 70,
+                        child: Center(
+                          child: ScaleTransition(
+                            scale: controller,
+                            child: Icon(
+                              FontAwesomeIcons.play,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        decoration: decorator.copyWith(
+                            color: iconColorAnimation!.value,
+                            shape: BoxShape.circle),
+                      ),
+                    )
+            ],
+          );
+        }),
       ),
     );
   }

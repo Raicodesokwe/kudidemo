@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 part 'task_model.g.dart';
 
@@ -22,6 +21,8 @@ class TaskModel extends HiveObject {
   final int? reminder;
   @HiveField(8)
   final String? repeat;
+  @HiveField(9)
+  final bool? isComplete;
 
   TaskModel(
       {this.id,
@@ -32,5 +33,6 @@ class TaskModel extends HiveObject {
       this.color,
       this.reminder,
       this.repeat,
-      this.subtask});
+      this.subtask,
+      this.isComplete});
 }

@@ -168,7 +168,8 @@ class _TaskViewState extends State<TaskView>
             notes: notes,
             color: color.value,
             reminder: reminder,
-            repeat: repeat);
+            repeat: repeat,
+            isComplete: false);
         final taskProvider = Provider.of<TaskProvider>(context, listen: false);
         taskProvider.addTask(task).then((value) => taskProvider.reset());
 
