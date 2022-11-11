@@ -46,7 +46,7 @@ class TaskProvider with ChangeNotifier {
   }
 
   int? reminder = 0;
-  String? repeat = '';
+  String? repeat = 'None';
   String? notes = '';
   String? subtask = '';
   void addTaskDetails(TaskModel task) {
@@ -76,9 +76,14 @@ class TaskProvider with ChangeNotifier {
     repeat = repeatList[repeatindex].repeat;
   }
 
+  bool? complete = false;
+  void completeStatus() {
+    complete = !complete!;
+  }
+
   void reset() {
     reminder = 0;
-    repeat = '';
+    repeat = 'None';
     notes = '';
     subtask = '';
     from = DateTime.now();

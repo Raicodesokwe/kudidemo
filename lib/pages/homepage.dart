@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -17,11 +18,13 @@ import 'package:kudidemo/services/notification_service.dart';
 
 import 'package:kudidemo/utils/utils.dart';
 import 'package:kudidemo/widgets/icon_circle.dart';
+import 'package:kudidemo/widgets/task_list.dart';
 
 import 'package:kudidemo/widgets/theme_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../models/task_model.dart';
 import '../providers/task_provider.dart';
 import '../widgets/date_container.dart';
 import '../widgets/image_modal.dart';
@@ -62,6 +65,7 @@ class _HomePageState extends State<HomePage> {
   String? month;
   String? previousMonth;
   String? nextMonth;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -85,7 +89,6 @@ class _HomePageState extends State<HomePage> {
     Hive.box('task-box').close();
   }
 
-  bool checkDate = false;
   @override
   Widget build(BuildContext context) {
     if (now.month == 1) {
@@ -353,67 +356,61 @@ class _HomePageState extends State<HomePage> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CalendarWidget()));
-                  },
-                  child: Row(
-                    children: [
-                      DateContainer(
-                        decorator: decorator,
-                        date:
-                            '${DateFormat("EEEE").format(now.subtract(Duration(days: 2))).substring(0, 3)}',
-                        day:
-                            '${DateFormat("dd").format(now.subtract(Duration(days: 2)))}',
+                child: Row(
+                  children: [
+                    DateContainer(
+                      decorator: decorator,
+                      date:
+                          '${DateFormat("EEEE").format(now.subtract(Duration(days: 2))).substring(0, 3)}',
+                      day:
+                          '${DateFormat("dd").format(now.subtract(Duration(days: 2)))}',
+                    ),
+                    Spacer(),
+                    DateContainer(
+                      decorator: decorator,
+                      date:
+                          '${DateFormat("EEEE").format(now.subtract(Duration(days: 1))).substring(0, 3)}',
+                      day:
+                          '${DateFormat("dd").format(now.subtract(Duration(days: 1)))}',
+                    ),
+                    Spacer(),
+                    Container(
+                      decoration: decorator.copyWith(
+                          color: Colors.greenAccent,
+                          borderRadius: BorderRadius.circular(10.0)),
+                      height: 60,
+                      width: 50,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${DateFormat("EEEE").format(now).substring(0, 3)}',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          Text(
+                            (now.day).toString(),
+                            style: TextStyle(color: Colors.black),
+                          )
+                        ],
                       ),
-                      Spacer(),
-                      DateContainer(
-                        decorator: decorator,
-                        date:
-                            '${DateFormat("EEEE").format(now.subtract(Duration(days: 1))).substring(0, 3)}',
-                        day:
-                            '${DateFormat("dd").format(now.subtract(Duration(days: 1)))}',
-                      ),
-                      Spacer(),
-                      Container(
-                        decoration: decorator.copyWith(
-                            color: Colors.greenAccent,
-                            borderRadius: BorderRadius.circular(10.0)),
-                        height: 60,
-                        width: 50,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '${DateFormat("EEEE").format(now).substring(0, 3)}',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            Text(
-                              (now.day).toString(),
-                              style: TextStyle(color: Colors.black),
-                            )
-                          ],
-                        ),
-                      ),
-                      Spacer(),
-                      DateContainer(
-                        decorator: decorator,
-                        date:
-                            '${DateFormat("EEEE").format(now.add(Duration(days: 1))).substring(0, 3)}',
-                        day:
-                            '${DateFormat("dd").format(now.add(Duration(days: 1)))}',
-                      ),
-                      Spacer(),
-                      DateContainer(
-                        decorator: decorator,
-                        date:
-                            '${DateFormat("EEEE").format(now.add(Duration(days: 2))).substring(0, 3)}',
-                        day:
-                            '${DateFormat("dd").format(now.add(Duration(days: 2)))}',
-                      ),
-                    ],
-                  ),
+                    ),
+                    Spacer(),
+                    DateContainer(
+                      decorator: decorator,
+                      date:
+                          '${DateFormat("EEEE").format(now.add(Duration(days: 1))).substring(0, 3)}',
+                      day:
+                          '${DateFormat("dd").format(now.add(Duration(days: 1)))}',
+                    ),
+                    Spacer(),
+                    DateContainer(
+                      decorator: decorator,
+                      date:
+                          '${DateFormat("EEEE").format(now.add(Duration(days: 2))).substring(0, 3)}',
+                      day:
+                          '${DateFormat("dd").format(now.add(Duration(days: 2)))}',
+                    ),
+                  ],
                 ),
               ),
               ScrollWidget(size: size, decorator: decorator),
@@ -489,6 +486,7 @@ class _HomePageState extends State<HomePage> {
                                 if (notifier.tasks.length <= 0) {
                                   return ch!;
                                 }
+
                                 return Column(
                                   children: [
                                     ListView.builder(
@@ -496,337 +494,115 @@ class _HomePageState extends State<HomePage> {
                                         shrinkWrap: true,
                                         itemCount: taskItem.length,
                                         itemBuilder: (ctx, index) {
-                                          checkDate = Utils.toDay(
-                                                  taskItem[index].from!) ==
-                                              Utils.toDay(now);
-                                          return checkDate
-                                              ? Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 15),
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      showModalBottomSheet(
-                                                          backgroundColor: Theme
-                                                                  .of(context)
-                                                              .backgroundColor,
-                                                          isScrollControlled:
-                                                              true,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15)),
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              children: [
-                                                                SizedBox(
-                                                                  height: 20,
-                                                                ),
-                                                                ListTile(
-                                                                  leading:
-                                                                      IconCircle(
-                                                                    icon: Icons
-                                                                        .check,
-                                                                  ),
-                                                                  title: Text(
-                                                                    'Mark as done',
-                                                                    style: TextStyle(
-                                                                        color: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyText2!
-                                                                            .color,
-                                                                        fontFamily: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyText2!
-                                                                            .fontFamily),
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10,
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          20),
-                                                                  child:
-                                                                      Divider(),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10,
-                                                                ),
-                                                                ListTile(
-                                                                  leading:
-                                                                      IconCircle(
-                                                                    icon: Icons
-                                                                        .timer,
-                                                                  ),
-                                                                  onTap: () {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .push(MaterialPageRoute(
-                                                                            builder: (context) => TimerWidget(
-                                                                                  task: taskItem[index].name,
-                                                                                )));
-                                                                  },
-                                                                  title: Text(
-                                                                    'Start timer',
-                                                                    style: TextStyle(
-                                                                        color: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyText2!
-                                                                            .color,
-                                                                        fontFamily: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyText2!
-                                                                            .fontFamily),
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10,
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          20),
-                                                                  child:
-                                                                      Divider(),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10,
-                                                                ),
-                                                                ListTile(
-                                                                  leading:
-                                                                      IconCircle(
-                                                                    icon: Icons
-                                                                        .edit,
-                                                                  ),
-                                                                  onTap: () {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .push(MaterialPageRoute(
-                                                                            builder: (context) => EditTask(
-                                                                                  task: tasks[index],
-                                                                                )));
-                                                                  },
-                                                                  title: Text(
-                                                                    'Edit task',
-                                                                    style: TextStyle(
-                                                                        color: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyText2!
-                                                                            .color,
-                                                                        fontFamily: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyText2!
-                                                                            .fontFamily),
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10,
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          20),
-                                                                  child:
-                                                                      Divider(),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10,
-                                                                ),
-                                                                ListTile(
-                                                                  leading:
-                                                                      IconCircle(
-                                                                    icon: Icons
-                                                                        .delete,
-                                                                  ),
-                                                                  onTap: () {
-                                                                    deleteTask
-                                                                        .removeTask(
-                                                                            tasks[index]);
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop();
-                                                                  },
-                                                                  title: Text(
-                                                                    'Delete',
-                                                                    style: TextStyle(
-                                                                        color: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyText2!
-                                                                            .color,
-                                                                        fontFamily: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyText2!
-                                                                            .fontFamily),
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10,
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          20),
-                                                                  child:
-                                                                      Divider(),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10,
-                                                                ),
-                                                              ],
-                                                            );
-                                                          });
-                                                    },
-                                                    child: Container(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 15,
-                                                          vertical: 10),
-                                                      width: double.infinity,
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons.watch,
-                                                                color: Colors
-                                                                    .black54,
-                                                              ),
-                                                              Text(
-                                                                Utils.toTime(
-                                                                    taskItem[
-                                                                            index]
-                                                                        .from!),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        10,
-                                                                    color: Colors
-                                                                        .black54),
-                                                              ),
-                                                              Text(
-                                                                '-',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black54),
-                                                              ),
-                                                              Text(
-                                                                Utils.toTime(
-                                                                    taskItem[
-                                                                            index]
-                                                                        .to!),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        10,
-                                                                    color: Colors
-                                                                        .black54),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          Text(
-                                                            taskItem[index]
-                                                                .name!,
-                                                            style: TextStyle(
-                                                                fontSize: 19,
-                                                                color: Colors
-                                                                    .black),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          taskItem[index]
-                                                                      .subtask !=
-                                                                  ''
-                                                              ? Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Container(
-                                                                      height:
-                                                                          10,
-                                                                      width: 10,
-                                                                      decoration: BoxDecoration(
-                                                                          shape: BoxShape
-                                                                              .circle,
-                                                                          color: Theme.of(context)
-                                                                              .textTheme
-                                                                              .bodyText2!
-                                                                              .color),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      width: 5,
-                                                                    ),
-                                                                    Text(
-                                                                      taskItem[
-                                                                              index]
-                                                                          .subtask!,
-                                                                      style: GoogleFonts.prompt(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .w600,
-                                                                          color: Theme.of(context)
-                                                                              .textTheme
-                                                                              .bodyText2!
-                                                                              .color!
-                                                                              .withOpacity(0.5)),
-                                                                    ),
-                                                                  ],
-                                                                )
-                                                              : Container(),
-                                                          SizedBox(
-                                                            height: 3,
-                                                          ),
-                                                          Text(
-                                                            taskItem[index]
-                                                                .notes!,
-                                                            style: GoogleFonts.prompt(
-                                                                fontSize: 12,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .bodyText2!
-                                                                    .color!
-                                                                    .withOpacity(
-                                                                        0.5)),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      decoration:
-                                                          decorator.copyWith(
-                                                              color: Color(
-                                                                  taskItem[
-                                                                          index]
-                                                                      .color!),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10.0)),
-                                                    ),
-                                                  ),
-                                                )
+                                          if (taskItem[index].reminder == 5) {
+                                            NotifyService
+                                                .showScheduledNotification(
+                                                    scheduledDate:
+                                                        taskItem[index]
+                                                            .from!
+                                                            .subtract(
+                                                                Duration(
+                                                                    minutes:
+                                                                        5)),
+                                                    payload:
+                                                        taskItem[index].notes,
+                                                    title:
+                                                        taskItem[index].name);
+                                          }
+                                          if (taskItem[index].reminder == 10) {
+                                            NotifyService
+                                                .showScheduledNotification(
+                                                    scheduledDate:
+                                                        taskItem[index]
+                                                            .from!
+                                                            .subtract(
+                                                                Duration(
+                                                                    minutes:
+                                                                        10)),
+                                                    payload:
+                                                        taskItem[index].notes,
+                                                    title:
+                                                        taskItem[index].name);
+                                          }
+                                          if (taskItem[index].reminder == 15) {
+                                            NotifyService
+                                                .showScheduledNotification(
+                                                    scheduledDate:
+                                                        taskItem[index]
+                                                            .from!
+                                                            .subtract(
+                                                                Duration(
+                                                                    minutes:
+                                                                        15)),
+                                                    payload:
+                                                        taskItem[index].notes,
+                                                    title:
+                                                        taskItem[index].name);
+                                          }
+                                          if (taskItem[index].reminder == 20) {
+                                            NotifyService
+                                                .showScheduledNotification(
+                                                    scheduledDate:
+                                                        taskItem[index]
+                                                            .from!
+                                                            .subtract(
+                                                                Duration(
+                                                                    minutes:
+                                                                        20)),
+                                                    payload:
+                                                        taskItem[index].notes,
+                                                    title:
+                                                        taskItem[index].name);
+                                          }
+                                          if (taskItem[index].repeat ==
+                                              'None') {
+                                            NotifyService
+                                                .showScheduledNotification(
+                                                    scheduledDate:
+                                                        taskItem[index].from!,
+                                                    payload:
+                                                        taskItem[index].notes,
+                                                    title:
+                                                        taskItem[index].name);
+                                          }
+                                          if (taskItem[index].repeat ==
+                                              'Daily') {
+                                            NotifyService
+                                                .showDailyScheduledNotification(
+                                                    scheduledDate:
+                                                        taskItem[index].from!,
+                                                    payload:
+                                                        taskItem[index].notes,
+                                                    title:
+                                                        taskItem[index].name);
+                                          }
+                                          if (taskItem[index].repeat ==
+                                              'Weekly') {
+                                            NotifyService
+                                                .showWeeklyScheduledNotification(
+                                                    scheduledDate:
+                                                        taskItem[index].from!,
+                                                    payload:
+                                                        taskItem[index].notes,
+                                                    title:
+                                                        taskItem[index].name);
+                                          }
+
+                                          return Utils.toDay(taskItem[index]
+                                                          .from!) ==
+                                                      Utils.toDay(now) ||
+                                                  taskItem[index].repeat ==
+                                                      'daily'
+                                              ? TaskList(
+                                                  taskItem: taskItem[index],
+                                                  index: index)
                                               : Container();
                                         }),
                                     SizedBox(
                                       height: 20,
                                     ),
-                                    !checkDate
+                                    taskItem.any(
+                                            (element) => element.from != now)
                                         ? Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -845,278 +621,10 @@ class _HomePageState extends State<HomePage> {
                                                                 taskItem[index]
                                                                     .from!) !=
                                                             Utils.toDay(now)
-                                                        ? Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    bottom: 15),
-                                                            child:
-                                                                GestureDetector(
-                                                              onTap: () {
-                                                                showModalBottomSheet(
-                                                                    backgroundColor:
-                                                                        Theme.of(context)
-                                                                            .backgroundColor,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    shape: RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                15)),
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (context) {
-                                                                      return Column(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.min,
-                                                                        children: [
-                                                                          SizedBox(
-                                                                            height:
-                                                                                20,
-                                                                          ),
-                                                                          ListTile(
-                                                                            leading:
-                                                                                IconCircle(
-                                                                              icon: Icons.check,
-                                                                            ),
-                                                                            title:
-                                                                                Text(
-                                                                              'Mark as done',
-                                                                              style: TextStyle(color: Theme.of(context).textTheme.bodyText2!.color, fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily),
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                10,
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(horizontal: 20),
-                                                                            child:
-                                                                                Divider(),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                10,
-                                                                          ),
-                                                                          ListTile(
-                                                                            leading:
-                                                                                IconCircle(
-                                                                              icon: Icons.timer,
-                                                                            ),
-                                                                            onTap:
-                                                                                () {
-                                                                              Navigator.of(context).push(MaterialPageRoute(
-                                                                                  builder: (context) => TimerWidget(
-                                                                                        task: taskItem[index].name,
-                                                                                      )));
-                                                                            },
-                                                                            title:
-                                                                                Text(
-                                                                              'Start timer',
-                                                                              style: TextStyle(color: Theme.of(context).textTheme.bodyText2!.color, fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily),
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                10,
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(horizontal: 20),
-                                                                            child:
-                                                                                Divider(),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                10,
-                                                                          ),
-                                                                          ListTile(
-                                                                            leading:
-                                                                                IconCircle(
-                                                                              icon: Icons.edit,
-                                                                            ),
-                                                                            onTap:
-                                                                                () {
-                                                                              Navigator.of(context).push(MaterialPageRoute(
-                                                                                  builder: (context) => EditTask(
-                                                                                        task: tasks[index],
-                                                                                      )));
-                                                                            },
-                                                                            title:
-                                                                                Text(
-                                                                              'Edit task',
-                                                                              style: TextStyle(color: Theme.of(context).textTheme.bodyText2!.color, fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily),
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                10,
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(horizontal: 20),
-                                                                            child:
-                                                                                Divider(),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                10,
-                                                                          ),
-                                                                          ListTile(
-                                                                            leading:
-                                                                                IconCircle(
-                                                                              icon: Icons.delete,
-                                                                            ),
-                                                                            onTap:
-                                                                                () {
-                                                                              deleteTask.removeTask(tasks[index]);
-                                                                              Navigator.of(context).pop();
-                                                                            },
-                                                                            title:
-                                                                                Text(
-                                                                              'Delete',
-                                                                              style: TextStyle(color: Theme.of(context).textTheme.bodyText2!.color, fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily),
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                10,
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(horizontal: 20),
-                                                                            child:
-                                                                                Divider(),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                10,
-                                                                          ),
-                                                                        ],
-                                                                      );
-                                                                    });
-                                                              },
-                                                              child: Container(
-                                                                padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        15,
-                                                                    vertical:
-                                                                        10),
-                                                                width: double
-                                                                    .infinity,
-                                                                child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Row(
-                                                                      children: [
-                                                                        Icon(
-                                                                          Icons
-                                                                              .watch,
-                                                                          color:
-                                                                              Colors.black54,
-                                                                        ),
-                                                                        Text(
-                                                                          Utils.toDay(
-                                                                              taskItem[index].from!),
-                                                                          style: TextStyle(
-                                                                              fontSize: 10,
-                                                                              color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.5)),
-                                                                        ),
-                                                                        SizedBox(
-                                                                          width:
-                                                                              5,
-                                                                        ),
-                                                                        Text(
-                                                                          Utils.toTime(
-                                                                              taskItem[index].from!),
-                                                                          style: TextStyle(
-                                                                              fontSize: 10,
-                                                                              color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.5)),
-                                                                        ),
-                                                                        Text(
-                                                                          '-',
-                                                                          style:
-                                                                              TextStyle(color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.5)),
-                                                                        ),
-                                                                        Text(
-                                                                          Utils.toTime(
-                                                                              taskItem[index].to!),
-                                                                          style: TextStyle(
-                                                                              fontSize: 10,
-                                                                              color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.5)),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height: 5,
-                                                                    ),
-                                                                    Text(
-                                                                      taskItem[
-                                                                              index]
-                                                                          .name!,
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              19,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height: 5,
-                                                                    ),
-                                                                    taskItem[index].subtask !=
-                                                                            ''
-                                                                        ? Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.start,
-                                                                            children: [
-                                                                              Container(
-                                                                                height: 10,
-                                                                                width: 10,
-                                                                                decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).textTheme.bodyText2!.color),
-                                                                              ),
-                                                                              SizedBox(
-                                                                                width: 5,
-                                                                              ),
-                                                                              Text(
-                                                                                taskItem[index].subtask!,
-                                                                                style: GoogleFonts.prompt(fontSize: 15, fontWeight: FontWeight.w600, color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.5)),
-                                                                              ),
-                                                                            ],
-                                                                          )
-                                                                        : Container(),
-                                                                    SizedBox(
-                                                                      height: 3,
-                                                                    ),
-                                                                    Text(
-                                                                      taskItem[
-                                                                              index]
-                                                                          .notes!,
-                                                                      style: GoogleFonts.prompt(
-                                                                          fontSize:
-                                                                              12,
-                                                                          color: Theme.of(context)
-                                                                              .textTheme
-                                                                              .bodyText2!
-                                                                              .color!
-                                                                              .withOpacity(0.5)),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                decoration: decorator.copyWith(
-                                                                    color: Color(
-                                                                        taskItem[index]
-                                                                            .color!),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            10.0)),
-                                                              ),
-                                                            ),
-                                                          )
+                                                        ? TaskList(
+                                                            taskItem:
+                                                                taskItem[index],
+                                                            index: index)
                                                         : Container();
                                                   })
                                             ],

@@ -13,23 +13,24 @@ class NotifyService {
     return NotificationDetails(
         android: AndroidNotificationDetails('channel id', 'channel name',
             importance: Importance.max),
-        iOS: IOSNotificationDetails());
+        iOS: DarwinNotificationDetails());
   }
 
   static Future init({
     bool initScheduled = false,
   }) async {
     final android = AndroidInitializationSettings('appicon');
-    final iOS = IOSInitializationSettings(
+    final iOS = DarwinInitializationSettings(
         requestSoundPermission: false,
         requestBadgePermission: false,
         requestAlertPermission: false);
     final settings = InitializationSettings(android: android, iOS: iOS);
-    await _notifications.initialize(settings, onSelectNotification: (payload) {
-      onNotifications.add(payload);
+    await _notifications.initialize(settings,
+        onDidReceiveNotificationResponse: (payload) {
+      // onNotifications.add(payload);
     });
     if (initScheduled) {
-      tz.initializeTimeZones();
+      _configureLocalTimezone();
       final locationName = await FlutterNativeTimezone.getLocalTimezone();
       tz.setLocalLocation(tz.getLocation(locationName));
     }
@@ -74,13 +75,29 @@ class NotifyService {
         id,
         title,
         body,
-        tz.TZDateTime.from(scheduledDate, tz.local),
+        // tz.TZDateTime.from(scheduledDate, tz.local),
+        _scheduleDate(scheduledDate),
         await _notificationDetails(),
         payload: payload,
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
       );
+  static _scheduleDate(DateTime scheduleDate) {
+    final now = tz.TZDateTime.now(tz.local);
+    final scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day,
+        scheduleDate.hour, scheduleDate.minute);
+    return scheduledDate.isBefore(now)
+        ? scheduledDate.add(Duration(days: 1))
+        : scheduledDate;
+  }
+
+  static _configureLocalTimezone() async {
+    tz.initializeTimeZones();
+    final String timeZone = await FlutterNativeTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timeZone));
+  }
+
   static Future showDailyScheduledNotification({
     int id = 0,
     String? title,
@@ -88,21 +105,13 @@ class NotifyService {
     String? payload,
     required DateTime scheduledDate,
   }) async =>
-      _notifications.zonedSchedule(id, title, body, _scheduleDaily(Time(8)),
-          await _notificationDetails(),
+      _notifications.zonedSchedule(id, title, body,
+          _scheduleDate(scheduledDate), await _notificationDetails(),
           payload: payload,
           androidAllowWhileIdle: true,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.absoluteTime,
           matchDateTimeComponents: DateTimeComponents.time);
-  static tz.TZDateTime _scheduleDaily(Time time) {
-    final now = tz.TZDateTime.now(tz.local);
-    final scheduledDate = tz.TZDateTime(
-        tz.local, now.year, now.month, now.day, time.hour, time.minute);
-    return scheduledDate.isBefore(now)
-        ? scheduledDate.add(Duration(days: 1))
-        : scheduledDate;
-  }
 
   static Future showWeeklyScheduledNotification({
     int id = 0,
@@ -115,18 +124,16 @@ class NotifyService {
           id,
           title,
           body,
-          _scheduleWeekly(Time(8), days: [
-            DateTime.monday,
-            DateTime.tuesday,
-          ]),
+          _scheduleWeekly(scheduledDate, days: [scheduledDate.day]),
           await _notificationDetails(),
           payload: payload,
           androidAllowWhileIdle: true,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.absoluteTime,
           matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
-  static tz.TZDateTime _scheduleWeekly(Time time, {required List<int> days}) {
-    tz.TZDateTime scheduledDate = _scheduleDaily(time);
+  static tz.TZDateTime _scheduleWeekly(DateTime time,
+      {required List<int> days}) {
+    tz.TZDateTime scheduledDate = _scheduleDate(time);
     while (!days.contains(scheduledDate.weekday)) {
       scheduledDate = scheduledDate.add(Duration(days: 1));
     }
