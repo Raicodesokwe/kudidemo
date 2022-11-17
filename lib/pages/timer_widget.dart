@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:kudidemo/providers/timer_provider.dart';
+import 'package:kudidemo/services/notification_service.dart';
 import 'package:kudidemo/widgets/minutes_overlay.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,8 @@ import '../widgets/back_arrow.dart';
 
 class TimerWidget extends StatefulWidget {
   final String? task;
-  TimerWidget({Key? key, this.task}) : super(key: key);
+  final Color? color;
+  TimerWidget({Key? key, this.task, this.color}) : super(key: key);
 
   @override
   State<TimerWidget> createState() => _TimerWidgetState();
@@ -26,14 +28,15 @@ class _TimerWidgetState extends State<TimerWidget>
 
   bool isStarted = false;
   bool isRunning = false;
-  bool _active = false;
+  // bool _active = false;
+  bool isFinished = false;
   int focusedMins = 0;
   // DateTime finishTime = DateTime.now().add(Duration(minutes: 25));
   late AnimationController controller;
   late AnimationController colorController;
   Animation? iconColorAnimation;
-  Timer? _timer;
-  Timer? _timer2;
+  late Timer _timer;
+  // Timer? _timer2;
   var counter = 0;
   List<Color> get getColorsList => [
         const Color(0xFF006E7F),
@@ -74,46 +77,62 @@ class _TimerWidgetState extends State<TimerWidget>
     super.initState();
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   // TODO: implement didChangeDependencies
-  //   super.didChangeDependencies();
-  //   defaultValue = Provider.of<TimerProvider>(context, listen: false).time;
-  //   value = Provider.of<TimerProvider>(context, listen: false).time;
+  // void _startBgColorAnimationTimer() {
+  //   ///Animating for the first time.
+  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //     counter++;
+  //     setState(() {});
+  //   });
+
+  //   const interval = Duration(seconds: 5);
+  //   _timer2 = Timer.periodic(
+  //     interval,
+  //     (Timer timer) {
+  //       counter++;
+  //       setState(() {});
+  //     },
+  //   );
   // }
-
-  void _startBgColorAnimationTimer() {
-    ///Animating for the first time.
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      counter++;
-      setState(() {});
-    });
-
-    const interval = Duration(seconds: 5);
-    _timer2 = Timer.periodic(
-      interval,
+  int? value;
+  int? defaultValue;
+  void startTimer() {
+    focusedMins = value!;
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
       (Timer timer) {
-        counter++;
-        setState(() {});
+        if (value! <= 1) {
+          setState(() {
+            timer.cancel();
+            value = defaultValue;
+            isStarted = false;
+          });
+        } else {
+          setState(() {
+            // if (value != null) value = value! - 1;
+            // value--;
+            Provider.of<TimerProvider>(context, listen: false).decreaseOneSec();
+          });
+        }
       },
     );
   }
 
   void stopTimer() {
-    _timer!.cancel();
-    _timer2!.cancel();
+    _timer.cancel();
+    // _timer2!.cancel();
   }
 
   @override
   void dispose() {
-    _timer!.cancel();
-    _timer2!.cancel();
+    _timer.cancel();
+    // _timer2!.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    isRunning = _timer == null ? false : _timer!.isActive;
+    // isRunning = _timer == null ? false : _timer!.isActive;
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -128,33 +147,18 @@ class _TimerWidgetState extends State<TimerWidget>
       )
     ]);
     Size size = MediaQuery.of(context).size;
+
     return SafeArea(
       child: Scaffold(
         body: Consumer<TimerProvider>(builder: (context, timerValue, child) {
-          int value = timerValue.time;
-          int defaultValue = timerValue.time;
-          void startTimer() {
-            focusedMins = value;
-            const oneSec = Duration(seconds: 1);
-            _timer = Timer.periodic(
-              oneSec,
-              (Timer timer) {
-                if (value <= 1) {
-                  setState(() {
-                    timer.cancel();
-                    value = defaultValue;
-                    isStarted = false;
-                  });
-                } else {
-                  setState(() {
-                    // if (value != null) value = value! - 1;
-                    // value--;
-                    Provider.of<TimerProvider>(context, listen: false)
-                        .decreaseOneSec();
-                  });
-                }
-              },
-            );
+          value = timerValue.time;
+
+          defaultValue = timerValue.time;
+          if (value == 1) {
+            NotifyService.showNotification(
+                id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+                title: 'Task finished',
+                body: widget.task ?? '');
           }
 
           return Column(
@@ -203,12 +207,12 @@ class _TimerWidgetState extends State<TimerWidget>
                                 SizedBox(
                                   width: 5,
                                 ),
-                                Text(
-                                  'Finishing ${DateFormat('Hm').format(now.add(Duration(seconds: timerValue.time)))}',
-                                  style: TextStyle(
-                                    color: Colors.black54,
-                                  ),
-                                )
+                                // Text(
+                                //   'Finishing ${DateFormat('Hm').format(now.add(Duration(seconds: timerValue.time)))}',
+                                //   style: TextStyle(
+                                //     color: Colors.black54,
+                                //   ),
+                                // )
                               ],
                             )
                           ],
@@ -249,7 +253,7 @@ class _TimerWidgetState extends State<TimerWidget>
                         shape: BoxShape.circle,
                         color: Theme.of(context).backgroundColor),
                     child: Text(
-                        "${(value ~/ 60).toInt().toString().padLeft(2, '0')}:${(value % 60).toInt().toString().padLeft(2, '0')}"),
+                        "${(value! ~/ 60).toInt().toString().padLeft(2, '0')}:${(value! % 60).toInt().toString().padLeft(2, '0')}"),
                   ),
                   percent: percent,
                   animation: true,
@@ -257,9 +261,17 @@ class _TimerWidgetState extends State<TimerWidget>
                 ),
               ),
               SizedBox(
-                height: size.height * 0.08,
+                height: size.height * 0.05,
               ),
-              Text(widget.task ?? ''),
+              widget.task != ''
+                  ? Container(
+                      width: size.width * 0.5,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: widget.color,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Center(child: Text(widget.task ?? '')))
+                  : Container(),
               SizedBox(
                 height: size.height * 0.05,
               ),
@@ -284,57 +296,74 @@ class _TimerWidgetState extends State<TimerWidget>
               SizedBox(
                 height: size.height * 0.05,
               ),
-              isRunning
-                  ? GestureDetector(
-                      onTap: () {
-                        stopTimer();
-                        setState(() {
-                          isRunning = !isRunning;
-                        });
-                      },
-                      child: Container(
-                        height: 70,
-                        width: 70,
-                        child: Center(
-                          child: Icon(
-                            FontAwesomeIcons.pause,
-                            color: Colors.redAccent,
-                          ),
-                        ),
-                        decoration: decorator.copyWith(
-                            color: Theme.of(context).backgroundColor,
-                            shape: BoxShape.circle),
+              // isRunning
+              //     ? GestureDetector(
+              //         onTap: () {
+              //           stopTimer();
+              //           isStarted = false;
+              //           setState(() {
+              //             isRunning = !isRunning;
+              //           });
+              //         },
+              //         child: Container(
+              //           height: 70,
+              //           width: 70,
+              //           child: Center(
+              //             child: Icon(
+              //               FontAwesomeIcons.pause,
+              //               color: Colors.redAccent,
+              //             ),
+              //           ),
+              //           decoration: decorator.copyWith(
+              //               color: Theme.of(context).backgroundColor,
+              //               shape: BoxShape.circle),
+              //         ),
+              //       )
+              //     :
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    if (!isStarted) {
+                      isStarted = true;
+                      startTimer();
+                    } else {
+                      _timer.cancel();
+                      value = defaultValue;
+                      isStarted = false;
+                    }
+                  });
+
+                  // isStarted = true;
+                  // startTimer();
+                  // controller.forward().then((value) {
+                  //   _active
+                  //       ? colorController.forward()
+                  //       : colorController.reverse();
+                  //   controller.reverse();
+                  // });
+                  // _active = !_active;
+                  // _startBgColorAnimationTimer();
+                  // final notifyTime =
+                  //     now.add(Duration(seconds: timerValue.time));
+                },
+                child: Container(
+                  height: 70,
+                  width: 70,
+                  child: Center(
+                    child: ScaleTransition(
+                      scale: controller,
+                      child: Icon(
+                        !isStarted
+                            ? FontAwesomeIcons.play
+                            : FontAwesomeIcons.pause,
+                        color: Colors.white,
                       ),
-                    )
-                  : GestureDetector(
-                      onTap: () {
-                        startTimer();
-                        controller.forward().then((value) {
-                          _active
-                              ? colorController.forward()
-                              : colorController.reverse();
-                          controller.reverse();
-                        });
-                        _active = !_active;
-                        _startBgColorAnimationTimer();
-                      },
-                      child: Container(
-                        height: 70,
-                        width: 70,
-                        child: Center(
-                          child: ScaleTransition(
-                            scale: controller,
-                            child: Icon(
-                              FontAwesomeIcons.play,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        decoration: decorator.copyWith(
-                            color: iconColorAnimation!.value,
-                            shape: BoxShape.circle),
-                      ),
-                    )
+                    ),
+                  ),
+                  decoration: decorator.copyWith(
+                      color: iconColorAnimation!.value, shape: BoxShape.circle),
+                ),
+              )
             ],
           );
         }),

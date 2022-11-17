@@ -11,6 +11,11 @@ class TaskProvider with ChangeNotifier {
     return [..._tasks];
   }
 
+  DateTime _selectedDate = DateTime.now();
+  DateTime get selectedDate => _selectedDate;
+  void setDate(DateTime date) => _selectedDate = date;
+  List<TaskModel> get eventsOfSelectedDate => _tasks;
+
   final String taskHiveBox = 'task-box';
   DateTime? from = DateTime.now();
   DateTime? to = DateTime.now().add(Duration(hours: 1));
@@ -70,15 +75,18 @@ class TaskProvider with ChangeNotifier {
 
   void selectReminder(int reminderindex) {
     reminder = reminderList[reminderindex].reminder;
+    notifyListeners();
   }
 
   void selectRepeat(int repeatindex) {
     repeat = repeatList[repeatindex].repeat;
+    notifyListeners();
   }
 
   bool? complete = false;
   void completeStatus() {
     complete = !complete!;
+    notifyListeners();
   }
 
   void reset() {

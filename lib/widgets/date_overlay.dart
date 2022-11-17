@@ -59,14 +59,14 @@ class DateOverlayState extends State<DateOverlay>
 
   @override
   Widget build(BuildContext context) {
-    final reminderProvider = Provider.of<TaskProvider>(context);
-    widget.reminder = reminderProvider.reminder;
-    widget.repeat = reminderProvider.repeat;
+    final reminderProvider = Provider.of<TaskProvider>(context, listen: false);
+    // widget.reminder = reminderProvider.reminder;
+    // widget.repeat = reminderProvider.repeat;
     TaskModel task = TaskModel(
         from: widget.fromDate,
         to: widget.toDateString,
-        reminder: widget.reminder,
-        repeat: widget.repeat);
+        reminder: reminderProvider.reminder,
+        repeat: reminderProvider.repeat);
 
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(

@@ -45,11 +45,11 @@ class _MinutesOverlayState extends State<MinutesOverlay>
     }
 
     void reduceCount() {
-      if (value! > 1) {
+      if (value! > 60) {
         setState(() {
           // widget.minutes -= 60;
 
-          Provider.of<TimerProvider>(context, listen: false).increaseTime();
+          Provider.of<TimerProvider>(context, listen: false).decreaseTime();
         });
       }
     }

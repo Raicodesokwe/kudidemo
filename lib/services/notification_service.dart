@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:kudidemo/models/task_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -25,9 +26,9 @@ class NotifyService {
         requestBadgePermission: false,
         requestAlertPermission: false);
     final settings = InitializationSettings(android: android, iOS: iOS);
-    await _notifications.initialize(settings,
-        onDidReceiveNotificationResponse: (payload) {
-      // onNotifications.add(payload);
+    await _notifications.initialize(settings, onDidReceiveNotificationResponse:
+        (NotificationResponse notificationResponse) {
+      onNotifications.add(notificationResponse.payload);
     });
     if (initScheduled) {
       _configureLocalTimezone();
@@ -57,28 +58,33 @@ class NotifyService {
   }
 
   static Future showNotification({
-    int id = 0,
+    int? id,
     String? title,
     String? body,
     String? payload,
   }) async =>
-      _notifications.show(id, title, body, _notificationDetails(),
+      _notifications.show(id!, title, body, await _notificationDetails(),
           payload: payload);
   static Future showScheduledNotification({
-    int id = 0,
+    int? id,
     String? title,
     String? body,
+    String? from,
+    String? to,
+    String? day,
+    String? toDate,
     String? payload,
     required DateTime scheduledDate,
   }) async =>
       _notifications.zonedSchedule(
-        id,
+        id!,
         title,
         body,
+
         // tz.TZDateTime.from(scheduledDate, tz.local),
         _scheduleDate(scheduledDate),
         await _notificationDetails(),
-        payload: payload,
+        payload: "$title|" "$body|" "$from|" "$to|" "$day|" "$toDate|",
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
@@ -99,13 +105,13 @@ class NotifyService {
   }
 
   static Future showDailyScheduledNotification({
-    int id = 0,
+    int? id,
     String? title,
     String? body,
     String? payload,
     required DateTime scheduledDate,
   }) async =>
-      _notifications.zonedSchedule(id, title, body,
+      _notifications.zonedSchedule(id!, title, body,
           _scheduleDate(scheduledDate), await _notificationDetails(),
           payload: payload,
           androidAllowWhileIdle: true,
@@ -114,14 +120,14 @@ class NotifyService {
           matchDateTimeComponents: DateTimeComponents.time);
 
   static Future showWeeklyScheduledNotification({
-    int id = 0,
+    int? id,
     String? title,
     String? body,
     String? payload,
     required DateTime scheduledDate,
   }) async =>
       _notifications.zonedSchedule(
-          id,
+          id!,
           title,
           body,
           _scheduleWeekly(scheduledDate, days: [scheduledDate.day]),

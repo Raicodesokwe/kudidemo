@@ -125,6 +125,7 @@ class TaskList extends StatelessWidget {
                                         .push(MaterialPageRoute(
                                             builder: (context) => TimerWidget(
                                                   task: taskItem.name,
+                                                  color: Color(taskItem.color!),
                                                 )));
                                   },
                                   title: Text(

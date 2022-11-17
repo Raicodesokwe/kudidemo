@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:kudidemo/pages/calendar_widget.dart';
+import 'package:kudidemo/pages/display_notification.dart';
 import 'package:kudidemo/pages/edit_task.dart';
 
 import 'package:kudidemo/pages/timer_widget.dart';
@@ -81,7 +82,13 @@ class _HomePageState extends State<HomePage> {
     NotifyService.onNotifications.stream.listen(onClickedNotification);
   }
 
-  void onClickedNotification(String? payload) {}
+  void onClickedNotification(String? payload) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => DisplayNotification(
+              payload: payload,
+            )));
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -356,61 +363,67 @@ class _HomePageState extends State<HomePage> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    DateContainer(
-                      decorator: decorator,
-                      date:
-                          '${DateFormat("EEEE").format(now.subtract(Duration(days: 2))).substring(0, 3)}',
-                      day:
-                          '${DateFormat("dd").format(now.subtract(Duration(days: 2)))}',
-                    ),
-                    Spacer(),
-                    DateContainer(
-                      decorator: decorator,
-                      date:
-                          '${DateFormat("EEEE").format(now.subtract(Duration(days: 1))).substring(0, 3)}',
-                      day:
-                          '${DateFormat("dd").format(now.subtract(Duration(days: 1)))}',
-                    ),
-                    Spacer(),
-                    Container(
-                      decoration: decorator.copyWith(
-                          color: Colors.greenAccent,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      height: 60,
-                      width: 50,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${DateFormat("EEEE").format(now).substring(0, 3)}',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          Text(
-                            (now.day).toString(),
-                            style: TextStyle(color: Colors.black),
-                          )
-                        ],
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CalendarWidget()));
+                  },
+                  child: Row(
+                    children: [
+                      DateContainer(
+                        decorator: decorator,
+                        date:
+                            '${DateFormat("EEEE").format(now.subtract(Duration(days: 2))).substring(0, 3)}',
+                        day:
+                            '${DateFormat("dd").format(now.subtract(Duration(days: 2)))}',
                       ),
-                    ),
-                    Spacer(),
-                    DateContainer(
-                      decorator: decorator,
-                      date:
-                          '${DateFormat("EEEE").format(now.add(Duration(days: 1))).substring(0, 3)}',
-                      day:
-                          '${DateFormat("dd").format(now.add(Duration(days: 1)))}',
-                    ),
-                    Spacer(),
-                    DateContainer(
-                      decorator: decorator,
-                      date:
-                          '${DateFormat("EEEE").format(now.add(Duration(days: 2))).substring(0, 3)}',
-                      day:
-                          '${DateFormat("dd").format(now.add(Duration(days: 2)))}',
-                    ),
-                  ],
+                      Spacer(),
+                      DateContainer(
+                        decorator: decorator,
+                        date:
+                            '${DateFormat("EEEE").format(now.subtract(Duration(days: 1))).substring(0, 3)}',
+                        day:
+                            '${DateFormat("dd").format(now.subtract(Duration(days: 1)))}',
+                      ),
+                      Spacer(),
+                      Container(
+                        decoration: decorator.copyWith(
+                            color: Colors.greenAccent,
+                            borderRadius: BorderRadius.circular(10.0)),
+                        height: 60,
+                        width: 50,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${DateFormat("EEEE").format(now).substring(0, 3)}',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            Text(
+                              (now.day).toString(),
+                              style: TextStyle(color: Colors.black),
+                            )
+                          ],
+                        ),
+                      ),
+                      Spacer(),
+                      DateContainer(
+                        decorator: decorator,
+                        date:
+                            '${DateFormat("EEEE").format(now.add(Duration(days: 1))).substring(0, 3)}',
+                        day:
+                            '${DateFormat("dd").format(now.add(Duration(days: 1)))}',
+                      ),
+                      Spacer(),
+                      DateContainer(
+                        decorator: decorator,
+                        date:
+                            '${DateFormat("EEEE").format(now.add(Duration(days: 2))).substring(0, 3)}',
+                        day:
+                            '${DateFormat("dd").format(now.add(Duration(days: 2)))}',
+                      ),
+                    ],
+                  ),
                 ),
               ),
               ScrollWidget(size: size, decorator: decorator),
@@ -494,63 +507,54 @@ class _HomePageState extends State<HomePage> {
                                         shrinkWrap: true,
                                         itemCount: taskItem.length,
                                         itemBuilder: (ctx, index) {
+                                          final theTime = taskItem[index]
+                                              .from!
+                                              .subtract(Duration(minutes: 5));
                                           if (taskItem[index].reminder == 5) {
                                             NotifyService
                                                 .showScheduledNotification(
-                                                    scheduledDate:
-                                                        taskItem[index]
-                                                            .from!
-                                                            .subtract(
-                                                                Duration(
-                                                                    minutes:
-                                                                        5)),
-                                                    payload:
-                                                        taskItem[index].notes,
+                                                    id: taskItem[index].id,
+                                                    scheduledDate: theTime,
+                                                    body: taskItem[index].notes,
                                                     title:
                                                         taskItem[index].name);
                                           }
                                           if (taskItem[index].reminder == 10) {
                                             NotifyService
                                                 .showScheduledNotification(
+                                                    id: taskItem[index].id,
                                                     scheduledDate:
                                                         taskItem[index]
                                                             .from!
-                                                            .subtract(
-                                                                Duration(
-                                                                    minutes:
-                                                                        10)),
-                                                    payload:
-                                                        taskItem[index].notes,
+                                                            .subtract(Duration(
+                                                                minutes: 10)),
+                                                    body: taskItem[index].notes,
                                                     title:
                                                         taskItem[index].name);
                                           }
                                           if (taskItem[index].reminder == 15) {
                                             NotifyService
                                                 .showScheduledNotification(
+                                                    id: taskItem[index].id,
                                                     scheduledDate:
                                                         taskItem[index]
                                                             .from!
-                                                            .subtract(
-                                                                Duration(
-                                                                    minutes:
-                                                                        15)),
-                                                    payload:
-                                                        taskItem[index].notes,
+                                                            .subtract(Duration(
+                                                                minutes: 15)),
+                                                    body: taskItem[index].notes,
                                                     title:
                                                         taskItem[index].name);
                                           }
                                           if (taskItem[index].reminder == 20) {
                                             NotifyService
                                                 .showScheduledNotification(
+                                                    id: taskItem[index].id,
                                                     scheduledDate:
                                                         taskItem[index]
                                                             .from!
-                                                            .subtract(
-                                                                Duration(
-                                                                    minutes:
-                                                                        20)),
-                                                    payload:
-                                                        taskItem[index].notes,
+                                                            .subtract(Duration(
+                                                                minutes: 20)),
+                                                    body: taskItem[index].notes,
                                                     title:
                                                         taskItem[index].name);
                                           }
@@ -558,10 +562,18 @@ class _HomePageState extends State<HomePage> {
                                               'None') {
                                             NotifyService
                                                 .showScheduledNotification(
+                                                    id: taskItem[index].id,
                                                     scheduledDate:
                                                         taskItem[index].from!,
-                                                    payload:
-                                                        taskItem[index].notes,
+                                                    body: taskItem[index].notes,
+                                                    from: Utils.toTime(
+                                                        taskItem[index].from!),
+                                                    to: Utils.toTime(
+                                                        taskItem[index].to!),
+                                                    day: Utils.toDay(
+                                                        taskItem[index].from!),
+                                                    toDate: Utils.toDay(
+                                                        taskItem[index].to!),
                                                     title:
                                                         taskItem[index].name);
                                           }
@@ -569,10 +581,10 @@ class _HomePageState extends State<HomePage> {
                                               'Daily') {
                                             NotifyService
                                                 .showDailyScheduledNotification(
+                                                    id: taskItem[index].id,
                                                     scheduledDate:
                                                         taskItem[index].from!,
-                                                    payload:
-                                                        taskItem[index].notes,
+                                                    body: taskItem[index].notes,
                                                     title:
                                                         taskItem[index].name);
                                           }
@@ -580,10 +592,10 @@ class _HomePageState extends State<HomePage> {
                                               'Weekly') {
                                             NotifyService
                                                 .showWeeklyScheduledNotification(
+                                                    id: taskItem[index].id,
                                                     scheduledDate:
                                                         taskItem[index].from!,
-                                                    payload:
-                                                        taskItem[index].notes,
+                                                    body: taskItem[index].notes,
                                                     title:
                                                         taskItem[index].name);
                                           }
