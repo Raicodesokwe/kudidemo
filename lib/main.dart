@@ -11,6 +11,7 @@ import 'package:kudidemo/providers/color_provider.dart';
 import 'package:kudidemo/providers/expense_provider.dart';
 import 'package:kudidemo/providers/google_signin.dart';
 import 'package:kudidemo/providers/habits_provider.dart';
+import 'package:kudidemo/providers/pic_provider.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/providers/theme_provider.dart';
 import 'package:kudidemo/providers/timer_provider.dart';
@@ -68,6 +69,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => TimerProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PicProvider(),
         ),
       ],
       child: Consumer<ThemeProvider>(

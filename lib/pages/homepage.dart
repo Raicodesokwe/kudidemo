@@ -93,7 +93,6 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    Hive.box('task-box').close();
   }
 
   @override

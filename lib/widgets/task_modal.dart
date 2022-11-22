@@ -10,6 +10,7 @@ import 'package:kudidemo/pages/group_task.dart';
 import 'package:kudidemo/pages/habits_page.dart';
 import 'package:kudidemo/pages/journal_page.dart';
 import 'package:kudidemo/pages/task_view.dart';
+import 'package:kudidemo/services/auth_service.dart';
 
 import 'image_modal.dart';
 
@@ -98,8 +99,9 @@ class TaskModal extends StatelessWidget {
                     left: 10, right: 10, top: 10, bottom: 5),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => TaskView()));
+                    // Navigator.of(context).push(
+                    //     MaterialPageRoute(builder: (context) => TaskView()));
+                    AuthService.signOut(context);
                   },
                   child: ImageModal(
                     image: "assets/images/tasks.png",

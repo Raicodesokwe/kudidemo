@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kudidemo/navbar/navbar.dart';
+import 'package:kudidemo/widgets/auth_textfield.dart';
+import 'package:kudidemo/widgets/google_sign_in.dart';
 
 import 'package:kudidemo/widgets/next_button.dart';
 import 'package:kudidemo/widgets/nextneon_button.dart';
@@ -30,7 +34,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController confirmPasswordController = TextEditingController();
 
   final _emailForm = GlobalKey<FormState>();
-
+  final googleSignIn = GoogleSignIn();
+  GoogleSignInAccount? _user;
+  GoogleSignInAccount get user => _user!;
+  User? currentUser = FirebaseAuth.instance.currentUser;
   checkFields() {
     final form = _emailForm.currentState;
     if (form!.validate()) {
@@ -70,121 +77,110 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  width: size.width * 0.8,
-                  decoration: decorator.copyWith(
-                      color: Theme.of(context).backgroundColor,
-                      borderRadius: BorderRadius.circular(10.0)),
-                  child: TextFormField(
-                    controller: emailNameController,
-                    validator: (value) {
-                      if (value!.isEmpty || !value.contains('@')) {
-                        return 'Please enter a valid email';
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.emailAddress,
-                    onChanged: (value) {
-                      this.email = value;
-                    },
-                    cursorColor: Colors.black45,
-                    style: GoogleFonts.prompt(color: Colors.black),
-                    decoration: InputDecoration(
-                        hintText: 'email',
-                        hintStyle: GoogleFonts.prompt(),
-                        border: InputBorder.none),
-                  )),
+              AuthTextField(
+                  keyboardType: TextInputType.emailAddress,
+                  controller: emailNameController,
+                  validator: (value) {
+                    if (value!.isEmpty || !value.contains('@')) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    this.email = value;
+                  },
+                  hintText: 'email'),
               SizedBox(
                 height: size.height * 0.03,
               ),
-              Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  width: size.width * 0.8,
-                  decoration: decorator.copyWith(
-                      color: Theme.of(context).backgroundColor,
-                      borderRadius: BorderRadius.circular(10.0)),
-                  child: TextFormField(
-                    controller: passwordController,
-                    style: GoogleFonts.prompt(color: Colors.black),
-                    validator: (value) {
-                      if (value!.isEmpty || value.length < 6) {
-                        return 'Password must be at least 6 characters long';
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      this.password = value;
-                    },
-                    cursorColor: Colors.black45,
-                    decoration: InputDecoration(
-                        hintText: 'password',
-                        hintStyle: GoogleFonts.prompt(),
-                        border: InputBorder.none),
-                  )),
+              AuthTextField(
+                  keyboardType: TextInputType.visiblePassword,
+                  controller: passwordController,
+                  validator: (value) {
+                    if (value!.isEmpty || value.length < 6) {
+                      return 'Password must be at least 6 characters long';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    this.password = value;
+                  },
+                  hintText: 'password'),
               SizedBox(
                 height: size.height * 0.03,
               ),
-              Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  width: size.width * 0.8,
-                  decoration: decorator.copyWith(
-                      color: Theme.of(context).backgroundColor,
-                      borderRadius: BorderRadius.circular(10.0)),
-                  child: TextFormField(
-                    style: GoogleFonts.prompt(color: Colors.black),
-                    controller: confirmPasswordController,
-                    validator: (value) {
-                      if (value!.isEmpty || value.length < 6) {
-                        return 'Please enter a valid password that matches';
-                      } else if (value != passwordController.text) {
-                        return 'Password must match the one above';
-                      }
+              AuthTextField(
+                  keyboardType: TextInputType.visiblePassword,
+                  controller: confirmPasswordController,
+                  validator: (value) {
+                    if (value!.isEmpty || value.length < 6) {
+                      return 'Please enter a valid password that matches';
+                    } else if (value != passwordController.text) {
+                      return 'Password must match the one above';
+                    }
 
-                      return null;
-                    },
-                    onChanged: (value) {
-                      confirmPassword = value;
-                    },
-                    cursorColor: Colors.black45,
-                    decoration: InputDecoration(
-                        hintText: 'confirm password',
-                        hintStyle: GoogleFonts.prompt(),
-                        border: InputBorder.none),
-                  )),
+                    return null;
+                  },
+                  onChanged: (value) {
+                    confirmPassword = value;
+                  },
+                  hintText: 'confirm password'),
               SizedBox(
                 height: size.height * 0.05,
               ),
               if (!isKeyboard)
-                Container(
-                  height: 50,
-                  width: size.width * 0.8,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          width: 30,
-                          child: Image.asset('assets/images/GoogleLogo.png')),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        'Sign in with Google',
-                        style: TextStyle(color: Colors.white),
-                      )
-                    ],
-                  ),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
-                      color: Colors.black),
-                ),
+                GestureDetector(
+                    onTap: () async {
+                      // Provider.of<GoogleSignInProvider>(context, listen: false)
+                      //     .googleLogin(context);
+
+                      // Navigator.pushReplacement(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => BottomNavBar()));
+                      try {
+                        String? googleEmail;
+                        final googleUser = await googleSignIn.signIn();
+                        if (googleUser == null) return;
+                        _user = googleUser;
+                        final googleAuth = await googleUser.authentication;
+                        final credential = GoogleAuthProvider.credential(
+                            accessToken: googleAuth.accessToken,
+                            idToken: googleAuth.idToken);
+                        await FirebaseAuth.instance
+                            .signInWithCredential(credential)
+                            .then((value) async {
+                          googleEmail = value.user!.email;
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(value.user!.uid)
+                              .get()
+                              .then((value) {
+                            if (!value.exists) {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => NamePicScreen(
+                                            email: googleEmail!,
+                                          )));
+                            } else {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BottomNavBar()));
+                            }
+                          });
+                        });
+                      } on FirebaseAuthException catch (e) {
+                        var message = 'Something went wrong';
+                        if (e.message != null) {
+                          message = e.message!;
+                        }
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text(message)));
+                      }
+                    },
+                    child: GoogleWidget(sign: 'up')),
               SizedBox(
                 height: size.height * 0.05,
               ),

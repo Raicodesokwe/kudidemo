@@ -1,0 +1,28 @@
+<svg width="129" height="209" viewBox="0 0 129 209" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11 185C11 157.938 32.938 136 60 136C87.062 136 109 157.938 109 185V208H11V185Z" fill="#83ED8E" stroke="black" stroke-width="2"/>
+<path d="M70.7413 130.25L60.5 157.186L50.2587 130.25H70.7413Z" fill="#EC9AF3" stroke="black" stroke-width="2"/>
+<path d="M4.63663 29.2035C-3.54579 34.5295 4.63663 54.2035 4.63663 54.2035H119.637C119.637 54.2035 129.566 36.4552 127 29.2035C123.482 19.2635 107.8 43.9404 100.637 36.2035C94.0035 29.0397 108.446 17.0634 100.637 11.2035C91.9746 4.70354 86.1153 25.9378 75.6366 23.2035C65.3574 20.5212 69.9543 -1.32664 59.6366 1.2035C50.6211 3.41432 59.095 19.3795 50.6366 23.2035C41.0882 27.5203 35.2213 5.19427 26.6366 11.2035C18.6384 16.8023 34.819 30.8775 26.6366 36.2035C19.0804 41.1219 12.1929 24.2851 4.63663 29.2035Z" fill="#EC9AF3" stroke="black" stroke-width="2"/>
+<mask id="mask0_0_1" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="3" y="52" width="117" height="117">
+<path d="M61.5 169L3.90931 52L119.091 52L61.5 169Z" fill="#E22B2B"/>
+</mask>
+<g mask="url(#mask0_0_1)">
+<rect x="119.459" y="136.108" width="122.018" height="93.9759" transform="rotate(-180 119.459 136.108)" fill="#EC9AF3"/>
+</g>
+<path d="M2 48L44 135H77L119 54" stroke="black" stroke-width="2"/>
+<circle cx="34" cy="63" r="14" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="34" cy="63" r="9.5" fill="black" stroke="black"/>
+<circle cx="89" cy="63" r="14" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="89" cy="63" r="10" fill="black"/>
+<circle cx="31.5" cy="68.5" r="2.5" fill="white"/>
+<circle cx="36.5" cy="63.5" r="2.5" fill="white"/>
+<circle cx="31.5" cy="60.5" r="2.5" fill="white"/>
+<circle cx="89.5" cy="60.5" r="2.5" fill="white"/>
+<circle cx="84.5" cy="65.5" r="2.5" fill="white"/>
+<circle cx="94.5" cy="66.5" r="2.5" fill="white"/>
+<path d="M81.5 102C81.5 104.47 79.4847 106.841 75.9185 108.624C72.3823 110.392 67.4621 111.5 62 111.5C56.5379 111.5 51.6177 110.392 48.0815 108.624C44.5153 106.841 42.5 104.47 42.5 102C42.5 99.53 44.5153 97.1592 48.0815 95.3761C51.6177 93.608 56.5379 92.5 62 92.5C67.4621 92.5 72.3823 93.608 75.9185 95.3761C79.4847 97.1592 81.5 99.53 81.5 102Z" fill="black" stroke="black"/>
+<ellipse cx="62" cy="107" rx="15" ry="5" fill="#E22B2B"/>
+<path d="M32.9235 42.4185C18.2669 39.1586 16.0721 51.6065 16.0721 51.6065" stroke="black" stroke-width="2"/>
+<path d="M105.87 51.0031C98.9465 37.6801 88 44 88 44" stroke="black" stroke-width="2"/>
+<path d="M89 207V173" stroke="black" stroke-width="2"/>
+<path d="M34 209V175" stroke="black" stroke-width="2"/>
+</svg>

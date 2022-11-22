@@ -3,9 +3,12 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kudidemo/models/pic_model.dart';
+import 'package:kudidemo/providers/pic_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
@@ -61,6 +64,7 @@ class _PicModalState extends State<PicModal> {
     Color greenColor = const Color(0xFF00AF19);
     Future<void> _showSelectionDialog(BuildContext context) {
       Color greenColor = const Color(0xFF00AF19);
+      Size size = MediaQuery.of(context).size;
       return Platform.isIOS
           ? showCupertinoDialog(
               context: context,
@@ -127,104 +131,137 @@ class _PicModalState extends State<PicModal> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   backgroundColor: Theme.of(context).backgroundColor,
-                  title: const Text(
-                    'PICK IMAGE FROM :',
-                    textAlign: TextAlign.center,
-                  ),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          _openGallery(context);
-                        },
-                        child: Container(
-                          height: 50,
-                          decoration: decorator.copyWith(
-                              borderRadius: BorderRadius.circular(20.0),
-                              color: Theme.of(context).backgroundColor),
-                          child: Center(
-                            child: Text("Gallery"),
+                  // title: const Text(
+                  //   'PICK IMAGE FROM :',
+                  //   textAlign: TextAlign.center,
+                  // ),
+                  content: Consumer<PicProvider>(
+                      builder: (context, notifier, child) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.3,
+                          width: size.width * 0.8,
+                          child:
+                              SvgPicture.asset('assets/images/${notifier.pic}'),
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Wrap(
+                            children: List.generate(
+                                picList.length,
+                                (index) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          notifier.changePic(index);
+                                        },
+                                        child: Container(
+                                          height: 100,
+                                          width: 100,
+                                          child: SvgPicture.asset(
+                                              'assets/images/${picList[index].pic}'),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                                width: picList[index].pic ==
+                                                        notifier.pic
+                                                    ? 2
+                                                    : 1,
+                                                color: picList[index].pic ==
+                                                        notifier.pic
+                                                    ? const Color(0xFF240754)
+                                                    : Colors.black),
+                                          ),
+                                        ),
+                                      ),
+                                    )),
                           ),
                         ),
-                      ),
-                      Padding(padding: EdgeInsets.all(8.0)),
-                      GestureDetector(
-                        onTap: () {
-                          _openCamera(context);
-                        },
-                        child: Container(
-                          height: 50,
-                          decoration: decorator.copyWith(
-                              borderRadius: BorderRadius.circular(20.0),
-                              color: Theme.of(context).backgroundColor),
-                          child: Center(
-                            child: Text("Camera"),
+                        GestureDetector(
+                          onTap: () {
+                            _openGallery(context);
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: decorator.copyWith(
+                                borderRadius: BorderRadius.circular(20.0),
+                                color: Theme.of(context).backgroundColor),
+                            child: Center(
+                              child: Text("Gallery"),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                        Padding(padding: EdgeInsets.all(8.0)),
+                        GestureDetector(
+                          onTap: () {
+                            _openCamera(context);
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: decorator.copyWith(
+                                borderRadius: BorderRadius.circular(20.0),
+                                color: Theme.of(context).backgroundColor),
+                            child: Center(
+                              child: Text("Camera"),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
                 );
               });
     }
 
-    return Column(
-      children: [
-        // CircleAvatar(
-        //   radius: 40,
-
-        //   backgroundColor: Colors.grey,
-        //   backgroundImage: _pickedImg != null ? FileImage(_pickedImg!) : null,
-
-        //   //backgroundimage is of type imageprovider
-        //   //fileimage loads the image
-        //   //we wanna ensure that the picked user image is passed to the auth form then to auth screen
-        // ),
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: decorator.copyWith(
-              shape: BoxShape.circle, color: Theme.of(context).backgroundColor),
-          child: Container(
-            height: 80,
-            width: 80,
-            child: _pickedImg == null
-                ? Center(
-                    child: Image.asset(
-                    'assets/images/puppy.png',
-                    scale: 2,
-                  ))
-                : Container(),
-            decoration: _pickedImg == null
-                ? BoxDecoration(
-                    color: Colors.greenAccent,
-                    border: Border.all(color: Colors.black54, width: 4),
-                    shape: BoxShape.circle,
-                  )
-                : BoxDecoration(
-                    border: Border.all(color: Colors.black54, width: 4),
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        fit: BoxFit.cover, image: FileImage(_pickedImg!))),
+    return Consumer<PicProvider>(builder: (context, notifier, child) {
+      return Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: decorator.copyWith(
+                shape: BoxShape.circle,
+                color: Theme.of(context).backgroundColor),
+            child: Container(
+              height: 80,
+              width: 80,
+              child: _pickedImg == null
+                  ? Center(
+                      child: SvgPicture.asset('assets/images/${notifier.pic}'))
+                  : Container(),
+              decoration: _pickedImg == null
+                  ? BoxDecoration(
+                      color: Colors.greenAccent,
+                      border: Border.all(color: Colors.black54, width: 4),
+                      shape: BoxShape.circle,
+                    )
+                  : BoxDecoration(
+                      border: Border.all(color: Colors.black54, width: 4),
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          fit: BoxFit.cover, image: FileImage(_pickedImg!))),
+            ),
           ),
-        ),
+          ElevatedButton.icon(
+            onPressed: () {
+              _showSelectionDialog(context);
+            },
+            //pointer to function
 
-        ElevatedButton.icon(
-          onPressed: () {
-            _showSelectionDialog(context);
-          },
-          //pointer to function
-
-          label: Text(
-            'Add Avatar',
-            style: TextStyle(color: Colors.white),
+            label: Text(
+              'Add Avatar',
+              style: TextStyle(color: Colors.white),
+            ),
+            icon: Icon(FontAwesomeIcons.cameraRetro),
+            style: ButtonStyle(
+                elevation: MaterialStateProperty.all(7),
+                backgroundColor: MaterialStateProperty.all(Colors.black)),
           ),
-          icon: Icon(FontAwesomeIcons.cameraRetro),
-          style: ButtonStyle(
-              elevation: MaterialStateProperty.all(7),
-              backgroundColor: MaterialStateProperty.all(Colors.black)),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 }
