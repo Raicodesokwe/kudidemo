@@ -19,12 +19,13 @@ class NextBtn extends StatelessWidget {
       child: Center(
         child: Text(
           label,
-          style: TextStyle(color: Colors.black54),
+          style: TextStyle(color: Theme.of(context).textTheme.bodyText2!.color),
         ),
       ),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(width: 4, color: Colors.black54)),
+          border: Border.all(
+              width: 4, color: Theme.of(context).textTheme.bodyText2!.color!)),
     );
   }
 }

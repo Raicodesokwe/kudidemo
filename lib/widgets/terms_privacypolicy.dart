@@ -35,7 +35,8 @@ class TermsPrivacyPolicy extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: 'By continuing, you are agreeing to our',
-                    style: GoogleFonts.prompt(color: Colors.black),
+                    style: GoogleFonts.prompt(
+                        color: Theme.of(context).textTheme.bodyText2!.color),
                   ),
                   TextSpan(
                       text: ' Terms of Service ',
@@ -48,7 +49,8 @@ class TermsPrivacyPolicy extends StatelessWidget {
                         }),
                   TextSpan(
                     text: 'and ',
-                    style: TextStyle(color: Colors.black),
+                    style: GoogleFonts.prompt(
+                        color: Theme.of(context).textTheme.bodyText2!.color),
                   ),
                   TextSpan(
                       text: 'Privacy Policy',

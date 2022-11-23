@@ -46,7 +46,7 @@ class CustomTextField extends StatelessWidget {
           controller: controller,
           validator: (value) => value!.isEmpty ? emptytext : null,
           keyboardType: TextInputType.text,
-          cursorColor: Colors.black45,
+          cursorColor: Theme.of(context).textTheme.bodyText2!.color,
           style: GoogleFonts.prompt(
               color: Theme.of(context).textTheme.bodyText2!.color),
           decoration: InputDecoration(

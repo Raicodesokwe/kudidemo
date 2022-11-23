@@ -79,7 +79,8 @@ class _TermsDialogState extends State<TermsDialog>
                           'PLEASE READ THE FOLLOWING TERMS OF SERVICE BEFORE USING OUR MOBILE APPLICATION (OUR APP). BY UTILIZING OUR APP, YOU AGREE TO BE BOUND BY THE CURRENT VERSION OF OUR TERMS OF SERVICE AND PRIVACY POLICY',
                           style: TextStyle(
                               fontSize: 12,
-                              color: Colors.black54,
+                              color:
+                                  Theme.of(context).textTheme.bodyText2!.color,
                               fontWeight: FontWeight.w300),
                         ),
                         SizedBox(
@@ -646,7 +647,7 @@ class _TermsDialogState extends State<TermsDialog>
                         child: Icon(
                           Icons.check,
                           size: 30,
-                          color: Colors.black,
+                          color: Theme.of(context).textTheme.bodyText2!.color,
                         ),
                       ),
                       width: 60,

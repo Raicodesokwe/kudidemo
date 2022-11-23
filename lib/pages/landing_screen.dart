@@ -134,7 +134,12 @@ class _LandingScreenState extends State<LandingScreen>
                   child: Text(
                     'We focus on improving',
                     style: GoogleFonts.prompt(
-                        fontWeight: FontWeight.w600, color: Colors.black54),
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText2!
+                            .color!
+                            .withOpacity(0.5)),
                   ),
                 ),
               ),
@@ -144,7 +149,12 @@ class _LandingScreenState extends State<LandingScreen>
                   child: Text(
                     'your productivity and wellness',
                     style: GoogleFonts.prompt(
-                        fontWeight: FontWeight.w600, color: Colors.black54),
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText2!
+                            .color!
+                            .withOpacity(0.5)),
                   ),
                 ),
               ),

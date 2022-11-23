@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/widgets/auth_textfield.dart';
 import 'package:kudidemo/widgets/pic_modal.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -77,33 +78,46 @@ class _NamePicScreenState extends State<NamePicScreen> {
             SizedBox(
               height: size.height * 0.03,
             ),
-            Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                width: size.width * 0.8,
-                decoration: decorator.copyWith(
-                    color: Theme.of(context).backgroundColor,
-                    borderRadius: BorderRadius.circular(10.0)),
-                child: TextFormField(
-                  controller: nameController,
-                  validator: (value) {
-                    if (value!.isEmpty || value.length < 4) {
-                      return 'Please enter a valid username, at least 4 characters';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  style: GoogleFonts.prompt(color: Colors.black),
-                  onChanged: (value) {
-                    this.name = value;
-                  },
-                  cursorColor: Colors.black45,
-                  decoration: InputDecoration(
-                      hintText: 'username',
-                      hintStyle: GoogleFonts.prompt(),
-                      border: InputBorder.none),
-                )),
+            AuthTextField(
+                controller: nameController,
+                validator: (value) {
+                  if (value!.isEmpty || value.length < 4) {
+                    return 'Please enter a valid username, at least 4 characters';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  this.name = value;
+                },
+                keyboardType: TextInputType.text,
+                hintText: 'username'),
+            // Container(
+            //     margin: const EdgeInsets.symmetric(vertical: 10),
+            //     padding:
+            //         const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            //     width: size.width * 0.8,
+            //     decoration: decorator.copyWith(
+            //         color: Theme.of(context).backgroundColor,
+            //         borderRadius: BorderRadius.circular(10.0)),
+            //     child: TextFormField(
+            //       controller: nameController,
+            //       validator: (value) {
+            //         if (value!.isEmpty || value.length < 4) {
+            //           return 'Please enter a valid username, at least 4 characters';
+            //         }
+            //         return null;
+            //       },
+            //       keyboardType: TextInputType.emailAddress,
+            //       style: GoogleFonts.prompt(color: Colors.black),
+            //       onChanged: (value) {
+            //         this.name = value;
+            //       },
+            //       cursorColor: Colors.black45,
+            //       decoration: InputDecoration(
+            //           hintText: 'username',
+            //           hintStyle: GoogleFonts.prompt(),
+            //           border: InputBorder.none),
+            //     )),
             SizedBox(
               height: size.height * 0.05,
             ),

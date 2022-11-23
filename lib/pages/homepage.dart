@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -14,6 +15,7 @@ import 'package:kudidemo/pages/display_notification.dart';
 import 'package:kudidemo/pages/edit_task.dart';
 
 import 'package:kudidemo/pages/timer_widget.dart';
+import 'package:kudidemo/providers/pic_provider.dart';
 
 import 'package:kudidemo/services/notification_service.dart';
 
@@ -76,6 +78,7 @@ class _HomePageState extends State<HomePage> {
       NotifyService().requestIOSPermissions();
     }
     listenNotifications();
+    Provider.of<PicProvider>(context, listen: false).loadPic();
   }
 
   void listenNotifications() {
@@ -252,45 +255,91 @@ class _HomePageState extends State<HomePage> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          primary: false,
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 150,
-              width: 150,
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100.0),
-                  child: Image.asset(
-                    "assets/images/pic.jpg",
-                    fit: BoxFit.cover,
-                  )),
-            ),
-          ),
-          actions: [
-            GestureDetector(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      barrierDismissible: true,
-                      builder: (context) {
-                        return ThemeOverlay();
-                      });
-                },
-                child: Image.asset(
-                  'assets/images/sun.png',
-                  color: Theme.of(context).textTheme.bodyText2!.color,
-                )),
-            SizedBox(
-              width: 10,
-            )
-          ],
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-        ),
+        // appBar: AppBar(
+        //   primary: false,
+        //   leading: Padding(
+        //     padding: const EdgeInsets.all(8.0),
+        //     child: Container(
+        //       height: 150,
+        //       width: 150,
+        //       color: Colors.red,
+        //       child: ClipRRect(
+        //           borderRadius: BorderRadius.circular(100.0),
+        //           child: Consumer<PicProvider>(
+        //               builder: (context, notifier, child) {
+        //             return SvgPicture.asset(
+        //               "assets/images/${notifier.pic}",
+        //               fit: BoxFit.cover,
+        //             );
+        //           })),
+        //     ),
+        //   ),
+        //   actions: [
+        //     GestureDetector(
+        //         onTap: () {
+        //           showDialog(
+        //               context: context,
+        //               barrierDismissible: true,
+        //               builder: (context) {
+        //                 return ThemeOverlay();
+        //               });
+        //         },
+        //         child: Image.asset(
+        //           'assets/images/sun.png',
+        //           color: Theme.of(context).textTheme.bodyText2!.color,
+        //         )),
+        //     SizedBox(
+        //       width: 10,
+        //     )
+        //   ],
+        //   elevation: 0,
+        //   backgroundColor: Colors.transparent,
+        // ),
         body: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Consumer<PicProvider>(builder: (context, notifier, child) {
+                      return Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: notifier.color,
+                            border: Border.all(color: Colors.black54, width: 4),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                              child: SvgPicture.asset(
+                            'assets/images/${notifier.pic}',
+                            height: 30,
+                          )));
+                    }),
+                    GestureDetector(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (context) {
+                                return ThemeOverlay();
+                              });
+                        },
+                        child: Image.asset(
+                          'assets/images/sun.png',
+                          color: Theme.of(context).textTheme.bodyText2!.color,
+                        )),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
               Text(
                 '${time} Toluwanimi',
                 style: TextStyle(fontSize: 20),

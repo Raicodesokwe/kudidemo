@@ -140,11 +140,17 @@ class _PicModalState extends State<PicModal> {
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(
+                        Container(
                           height: size.height * 0.3,
                           width: size.width * 0.8,
+                          decoration: BoxDecoration(
+                              color: notifier.color,
+                              borderRadius: BorderRadius.circular(12)),
                           child:
                               SvgPicture.asset('assets/images/${notifier.pic}'),
+                        ),
+                        SizedBox(
+                          height: 12,
                         ),
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
@@ -166,10 +172,11 @@ class _PicModalState extends State<PicModal> {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(10),
+                                            color: picList[index].color,
                                             border: Border.all(
                                                 width: picList[index].pic ==
                                                         notifier.pic
-                                                    ? 2
+                                                    ? 3
                                                     : 1,
                                                 color: picList[index].pic ==
                                                         notifier.pic
@@ -181,6 +188,9 @@ class _PicModalState extends State<PicModal> {
                                     )),
                           ),
                         ),
+                        SizedBox(
+                          height: 12,
+                        ),
                         GestureDetector(
                           onTap: () {
                             _openGallery(context);
@@ -191,7 +201,16 @@ class _PicModalState extends State<PicModal> {
                                 borderRadius: BorderRadius.circular(20.0),
                                 color: Theme.of(context).backgroundColor),
                             child: Center(
-                              child: Text("Gallery"),
+                              child: Text(
+                                "Gallery",
+                                style: GoogleFonts.prompt(
+                                  fontWeight: FontWeight.w600,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .color,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -206,7 +225,16 @@ class _PicModalState extends State<PicModal> {
                                 borderRadius: BorderRadius.circular(20.0),
                                 color: Theme.of(context).backgroundColor),
                             child: Center(
-                              child: Text("Camera"),
+                              child: Text(
+                                "Camera",
+                                style: GoogleFonts.prompt(
+                                  fontWeight: FontWeight.w600,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .color,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -230,11 +258,14 @@ class _PicModalState extends State<PicModal> {
               width: 80,
               child: _pickedImg == null
                   ? Center(
-                      child: SvgPicture.asset('assets/images/${notifier.pic}'))
+                      child: SvgPicture.asset(
+                      'assets/images/${notifier.pic}',
+                      height: 50,
+                    ))
                   : Container(),
               decoration: _pickedImg == null
                   ? BoxDecoration(
-                      color: Colors.greenAccent,
+                      color: notifier.color,
                       border: Border.all(color: Colors.black54, width: 4),
                       shape: BoxShape.circle,
                     )

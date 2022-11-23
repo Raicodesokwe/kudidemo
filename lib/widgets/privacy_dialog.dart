@@ -655,7 +655,7 @@ class _PrivacyDialogState extends State<PrivacyDialog>
                         child: Icon(
                           Icons.check,
                           size: 30,
-                          color: Colors.black,
+                          color: Theme.of(context).textTheme.bodyText2!.color,
                         ),
                       ),
                       width: 60,

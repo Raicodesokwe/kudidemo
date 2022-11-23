@@ -44,8 +44,10 @@ class AuthTextField extends StatelessWidget {
           validator: validator,
           keyboardType: keyboardType,
           onChanged: onChanged,
-          cursorColor: Colors.black45,
-          style: GoogleFonts.prompt(color: Colors.black),
+          cursorColor:
+              Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.5),
+          style: GoogleFonts.prompt(
+              color: Theme.of(context).textTheme.bodyText2!.color),
           decoration: InputDecoration(
               hintText: hintText,
               hintStyle: GoogleFonts.prompt(),

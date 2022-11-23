@@ -130,29 +130,33 @@ class _SigninScreenState extends State<SigninScreen> {
                             accessToken: googleAuth.accessToken,
                             idToken: googleAuth.idToken);
                         await FirebaseAuth.instance
-                            .signInWithCredential(credential)
-                            .then((value) async {
-                          googleEmail = value.user!.email;
-                          await FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(value.user!.uid)
-                              .get()
-                              .then((value) {
-                            if (!value.exists) {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => NamePicScreen(
-                                            email: googleEmail!,
-                                          )));
-                            } else {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => BottomNavBar()));
-                            }
-                          });
-                        });
+                            .signInWithCredential(credential);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BottomNavBar()));
+                        //     .then((value) async {
+                        //   googleEmail = value.user!.email;
+                        //   await FirebaseFirestore.instance
+                        //       .collection('users')
+                        //       .doc(value.user!.uid)
+                        //       .get()
+                        //       .then((value) {
+                        //     if (!value.exists) {
+                        //       Navigator.pushReplacement(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //               builder: (context) => NamePicScreen(
+                        //                     email: googleEmail!,
+                        //                   )));
+                        //     } else {
+                        //       Navigator.pushReplacement(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //               builder: (context) => BottomNavBar()));
+                        //     }
+                        //   });
+                        // });
                       } on FirebaseAuthException catch (e) {
                         var message = 'Something went wrong';
                         if (e.message != null) {
