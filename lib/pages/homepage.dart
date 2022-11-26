@@ -255,453 +255,439 @@ class _HomePageState extends State<HomePage> {
 
     return SafeArea(
       child: Scaffold(
-        // appBar: AppBar(
-        //   primary: false,
-        //   leading: Padding(
-        //     padding: const EdgeInsets.all(8.0),
-        //     child: Container(
-        //       height: 150,
-        //       width: 150,
-        //       color: Colors.red,
-        //       child: ClipRRect(
-        //           borderRadius: BorderRadius.circular(100.0),
-        //           child: Consumer<PicProvider>(
-        //               builder: (context, notifier, child) {
-        //             return SvgPicture.asset(
-        //               "assets/images/${notifier.pic}",
-        //               fit: BoxFit.cover,
-        //             );
-        //           })),
-        //     ),
-        //   ),
-        //   actions: [
-        //     GestureDetector(
-        //         onTap: () {
-        //           showDialog(
-        //               context: context,
-        //               barrierDismissible: true,
-        //               builder: (context) {
-        //                 return ThemeOverlay();
-        //               });
-        //         },
-        //         child: Image.asset(
-        //           'assets/images/sun.png',
-        //           color: Theme.of(context).textTheme.bodyText2!.color,
-        //         )),
-        //     SizedBox(
-        //       width: 10,
-        //     )
-        //   ],
-        //   elevation: 0,
-        //   backgroundColor: Colors.transparent,
-        // ),
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Consumer<PicProvider>(builder: (context, notifier, child) {
-                      return Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color: notifier.color,
-                            border: Border.all(color: Colors.black54, width: 4),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                              child: SvgPicture.asset(
-                            'assets/images/${notifier.pic}',
-                            height: 30,
-                          )));
-                    }),
-                    GestureDetector(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              barrierDismissible: true,
-                              builder: (context) {
-                                return ThemeOverlay();
-                              });
-                        },
-                        child: Image.asset(
-                          'assets/images/sun.png',
-                          color: Theme.of(context).textTheme.bodyText2!.color,
-                        )),
-                  ],
+          child: Consumer<PicProvider>(builder: (context, notifier, child) {
+            return Column(
+              children: [
+                SizedBox(
+                  height: 10,
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                '${time} Toluwanimi',
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(
-                height: size.height * 0.02,
-              ),
-              GestureDetector(
-                onTap: () => _selectTask(),
-                child: Container(
-                  height: size.height * 0.07,
-                  width: size.width * 0.4,
-                  decoration: decorator.copyWith(
-                      borderRadius: BorderRadius.circular(30.0),
-                      color: Colors.greenAccent),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Create task',
-                        style: GoogleFonts.prompt(color: Colors.black),
-                      ),
-                      SizedBox(
-                        width: size.width * 0.02,
-                      ),
-                      const Icon(
-                        Icons.add,
-                        color: Colors.black,
-                      )
+                      notifier.cam != ''
+                          ? Container(
+                              height: 50,
+                              width: 50,
+                              decoration: decorator.copyWith(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: FileImage(File(notifier.cam!)))))
+                          : Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color: notifier.color,
+                                border:
+                                    Border.all(color: Colors.black54, width: 4),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                  child: SvgPicture.asset(
+                                'assets/images/${notifier.pic}',
+                                height: 30,
+                              ))),
+                      GestureDetector(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                barrierDismissible: true,
+                                builder: (context) {
+                                  return ThemeOverlay();
+                                });
+                          },
+                          child: Image.asset(
+                            'assets/images/sun.png',
+                            color: Theme.of(context).textTheme.bodyText2!.color,
+                          )),
                     ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: size.height * 0.02,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CalendarWidget()));
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.arrow_back),
-                      Text(
-                        '${previousMonth!.substring(0, 3)}',
-                        style: GoogleFonts.prompt(),
-                      ),
-                      Spacer(),
-                      Text(
-                        '${month}',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Icon(Icons.keyboard_arrow_down),
-                      Spacer(),
-                      Text(
-                        '${nextMonth!.substring(0, 3)}',
-                        style: GoogleFonts.prompt(),
-                      ),
-                      Icon(Icons.arrow_forward),
-                    ],
-                  ),
+                SizedBox(
+                  height: 10,
                 ),
-              ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CalendarWidget()));
-                  },
-                  child: Row(
-                    children: [
-                      DateContainer(
-                        decorator: decorator,
-                        date:
-                            '${DateFormat("EEEE").format(now.subtract(Duration(days: 2))).substring(0, 3)}',
-                        day:
-                            '${DateFormat("dd").format(now.subtract(Duration(days: 2)))}',
-                      ),
-                      Spacer(),
-                      DateContainer(
-                        decorator: decorator,
-                        date:
-                            '${DateFormat("EEEE").format(now.subtract(Duration(days: 1))).substring(0, 3)}',
-                        day:
-                            '${DateFormat("dd").format(now.subtract(Duration(days: 1)))}',
-                      ),
-                      Spacer(),
-                      Container(
-                        decoration: decorator.copyWith(
-                            color: Colors.greenAccent,
-                            borderRadius: BorderRadius.circular(10.0)),
-                        height: 60,
-                        width: 50,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '${DateFormat("EEEE").format(now).substring(0, 3)}',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            Text(
-                              (now.day).toString(),
-                              style: TextStyle(color: Colors.black),
-                            )
-                          ],
-                        ),
-                      ),
-                      Spacer(),
-                      DateContainer(
-                        decorator: decorator,
-                        date:
-                            '${DateFormat("EEEE").format(now.add(Duration(days: 1))).substring(0, 3)}',
-                        day:
-                            '${DateFormat("dd").format(now.add(Duration(days: 1)))}',
-                      ),
-                      Spacer(),
-                      DateContainer(
-                        decorator: decorator,
-                        date:
-                            '${DateFormat("EEEE").format(now.add(Duration(days: 2))).substring(0, 3)}',
-                        day:
-                            '${DateFormat("dd").format(now.add(Duration(days: 2)))}',
-                      ),
-                    ],
-                  ),
+                Text(
+                  '${time} ${notifier.name}',
+                  style: TextStyle(fontSize: 20),
                 ),
-              ),
-              ScrollWidget(size: size, decorator: decorator),
-              Container(
-                width: size.width * 0.9,
-                padding: const EdgeInsets.all(20),
-                decoration: decorator.copyWith(
-                    color: Theme.of(context).backgroundColor,
-                    borderRadius: BorderRadius.circular(10.0)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+                GestureDetector(
+                  onTap: () => _selectTask(),
+                  child: Container(
+                    height: size.height * 0.07,
+                    width: size.width * 0.4,
+                    decoration: decorator.copyWith(
+                        borderRadius: BorderRadius.circular(30.0),
+                        color: Colors.greenAccent),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Today',
-                          style: GoogleFonts.prompt(
-                              fontSize: 20, fontWeight: FontWeight.w700),
+                          'Create task',
+                          style: GoogleFonts.prompt(color: Colors.black),
                         ),
                         SizedBox(
-                          width: 10,
+                          width: size.width * 0.02,
                         ),
-                        Text('Recent tasks',
-                            style: GoogleFonts.prompt(
-                                fontWeight: FontWeight.w300,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2!
-                                    .color!
-                                    .withOpacity(0.5)))
+                        const Icon(
+                          Icons.add,
+                          color: Colors.black,
+                        )
                       ],
                     ),
-                    SizedBox(
-                      height: size.height * 0.03,
-                    ),
-                    FutureBuilder(
-                        future:
-                            Provider.of<TaskProvider>(context, listen: false)
-                                .getTasks(),
-                        builder: (context, snapshot) {
-                          return Consumer<TaskProvider>(
-                              child: Row(
-                                children: [
-                                  RotatedBox(
-                                    quarterTurns: 3,
-                                    child: Text(
-                                      '${DateFormat('Hm').format(now)}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w300,
-                                          color: Colors.black54),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: size.width * 0.07,
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.all(25),
-                                    width: size.width * 0.65,
-                                    child: Text(
-                                      'None at the moment',
-                                    ),
-                                    decoration: decorator.copyWith(
-                                        color:
-                                            Theme.of(context).backgroundColor,
-                                        borderRadius:
-                                            BorderRadius.circular(10.0)),
-                                  )
-                                ],
-                              ),
-                              builder: (context, notifier, ch) {
-                                final taskItem = notifier.tasks;
-                                if (notifier.tasks.length <= 0) {
-                                  return ch!;
-                                }
-
-                                return Column(
-                                  children: [
-                                    ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: taskItem.length,
-                                        itemBuilder: (ctx, index) {
-                                          final theTime = taskItem[index]
-                                              .from!
-                                              .subtract(Duration(minutes: 5));
-                                          if (taskItem[index].reminder == 5) {
-                                            NotifyService
-                                                .showScheduledNotification(
-                                                    id: taskItem[index].id,
-                                                    scheduledDate: theTime,
-                                                    body: taskItem[index].notes,
-                                                    title:
-                                                        taskItem[index].name);
-                                          }
-                                          if (taskItem[index].reminder == 10) {
-                                            NotifyService
-                                                .showScheduledNotification(
-                                                    id: taskItem[index].id,
-                                                    scheduledDate:
-                                                        taskItem[index]
-                                                            .from!
-                                                            .subtract(Duration(
-                                                                minutes: 10)),
-                                                    body: taskItem[index].notes,
-                                                    title:
-                                                        taskItem[index].name);
-                                          }
-                                          if (taskItem[index].reminder == 15) {
-                                            NotifyService
-                                                .showScheduledNotification(
-                                                    id: taskItem[index].id,
-                                                    scheduledDate:
-                                                        taskItem[index]
-                                                            .from!
-                                                            .subtract(Duration(
-                                                                minutes: 15)),
-                                                    body: taskItem[index].notes,
-                                                    title:
-                                                        taskItem[index].name);
-                                          }
-                                          if (taskItem[index].reminder == 20) {
-                                            NotifyService
-                                                .showScheduledNotification(
-                                                    id: taskItem[index].id,
-                                                    scheduledDate:
-                                                        taskItem[index]
-                                                            .from!
-                                                            .subtract(Duration(
-                                                                minutes: 20)),
-                                                    body: taskItem[index].notes,
-                                                    title:
-                                                        taskItem[index].name);
-                                          }
-                                          if (taskItem[index].repeat ==
-                                              'None') {
-                                            NotifyService
-                                                .showScheduledNotification(
-                                                    id: taskItem[index].id,
-                                                    scheduledDate:
-                                                        taskItem[index].from!,
-                                                    body: taskItem[index].notes,
-                                                    from: Utils.toTime(
-                                                        taskItem[index].from!),
-                                                    to: Utils.toTime(
-                                                        taskItem[index].to!),
-                                                    day: Utils.toDay(
-                                                        taskItem[index].from!),
-                                                    toDate: Utils.toDay(
-                                                        taskItem[index].to!),
-                                                    title:
-                                                        taskItem[index].name);
-                                          }
-                                          if (taskItem[index].repeat ==
-                                              'Daily') {
-                                            NotifyService
-                                                .showDailyScheduledNotification(
-                                                    id: taskItem[index].id,
-                                                    scheduledDate:
-                                                        taskItem[index].from!,
-                                                    body: taskItem[index].notes,
-                                                    title:
-                                                        taskItem[index].name);
-                                          }
-                                          if (taskItem[index].repeat ==
-                                              'Weekly') {
-                                            NotifyService
-                                                .showWeeklyScheduledNotification(
-                                                    id: taskItem[index].id,
-                                                    scheduledDate:
-                                                        taskItem[index].from!,
-                                                    body: taskItem[index].notes,
-                                                    title:
-                                                        taskItem[index].name);
-                                          }
-
-                                          return Utils.toDay(taskItem[index]
-                                                          .from!) ==
-                                                      Utils.toDay(now) ||
-                                                  taskItem[index].repeat ==
-                                                      'daily'
-                                              ? TaskList(
-                                                  taskItem: taskItem[index],
-                                                  index: index)
-                                              : Container();
-                                        }),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    taskItem.any(
-                                            (element) => element.from != now)
-                                        ? Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text('Pending tasks'),
-                                              SizedBox(
-                                                height: 15,
-                                              ),
-                                              ListView.builder(
-                                                  physics:
-                                                      NeverScrollableScrollPhysics(),
-                                                  shrinkWrap: true,
-                                                  itemCount: taskItem.length,
-                                                  itemBuilder: (ctx, index) {
-                                                    return Utils.toDay(
-                                                                taskItem[index]
-                                                                    .from!) !=
-                                                            Utils.toDay(now)
-                                                        ? TaskList(
-                                                            taskItem:
-                                                                taskItem[index],
-                                                            index: index)
-                                                        : Container();
-                                                  })
-                                            ],
-                                          )
-                                        : Container()
-                                  ],
-                                );
-                              });
-                        })
-                  ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: size.height * 0.24,
-              ),
-            ],
-          ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CalendarWidget()));
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.arrow_back),
+                        Text(
+                          '${previousMonth!.substring(0, 3)}',
+                          style: GoogleFonts.prompt(),
+                        ),
+                        Spacer(),
+                        Text(
+                          '${month}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Icon(Icons.keyboard_arrow_down),
+                        Spacer(),
+                        Text(
+                          '${nextMonth!.substring(0, 3)}',
+                          style: GoogleFonts.prompt(),
+                        ),
+                        Icon(Icons.arrow_forward),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CalendarWidget()));
+                    },
+                    child: Row(
+                      children: [
+                        DateContainer(
+                          decorator: decorator,
+                          date:
+                              '${DateFormat("EEEE").format(now.subtract(Duration(days: 2))).substring(0, 3)}',
+                          day:
+                              '${DateFormat("dd").format(now.subtract(Duration(days: 2)))}',
+                        ),
+                        Spacer(),
+                        DateContainer(
+                          decorator: decorator,
+                          date:
+                              '${DateFormat("EEEE").format(now.subtract(Duration(days: 1))).substring(0, 3)}',
+                          day:
+                              '${DateFormat("dd").format(now.subtract(Duration(days: 1)))}',
+                        ),
+                        Spacer(),
+                        Container(
+                          decoration: decorator.copyWith(
+                              color: Colors.greenAccent,
+                              borderRadius: BorderRadius.circular(10.0)),
+                          height: 60,
+                          width: 50,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${DateFormat("EEEE").format(now).substring(0, 3)}',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              Text(
+                                (now.day).toString(),
+                                style: TextStyle(color: Colors.black),
+                              )
+                            ],
+                          ),
+                        ),
+                        Spacer(),
+                        DateContainer(
+                          decorator: decorator,
+                          date:
+                              '${DateFormat("EEEE").format(now.add(Duration(days: 1))).substring(0, 3)}',
+                          day:
+                              '${DateFormat("dd").format(now.add(Duration(days: 1)))}',
+                        ),
+                        Spacer(),
+                        DateContainer(
+                          decorator: decorator,
+                          date:
+                              '${DateFormat("EEEE").format(now.add(Duration(days: 2))).substring(0, 3)}',
+                          day:
+                              '${DateFormat("dd").format(now.add(Duration(days: 2)))}',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                ScrollWidget(size: size, decorator: decorator),
+                Container(
+                  width: size.width * 0.9,
+                  padding: const EdgeInsets.all(20),
+                  decoration: decorator.copyWith(
+                      color: Theme.of(context).backgroundColor,
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Today',
+                            style: GoogleFonts.prompt(
+                                fontSize: 20, fontWeight: FontWeight.w700),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text('Recent tasks',
+                              style: GoogleFonts.prompt(
+                                  fontWeight: FontWeight.w300,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .color!
+                                      .withOpacity(0.5)))
+                        ],
+                      ),
+                      SizedBox(
+                        height: size.height * 0.03,
+                      ),
+                      FutureBuilder(
+                          future:
+                              Provider.of<TaskProvider>(context, listen: false)
+                                  .getTasks(),
+                          builder: (context, snapshot) {
+                            return Consumer<TaskProvider>(
+                                child: Row(
+                                  children: [
+                                    RotatedBox(
+                                      quarterTurns: 3,
+                                      child: Text(
+                                        '${DateFormat('Hm').format(now)}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.black54),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: size.width * 0.07,
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.all(25),
+                                      width: size.width * 0.65,
+                                      child: Text(
+                                        'None at the moment',
+                                      ),
+                                      decoration: decorator.copyWith(
+                                          color:
+                                              Theme.of(context).backgroundColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                    )
+                                  ],
+                                ),
+                                builder: (context, notifier, ch) {
+                                  final taskItem = notifier.tasks;
+                                  if (notifier.tasks.length <= 0) {
+                                    return ch!;
+                                  }
+
+                                  return Column(
+                                    children: [
+                                      ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: taskItem.length,
+                                          itemBuilder: (ctx, index) {
+                                            final theTime = taskItem[index]
+                                                .from!
+                                                .subtract(Duration(minutes: 5));
+                                            if (taskItem[index].reminder == 5) {
+                                              NotifyService
+                                                  .showScheduledNotification(
+                                                      id: taskItem[index].id,
+                                                      scheduledDate: theTime,
+                                                      body:
+                                                          taskItem[index].notes,
+                                                      title:
+                                                          taskItem[index].name);
+                                            }
+                                            if (taskItem[index].reminder ==
+                                                10) {
+                                              NotifyService
+                                                  .showScheduledNotification(
+                                                      id: taskItem[index].id,
+                                                      scheduledDate:
+                                                          taskItem[index]
+                                                              .from!
+                                                              .subtract(
+                                                                  Duration(
+                                                                      minutes:
+                                                                          10)),
+                                                      body:
+                                                          taskItem[index].notes,
+                                                      title:
+                                                          taskItem[index].name);
+                                            }
+                                            if (taskItem[index].reminder ==
+                                                15) {
+                                              NotifyService
+                                                  .showScheduledNotification(
+                                                      id: taskItem[index].id,
+                                                      scheduledDate:
+                                                          taskItem[index]
+                                                              .from!
+                                                              .subtract(
+                                                                  Duration(
+                                                                      minutes:
+                                                                          15)),
+                                                      body:
+                                                          taskItem[index].notes,
+                                                      title:
+                                                          taskItem[index].name);
+                                            }
+                                            if (taskItem[index].reminder ==
+                                                20) {
+                                              NotifyService
+                                                  .showScheduledNotification(
+                                                      id: taskItem[index].id,
+                                                      scheduledDate:
+                                                          taskItem[index]
+                                                              .from!
+                                                              .subtract(
+                                                                  Duration(
+                                                                      minutes:
+                                                                          20)),
+                                                      body:
+                                                          taskItem[index].notes,
+                                                      title:
+                                                          taskItem[index].name);
+                                            }
+                                            if (taskItem[index].repeat ==
+                                                'None') {
+                                              NotifyService.showScheduledNotification(
+                                                  id: taskItem[index].id,
+                                                  scheduledDate:
+                                                      taskItem[index].from!,
+                                                  body: taskItem[index].notes,
+                                                  from: Utils.toTime(
+                                                      taskItem[index].from!),
+                                                  to: Utils.toTime(
+                                                      taskItem[index].to!),
+                                                  day: Utils.toDay(
+                                                      taskItem[index].from!),
+                                                  toDate: Utils.toDay(
+                                                      taskItem[index].to!),
+                                                  title: taskItem[index].name);
+                                            }
+                                            if (taskItem[index].repeat ==
+                                                'Daily') {
+                                              NotifyService
+                                                  .showDailyScheduledNotification(
+                                                      id: taskItem[index].id,
+                                                      scheduledDate:
+                                                          taskItem[index].from!,
+                                                      body:
+                                                          taskItem[index].notes,
+                                                      title:
+                                                          taskItem[index].name);
+                                            }
+                                            if (taskItem[index].repeat ==
+                                                'Weekly') {
+                                              NotifyService
+                                                  .showWeeklyScheduledNotification(
+                                                      id: taskItem[index].id,
+                                                      scheduledDate:
+                                                          taskItem[index].from!,
+                                                      body:
+                                                          taskItem[index].notes,
+                                                      title:
+                                                          taskItem[index].name);
+                                            }
+
+                                            return Utils.toDay(taskItem[index]
+                                                            .from!) ==
+                                                        Utils.toDay(now) ||
+                                                    taskItem[index].repeat ==
+                                                        'daily'
+                                                ? TaskList(
+                                                    taskItem: taskItem[index],
+                                                    index: index)
+                                                : Container();
+                                          }),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      taskItem.any(
+                                              (element) => element.from != now)
+                                          ? Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text('Pending tasks'),
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                ListView.builder(
+                                                    physics:
+                                                        NeverScrollableScrollPhysics(),
+                                                    shrinkWrap: true,
+                                                    itemCount: taskItem.length,
+                                                    itemBuilder: (ctx, index) {
+                                                      return Utils.toDay(
+                                                                  taskItem[
+                                                                          index]
+                                                                      .from!) !=
+                                                              Utils.toDay(now)
+                                                          ? TaskList(
+                                                              taskItem:
+                                                                  taskItem[
+                                                                      index],
+                                                              index: index)
+                                                          : Container();
+                                                    })
+                                              ],
+                                            )
+                                          : Container()
+                                    ],
+                                  );
+                                });
+                          })
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.24,
+                ),
+              ],
+            );
+          }),
         ),
         floatingActionButton: SpeedDial(
           children: [

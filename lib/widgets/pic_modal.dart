@@ -11,8 +11,6 @@ import 'package:kudidemo/models/pic_model.dart';
 import 'package:kudidemo/providers/pic_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/theme_provider.dart';
-
 class PicModal extends StatefulWidget {
   final void Function(File _pickedImg) imagePickFunktion;
 
@@ -24,6 +22,7 @@ class PicModal extends StatefulWidget {
 
 class _PicModalState extends State<PicModal> {
   File? _pickedImg;
+
   void _openGallery(BuildContext context) async {
     final picture = await ImagePicker().pickImage(
         source: ImageSource.gallery, imageQuality: 80, maxWidth: 150);
@@ -32,6 +31,7 @@ class _PicModalState extends State<PicModal> {
       _pickedImg = pickedImageFile;
     });
     widget.imagePickFunktion(pickedImageFile);
+
     Navigator.of(context).pop();
   }
 
@@ -284,7 +284,8 @@ class _PicModalState extends State<PicModal> {
 
             label: Text(
               'Add Avatar',
-              style: TextStyle(color: Colors.white),
+              style: GoogleFonts.prompt(
+                  color: Colors.white, fontWeight: FontWeight.w600),
             ),
             icon: Icon(FontAwesomeIcons.cameraRetro),
             style: ButtonStyle(

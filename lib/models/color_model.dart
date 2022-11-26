@@ -11,5 +11,5 @@ List<ColorModel> colorList = [
   ColorModel(color: Colors.purple.shade200),
   ColorModel(color: Colors.blue.shade200),
   ColorModel(color: Colors.orange.shade200),
-  ColorModel(color: Colors.green.shade200)
+  ColorModel(color: Colors.red.shade200)
 ];

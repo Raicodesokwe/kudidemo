@@ -39,6 +39,7 @@ dependencies:
   lottie:
   font_awesome_flutter:
   syncfusion_flutter_calendar: 19.4.50
+  syncfusion_flutter_charts:
   url_launcher:
   flutter_speed_dial:
   animations:

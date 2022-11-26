@@ -270,7 +270,11 @@ class _TimerWidgetState extends State<TimerWidget>
                       decoration: BoxDecoration(
                           color: widget.color,
                           borderRadius: BorderRadius.circular(12)),
-                      child: Center(child: Text(widget.task ?? '')))
+                      child: Center(
+                          child: Text(
+                        widget.task ?? '',
+                        style: TextStyle(color: Colors.black),
+                      )))
                   : Container(),
               SizedBox(
                 height: size.height * 0.05,

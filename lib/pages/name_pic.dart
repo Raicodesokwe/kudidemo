@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/widgets/auth_textfield.dart';
 import 'package:kudidemo/widgets/pic_modal.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../navbar/navbar.dart';
@@ -50,7 +51,8 @@ class _NamePicScreenState extends State<NamePicScreen> {
   var message = 'Something went wrong';
 
   bool isLoading = false;
-
+  final _kCam = "cam_preference";
+  final _kName = "name_preference";
   @override
   Widget build(BuildContext context) {
     final decorator = BoxDecoration(boxShadow: [
@@ -91,33 +93,6 @@ class _NamePicScreenState extends State<NamePicScreen> {
                 },
                 keyboardType: TextInputType.text,
                 hintText: 'username'),
-            // Container(
-            //     margin: const EdgeInsets.symmetric(vertical: 10),
-            //     padding:
-            //         const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            //     width: size.width * 0.8,
-            //     decoration: decorator.copyWith(
-            //         color: Theme.of(context).backgroundColor,
-            //         borderRadius: BorderRadius.circular(10.0)),
-            //     child: TextFormField(
-            //       controller: nameController,
-            //       validator: (value) {
-            //         if (value!.isEmpty || value.length < 4) {
-            //           return 'Please enter a valid username, at least 4 characters';
-            //         }
-            //         return null;
-            //       },
-            //       keyboardType: TextInputType.emailAddress,
-            //       style: GoogleFonts.prompt(color: Colors.black),
-            //       onChanged: (value) {
-            //         this.name = value;
-            //       },
-            //       cursorColor: Colors.black45,
-            //       decoration: InputDecoration(
-            //           hintText: 'username',
-            //           hintStyle: GoogleFonts.prompt(),
-            //           border: InputBorder.none),
-            //     )),
             SizedBox(
               height: size.height * 0.05,
             ),
@@ -128,8 +103,12 @@ class _NamePicScreenState extends State<NamePicScreen> {
                         setState(() {
                           isLoading = true;
                         });
+                        var prefs = await SharedPreferences.getInstance();
+                        prefs.setString(_kName, nameController.text.trim());
                         try {
                           if (imgFile != null) {
+                            prefs.setString(_kCam, imgFile!.path);
+
                             final ref = FirebaseStorage.instance
                                 .ref()
                                 .child('user_images')

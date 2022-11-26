@@ -2,7 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kudidemo/pages/pospage.dart';
+import 'package:kudidemo/pages/stats_page.dart';
 
 import 'package:kudidemo/pages/walletpage.dart';
 
@@ -40,7 +40,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           index: _currentIndex,
           children: [
             HomePage(),
-            PosPage(),
+            StatsPage(),
             WalletPage(),
           ],
         ),
@@ -73,12 +73,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
-                FontAwesomeIcons.clipboard,
+                FontAwesomeIcons.chartLine,
                 size: 28,
                 color: Colors.white,
               ),
               Text(
-                'tasks',
+                'stats',
                 style: GoogleFonts.prompt(fontSize: 12),
               )
             ],
