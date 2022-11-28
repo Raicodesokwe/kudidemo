@@ -9,10 +9,13 @@ class CustomTextField extends StatelessWidget {
   final String emptytext;
   final String hintText;
   final String? initialValue;
-
+  final TextInputType? keyboardType;
+  final Widget? prefixIcon;
   const CustomTextField(
       {Key? key,
+      this.keyboardType,
       this.initialValue,
+      this.prefixIcon,
       required this.controller,
       required this.emptytext,
       required this.hintText})
@@ -45,11 +48,12 @@ class CustomTextField extends StatelessWidget {
           initialValue: initialValue,
           controller: controller,
           validator: (value) => value!.isEmpty ? emptytext : null,
-          keyboardType: TextInputType.text,
+          keyboardType: keyboardType,
           cursorColor: Theme.of(context).textTheme.bodyText2!.color,
           style: GoogleFonts.prompt(
               color: Theme.of(context).textTheme.bodyText2!.color),
           decoration: InputDecoration(
+              prefixIcon: prefixIcon,
               hintText: hintText,
               hintStyle: GoogleFonts.prompt(),
               border: InputBorder.none),

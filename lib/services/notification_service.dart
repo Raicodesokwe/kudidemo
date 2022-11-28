@@ -64,7 +64,7 @@ class NotifyService {
     String? payload,
   }) async =>
       _notifications.show(id!, title, body, await _notificationDetails(),
-          payload: payload);
+          payload: "$title|" "$body|" "|" "|" "|" "|");
   static Future showScheduledNotification({
     int? id,
     String? title,
