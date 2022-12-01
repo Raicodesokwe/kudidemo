@@ -12,7 +12,9 @@ import '../widgets/back_arrow.dart';
 class TimerWidget extends StatelessWidget {
   final String? task;
   final Color? color;
-  TimerWidget({Key? key, this.task, this.color}) : super(key: key);
+  final double? hourlyRate;
+  TimerWidget({Key? key, this.task, this.color, this.hourlyRate})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +92,11 @@ class TimerWidget extends StatelessWidget {
                   color: color,
                   task: task,
                 ),
-                BillableWidget()
+                BillableWidget(
+                  hourlyRate: hourlyRate,
+                  color: color,
+                  task: task,
+                )
               ]),
             ),
           ],

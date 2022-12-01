@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kudidemo/providers/bilable_provider.dart';
 import 'package:kudidemo/widgets/billing_overlay.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,9 @@ import 'minutes_overlay.dart';
 class BillableWidget extends StatefulWidget {
   final String? task;
   final Color? color;
-  BillableWidget({Key? key, this.task, this.color}) : super(key: key);
+  final double? hourlyRate;
+  BillableWidget({Key? key, this.task, this.color, this.hourlyRate})
+      : super(key: key);
 
   @override
   State<BillableWidget> createState() => _BillableWidgetState();
@@ -197,6 +200,16 @@ class _BillableWidgetState extends State<BillableWidget> {
                     style: TextStyle(color: Colors.black),
                   )))
               : Container(),
+          Container(
+              width: size.width * 0.5,
+              height: 50,
+              decoration: BoxDecoration(
+                  color: widget.color, borderRadius: BorderRadius.circular(12)),
+              child: Center(
+                  child: Text(
+                widget.hourlyRate.toString(),
+                style: TextStyle(color: Colors.black),
+              ))),
           SizedBox(
             height: size.height * 0.02,
           ),
@@ -246,7 +259,20 @@ class _BillableWidgetState extends State<BillableWidget> {
               decoration: decorator.copyWith(
                   color: Colors.green, shape: BoxShape.circle),
             ),
-          )
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Consumer<BillableProvider>(builder: (context, notifier, child) {
+            return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                child: Container(
+                  decoration: decorator.copyWith(
+                    color: Theme.of(context).backgroundColor,
+                  ),
+                ));
+          })
         ],
       ),
     );

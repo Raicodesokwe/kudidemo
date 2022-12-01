@@ -23,6 +23,7 @@ class TaskModel extends HiveObject {
   final String? repeat;
   @HiveField(9)
   final bool? isComplete;
+  final double? hourlyRate;
 
   TaskModel(
       {this.id,
@@ -34,5 +35,6 @@ class TaskModel extends HiveObject {
       this.reminder,
       this.repeat,
       this.subtask,
+      this.hourlyRate,
       this.isComplete});
 }

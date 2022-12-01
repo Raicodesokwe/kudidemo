@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/models/task_model.dart';
 import 'package:kudidemo/providers/color_provider.dart';
 import 'package:kudidemo/providers/task_provider.dart';
+import 'package:kudidemo/widgets/billing_overlay.dart';
 import 'package:kudidemo/widgets/circle_button.dart';
 import 'package:kudidemo/widgets/neon_button.dart';
 import 'package:kudidemo/widgets/notes_overlay.dart';
@@ -36,6 +37,7 @@ class _TaskViewState extends State<TaskView>
   late String subtask;
   late DateTime fromDate;
   late Color color;
+  late double hourlyRate;
   late DateTime toDate;
   int? reminder;
   late String repeat;
@@ -156,6 +158,7 @@ class _TaskViewState extends State<TaskView>
     color = Provider.of<ColorProvider>(context).selectedColor!;
     notes = Provider.of<TaskProvider>(context).notes!;
     subtask = Provider.of<TaskProvider>(context).subtask!;
+    hourlyRate = Provider.of<TaskProvider>(context).hourlyRate!;
 
     Future saveForm() async {
       final isValid = _taskForm.currentState!.validate();
@@ -170,6 +173,7 @@ class _TaskViewState extends State<TaskView>
             color: color.value,
             reminder: reminder,
             repeat: repeat,
+            hourlyRate: hourlyRate,
             isComplete: false);
         final taskProvider = Provider.of<TaskProvider>(context, listen: false);
         taskProvider.addTask(task).then((value) => taskProvider.reset());
@@ -319,7 +323,34 @@ class _TaskViewState extends State<TaskView>
                 ),
               ),
               SizedBox(
-                height: size.height * 0.2,
+                height: size.height * 0.03,
+              ),
+              GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (context) {
+                        return BillingOverlay();
+                      });
+                },
+                child: Center(
+                  child: Container(
+                    height: 35,
+                    width: 35,
+                    child: Center(
+                        child: Icon(FontAwesomeIcons.dollarSign,
+                            color:
+                                Theme.of(context).textTheme.bodyText2!.color)),
+                    decoration: decorator.copyWith(
+                        color: Theme.of(context).backgroundColor,
+                        borderRadius: BorderRadius.circular(5)),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: size.height * 0.13,
               ),
               GestureDetector(
                   onTap: () => saveForm(),

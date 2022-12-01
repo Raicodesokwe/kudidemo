@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,7 +17,7 @@ class TaskProvider with ChangeNotifier {
   DateTime get selectedDate => _selectedDate;
   void setDate(DateTime date) => _selectedDate = date;
   List<TaskModel> get eventsOfSelectedDate => _tasks;
-
+  double? hourlyRate = 0;
   final String taskHiveBox = 'task-box';
   DateTime? from = DateTime.now();
   DateTime? to = DateTime.now().add(Duration(hours: 1));
@@ -73,6 +75,11 @@ class TaskProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void addHourlyRate(TaskModel task) {
+    hourlyRate = task.hourlyRate;
+    notifyListeners();
+  }
+
   void selectReminder(int reminderindex) {
     reminder = reminderList[reminderindex].reminder;
     notifyListeners();
@@ -96,5 +103,6 @@ class TaskProvider with ChangeNotifier {
     subtask = '';
     from = DateTime.now();
     to = DateTime.now().add(Duration(hours: 1));
+    hourlyRate = 0;
   }
 }

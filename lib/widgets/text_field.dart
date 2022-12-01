@@ -5,18 +5,20 @@ import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
 
 class CustomTextField extends StatelessWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String emptytext;
   final String hintText;
   final String? initialValue;
   final TextInputType? keyboardType;
   final Widget? prefixIcon;
+  final void Function(String)? onChanged;
   const CustomTextField(
       {Key? key,
       this.keyboardType,
+      this.onChanged,
       this.initialValue,
       this.prefixIcon,
-      required this.controller,
+      this.controller,
       required this.emptytext,
       required this.hintText})
       : super(key: key);
@@ -45,6 +47,7 @@ class CustomTextField extends StatelessWidget {
             color: Theme.of(context).backgroundColor,
             borderRadius: BorderRadius.circular(10.0)),
         child: TextFormField(
+          onChanged: onChanged,
           initialValue: initialValue,
           controller: controller,
           validator: (value) => value!.isEmpty ? emptytext : null,

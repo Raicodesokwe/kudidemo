@@ -537,8 +537,8 @@ class _HomePageState extends State<HomePage> {
                                                           taskItem[index].notes,
                                                       title:
                                                           taskItem[index].name);
-                                            }
-                                            if (taskItem[index].reminder ==
+                                            } else if (taskItem[index]
+                                                    .reminder ==
                                                 10) {
                                               NotifyService
                                                   .showScheduledNotification(
@@ -554,8 +554,8 @@ class _HomePageState extends State<HomePage> {
                                                           taskItem[index].notes,
                                                       title:
                                                           taskItem[index].name);
-                                            }
-                                            if (taskItem[index].reminder ==
+                                            } else if (taskItem[index]
+                                                    .reminder ==
                                                 15) {
                                               NotifyService
                                                   .showScheduledNotification(
@@ -571,8 +571,8 @@ class _HomePageState extends State<HomePage> {
                                                           taskItem[index].notes,
                                                       title:
                                                           taskItem[index].name);
-                                            }
-                                            if (taskItem[index].reminder ==
+                                            } else if (taskItem[index]
+                                                    .reminder ==
                                                 20) {
                                               NotifyService
                                                   .showScheduledNotification(
@@ -588,8 +588,7 @@ class _HomePageState extends State<HomePage> {
                                                           taskItem[index].notes,
                                                       title:
                                                           taskItem[index].name);
-                                            }
-                                            if (taskItem[index].repeat ==
+                                            } else if (taskItem[index].repeat ==
                                                 'None') {
                                               NotifyService.showScheduledNotification(
                                                   id: taskItem[index].id,
@@ -605,8 +604,7 @@ class _HomePageState extends State<HomePage> {
                                                   toDate: Utils.toDay(
                                                       taskItem[index].to!),
                                                   title: taskItem[index].name);
-                                            }
-                                            if (taskItem[index].repeat ==
+                                            } else if (taskItem[index].repeat ==
                                                 'Daily') {
                                               NotifyService
                                                   .showDailyScheduledNotification(
@@ -617,8 +615,7 @@ class _HomePageState extends State<HomePage> {
                                                           taskItem[index].notes,
                                                       title:
                                                           taskItem[index].name);
-                                            }
-                                            if (taskItem[index].repeat ==
+                                            } else if (taskItem[index].repeat ==
                                                 'Weekly') {
                                               NotifyService
                                                   .showWeeklyScheduledNotification(

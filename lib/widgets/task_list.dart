@@ -124,6 +124,8 @@ class TaskList extends StatelessWidget {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
                                             builder: (context) => TimerWidget(
+                                                  hourlyRate:
+                                                      taskItem.hourlyRate,
                                                   task: taskItem.name,
                                                   color: Color(taskItem.color!),
                                                 )));

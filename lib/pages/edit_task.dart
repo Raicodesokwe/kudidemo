@@ -41,6 +41,7 @@ class _EditTaskState extends State<EditTask>
   late String subtask;
   late DateTime fromDate;
   late Color color;
+  late double hourlyRate;
   late DateTime toDate;
   int? reminder;
   late String repeat;
@@ -155,6 +156,7 @@ class _EditTaskState extends State<EditTask>
     color = Provider.of<ColorProvider>(context).selectedColor!;
     notes = Provider.of<TaskProvider>(context).notes!;
     subtask = Provider.of<TaskProvider>(context).subtask!;
+    hourlyRate = Provider.of<TaskProvider>(context).hourlyRate!;
 
     Future saveForm() async {
       final isValid = _taskForm.currentState!.validate();
@@ -169,6 +171,7 @@ class _EditTaskState extends State<EditTask>
             color: color.value,
             reminder: reminder,
             repeat: repeat,
+            hourlyRate: hourlyRate == 0 ? widget.task!.hourlyRate : hourlyRate,
             isComplete: widget.task!.isComplete!);
         final taskProvider = Provider.of<TaskProvider>(context, listen: false);
         taskProvider.changeTask(task).then((value) => taskProvider.reset());
