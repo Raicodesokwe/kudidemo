@@ -19,6 +19,7 @@ class HabitsProvider with ChangeNotifier {
   }
 
   int? dailyGoal = 1;
+  bool selector = true;
   TimeOfDay? reminder = TimeOfDay.now();
   String? routine = 'Anytime';
   void addHabitDetails(HabitsModel habit) {

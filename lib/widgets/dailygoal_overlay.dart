@@ -4,17 +4,15 @@ import 'package:kudidemo/models/habits_model.dart';
 import 'package:kudidemo/providers/habits_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/task_provider.dart';
-
-class DailyGoalOvelay extends StatefulWidget {
+class DailyGoalOverlay extends StatefulWidget {
   int count;
-  DailyGoalOvelay({Key? key, required this.count}) : super(key: key);
+  DailyGoalOverlay({Key? key, required this.count}) : super(key: key);
 
   @override
-  State<DailyGoalOvelay> createState() => _DailyGoalOvelayState();
+  State<DailyGoalOverlay> createState() => _DailyGoalOverlayState();
 }
 
-class _DailyGoalOvelayState extends State<DailyGoalOvelay>
+class _DailyGoalOverlayState extends State<DailyGoalOverlay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;

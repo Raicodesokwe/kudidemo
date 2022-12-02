@@ -8,6 +8,8 @@ class HabitsModel {
   final String? repeat;
   final String? routine;
   final TimeOfDay? reminder;
+  final List? days;
+
   HabitsModel(
       {this.color,
       this.dailyGoal,
@@ -15,5 +17,6 @@ class HabitsModel {
       this.name,
       this.repeat,
       this.reminder,
+      this.days,
       this.routine});
 }

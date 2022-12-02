@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EditTextField extends StatelessWidget {
+  final Widget? prefixIcon;
   final String initialValue;
   final String emptytext;
   final void Function(String)? onChanged;
+  final TextInputType? keyboardType;
   const EditTextField(
       {Key? key,
+      this.prefixIcon,
+      this.keyboardType,
       required this.initialValue,
       required this.emptytext,
       required this.onChanged})
@@ -39,11 +43,12 @@ class EditTextField extends StatelessWidget {
           onChanged: onChanged,
           initialValue: initialValue,
           validator: (value) => value!.isEmpty ? emptytext : null,
-          keyboardType: TextInputType.text,
+          keyboardType: keyboardType,
           cursorColor: Colors.black45,
           style: GoogleFonts.prompt(
               color: Theme.of(context).textTheme.bodyText2!.color),
-          decoration: InputDecoration(border: InputBorder.none),
+          decoration:
+              InputDecoration(prefixIcon: prefixIcon, border: InputBorder.none),
         ));
     ;
   }

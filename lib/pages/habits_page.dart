@@ -179,7 +179,7 @@ class _HabitsPageState extends State<HabitsPage>
                         onTap: () {
                           showDialog(
                             context: context,
-                            builder: (_) => DailyGoalOvelay(
+                            builder: (_) => DailyGoalOverlay(
                               count: count,
                             ),
                           );

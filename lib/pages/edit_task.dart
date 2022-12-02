@@ -8,6 +8,7 @@ import 'package:kudidemo/models/task_model.dart';
 import 'package:kudidemo/providers/color_provider.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/widgets/circle_button.dart';
+import 'package:kudidemo/widgets/edit_billable.dart';
 import 'package:kudidemo/widgets/edit_notes_overlay.dart';
 import 'package:kudidemo/widgets/edit_subtask.dart';
 import 'package:kudidemo/widgets/edit_text_field.dart';
@@ -328,7 +329,36 @@ class _EditTaskState extends State<EditTask>
                 ),
               ),
               SizedBox(
-                height: size.height * 0.2,
+                height: size.height * 0.03,
+              ),
+              GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (context) {
+                        return EditBillingOverlay(
+                          hourlyRate: widget.task!.hourlyRate!,
+                        );
+                      });
+                },
+                child: Center(
+                  child: Container(
+                    height: 35,
+                    width: 35,
+                    child: Center(
+                        child: Icon(FontAwesomeIcons.dollarSign,
+                            color:
+                                Theme.of(context).textTheme.bodyText2!.color)),
+                    decoration: decorator.copyWith(
+                        color: Theme.of(context).backgroundColor,
+                        borderRadius: BorderRadius.circular(5)),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: size.height * 0.13,
               ),
               GestureDetector(
                   onTap: name != ''

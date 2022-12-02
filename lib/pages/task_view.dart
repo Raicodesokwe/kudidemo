@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/models/task_model.dart';
+import 'package:kudidemo/pages/homepage.dart';
 import 'package:kudidemo/providers/color_provider.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/widgets/billing_overlay.dart';
@@ -178,7 +179,8 @@ class _TaskViewState extends State<TaskView>
         final taskProvider = Provider.of<TaskProvider>(context, listen: false);
         taskProvider.addTask(task).then((value) => taskProvider.reset());
 
-        Navigator.of(context).pop();
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (c) => HomePage()), (route) => false);
       }
     }
 

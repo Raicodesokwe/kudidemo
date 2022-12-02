@@ -7,6 +7,7 @@ import 'package:kudidemo/pages/chat_page.dart';
 import 'package:kudidemo/pages/group_task.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kudidemo/pages/homepage.dart';
 import 'package:kudidemo/providers/bilable_provider.dart';
 import 'package:kudidemo/providers/color_provider.dart';
 import 'package:kudidemo/providers/expense_provider.dart';
@@ -85,7 +86,11 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: notifier.themeData,
           home: AuthService.handleAuth(),
-          routes: {'chat': (_) => ChatPage(), 'group': (_) => GroupTask()},
+          routes: {
+            'chat': (_) => ChatPage(),
+            'group': (_) => GroupTask(),
+            '/home': (_) => HomePage()
+          },
         );
       }),
     );

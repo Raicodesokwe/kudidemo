@@ -7,6 +7,7 @@ import 'package:kudidemo/widgets/billing_overlay.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
+import '../pages/task_view.dart';
 import '../providers/timer_provider.dart';
 import '../services/notification_service.dart';
 import 'back_arrow.dart';
@@ -43,9 +44,19 @@ class _BillableWidgetState extends State<BillableWidget> {
     _timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
   }
 
-  void stopTimer() {
-    _timer.cancel();
-    // _timer2!.cancel();
+  void reset() {
+    setState(() {
+      duration = Duration();
+    });
+  }
+
+  void stopTimer({bool resets = true}) {
+    if (resets) {
+      reset();
+    }
+    setState(() {
+      _timer.cancel();
+    });
   }
 
   @override
@@ -195,21 +206,25 @@ class _BillableWidgetState extends State<BillableWidget> {
                       color: widget.color,
                       borderRadius: BorderRadius.circular(12)),
                   child: Center(
-                      child: Text(
-                    widget.task ?? '',
-                    style: TextStyle(color: Colors.black),
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.task ?? '',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        widget.hourlyRate == null
+                            ? ''
+                            : '${widget.hourlyRate}/hr',
+                        style: TextStyle(color: Colors.black),
+                      )
+                    ],
                   )))
               : Container(),
-          Container(
-              width: size.width * 0.5,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: widget.color, borderRadius: BorderRadius.circular(12)),
-              child: Center(
-                  child: Text(
-                widget.hourlyRate.toString(),
-                style: TextStyle(color: Colors.black),
-              ))),
           SizedBox(
             height: size.height * 0.02,
           ),
@@ -236,16 +251,32 @@ class _BillableWidgetState extends State<BillableWidget> {
           ),
           GestureDetector(
             onTap: () {
-              setState(() {
-                if (!isStarted) {
-                  isStarted = true;
-                  startTimer();
-                } else {
-                  _timer.cancel();
+              if (widget.hourlyRate == null || widget.task == '') {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => TaskView()));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    backgroundColor:
+                        Theme.of(context).textTheme.bodyText2!.color,
+                    content: Text(
+                      'Add task name and hourly rate',
+                      style: TextStyle(
+                          fontFamily: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .fontFamily!),
+                    )));
+              } else {
+                setState(() {
+                  if (!isStarted) {
+                    isStarted = true;
+                    startTimer();
+                  } else {
+                    _timer.cancel();
 
-                  isStarted = false;
-                }
-              });
+                    isStarted = false;
+                  }
+                });
+              }
             },
             child: Container(
               height: 70,
@@ -261,18 +292,28 @@ class _BillableWidgetState extends State<BillableWidget> {
             ),
           ),
           SizedBox(
-            height: 20,
+            height: size.height * 0.02,
           ),
-          Consumer<BillableProvider>(builder: (context, notifier, child) {
-            return Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                child: Container(
-                  decoration: decorator.copyWith(
-                    color: Theme.of(context).backgroundColor,
+          GestureDetector(
+              onTap: () {
+                setState(() {
+                  stopTimer();
+                  isStarted = false;
+                });
+              },
+              child: Container(
+                decoration: decorator.copyWith(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.green),
+                width: size.width * 0.5,
+                height: 50,
+                child: Center(
+                  child: Text(
+                    'Done',
+                    style: TextStyle(fontSize: 20),
                   ),
-                ));
-          })
+                ),
+              )),
         ],
       ),
     );

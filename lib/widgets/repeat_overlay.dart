@@ -21,6 +21,8 @@ class _RepeatOverlayState extends State<RepeatOverlay>
   late AnimationController controller;
   late Animation<double> scaleAnimation;
   bool alldays = true;
+  bool monSelected = false;
+  bool tueSelected = false;
 
   @override
   void initState() {
@@ -55,6 +57,9 @@ class _RepeatOverlayState extends State<RepeatOverlay>
 
   @override
   Widget build(BuildContext context) {
+    // if (monSelected && tueSelected) {
+    //   alldays = true;
+    // }
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -69,178 +74,251 @@ class _RepeatOverlayState extends State<RepeatOverlay>
       )
     ]);
     Size size = MediaQuery.of(context).size;
-    final habit = HabitsModel(reminder: widget.selectedTime);
+    // final habit = HabitsModel(reminder: widget.selectedTime);
 
-    Provider.of<HabitsProvider>(context).addHabitDetails(habit);
+    // Provider.of<HabitsProvider>(context).addHabitDetails(habit);
+
     return ScaleTransition(
       scale: scaleAnimation,
-      child: AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        backgroundColor: Theme.of(context).backgroundColor,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Repeat everyday',
-              textAlign: TextAlign.center,
-              style:
-                  Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 16),
-            ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  alldays = !alldays;
-                });
-              },
-              child: Checkbox(
-                  value: alldays,
-                  checkColor: Colors.white,
-                  activeColor: Colors.green,
-                  side: MaterialStateBorderSide.resolveWith(
-                    (states) =>
-                        BorderSide(width: 2.0, color: const Color(0xFF32D74B)),
-                  ),
-                  onChanged: (bool? value) {
-                    setState(() {
-                      alldays = value!;
-                    });
-                  }),
-            )
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Wrap(
-              spacing: 5,
-              runSpacing: 15,
-              alignment: WrapAlignment.start,
-              crossAxisAlignment: WrapCrossAlignment.start,
-              direction: Axis.horizontal,
-              runAlignment: WrapAlignment.start,
-              verticalDirection: VerticalDirection.down,
-              clipBehavior: Clip.none,
-              children: List.generate(weekDays.length, (index) {
-                final dayName = weekDays[index];
-
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      Provider.of<HabitsProvider>(context, listen: false)
-                          .selectDay(index);
-                      print('day is ${dayName.day}');
-                      print('bool is ${dayName.daySelected}');
-                    });
-                  },
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Container(
-                        height: 50,
-                        width: 50,
-                        child: Center(
-                          child: Text(
-                            dayName.day,
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2!
-                                    .fontFamily,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2!
-                                    .color),
-                          ),
-                        ),
-                        decoration: decorator.copyWith(
-                            shape: BoxShape.circle,
-                            color: alldays || dayName.daySelected
-                                ? Colors.green
-                                : Theme.of(context).backgroundColor),
-                      )),
-                );
-              }),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Reminder',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2!
-                      .copyWith(fontSize: 16),
-                ),
-                Text(
-                  '(Optional)',
-                  style: GoogleFonts.prompt(
-                      fontSize: 10,
-                      color: Theme.of(context).textTheme.bodyText2!.color),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            GestureDetector(
-              onTap: () {
-                _selectTime();
-              },
-              child: Container(
-                width: size.width * 0.6,
-                height: 50,
-                child: Center(
-                  child: Text(
-                    'Add reminder',
-                    style: GoogleFonts.prompt(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).textTheme.bodyText2!.color),
-                  ),
-                ),
-                decoration: decorator.copyWith(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Theme.of(context).backgroundColor),
+      child: Consumer<HabitsProvider>(builder: (context, notifier, child) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Repeat everyday',
+                textAlign: TextAlign.center,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2!
+                    .copyWith(fontSize: 16),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Cancel',
-                        style: GoogleFonts.prompt(
-                            color: Color.fromARGB(255, 12, 99, 212),
-                            fontWeight: FontWeight.w600))),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    child: Center(
-                      child: Text(
-                        'Confirm',
-                        style: GoogleFonts.prompt(color: Colors.white),
-                      ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    notifier.selector = !notifier.selector;
+                  });
+                },
+                child: Checkbox(
+                    value: notifier.selector,
+                    checkColor: Colors.white,
+                    activeColor: Colors.green,
+                    side: MaterialStateBorderSide.resolveWith(
+                      (states) => BorderSide(
+                          width: 2.0, color: const Color(0xFF32D74B)),
                     ),
-                    height: 50,
-                    width: 120,
-                    decoration: decorator.copyWith(
-                        borderRadius: BorderRadius.circular(7),
-                        color: Color.fromARGB(255, 12, 99, 212)),
+                    onChanged: (bool? value) {
+                      setState(() {
+                        notifier.selector = value!;
+                      });
+                    }),
+              )
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Row(
+              //   children: [
+              //     GestureDetector(
+              //       onTap: () {
+              //         setState(() {
+              //           monSelected = !monSelected;
+              //         });
+              //       },
+              //       child: Container(
+              //         height: 50,
+              //         width: 50,
+              //         child: Center(
+              //           child: Text(
+              //             'Mon',
+              //             style: TextStyle(
+              //                 fontSize: 12,
+              //                 fontFamily: Theme.of(context)
+              //                     .textTheme
+              //                     .bodyText2!
+              //                     .fontFamily,
+              //                 color:
+              //                     Theme.of(context).textTheme.bodyText2!.color),
+              //           ),
+              //         ),
+              //         decoration: decorator.copyWith(
+              //             shape: BoxShape.circle,
+              //             color: alldays || monSelected
+              //                 ? Colors.green
+              //                 : Theme.of(context).backgroundColor),
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: 5,
+              //     ),
+              //     GestureDetector(
+              //       onTap: () {
+              //         setState(() {
+              //           tueSelected = !tueSelected;
+              //         });
+              //       },
+              //       child: Container(
+              //         height: 50,
+              //         width: 50,
+              //         child: Center(
+              //           child: Text(
+              //             'Tue',
+              //             style: TextStyle(
+              //                 fontSize: 12,
+              //                 fontFamily: Theme.of(context)
+              //                     .textTheme
+              //                     .bodyText2!
+              //                     .fontFamily,
+              //                 color:
+              //                     Theme.of(context).textTheme.bodyText2!.color),
+              //           ),
+              //         ),
+              //         decoration: decorator.copyWith(
+              //             shape: BoxShape.circle,
+              //             color: alldays || tueSelected
+              //                 ? Colors.green
+              //                 : Theme.of(context).backgroundColor),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+
+              Wrap(
+                spacing: 5,
+                runSpacing: 15,
+                alignment: WrapAlignment.start,
+                crossAxisAlignment: WrapCrossAlignment.start,
+                direction: Axis.horizontal,
+                runAlignment: WrapAlignment.start,
+                verticalDirection: VerticalDirection.down,
+                clipBehavior: Clip.none,
+                children: List.generate(weekDays.length, (index) {
+                  final dayName = weekDays[index];
+
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        Provider.of<HabitsProvider>(context, listen: false)
+                            .selectDay(index);
+                        print('day is ${dayName.day}');
+                        print('bool is ${dayName.daySelected}');
+                        dayName.daySelected = !dayName.daySelected;
+                      });
+                    },
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          child: Center(
+                            child: Text(
+                              dayName.day,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontFamily: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .fontFamily,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .color),
+                            ),
+                          ),
+                          decoration: decorator.copyWith(
+                              shape: BoxShape.circle,
+                              color: notifier.selector
+                                  ? Colors.green
+                                  : Theme.of(context).backgroundColor),
+                        )),
+                  );
+                }),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Reminder',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(fontSize: 16),
                   ),
+                  Text(
+                    '(Optional)',
+                    style: GoogleFonts.prompt(
+                        fontSize: 10,
+                        color: Theme.of(context).textTheme.bodyText2!.color),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              GestureDetector(
+                onTap: () {
+                  _selectTime();
+                },
+                child: Container(
+                  width: size.width * 0.6,
+                  height: 50,
+                  child: Center(
+                    child: Text(
+                      'Add reminder',
+                      style: GoogleFonts.prompt(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Theme.of(context).textTheme.bodyText2!.color),
+                    ),
+                  ),
+                  decoration: decorator.copyWith(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Theme.of(context).backgroundColor),
                 ),
-              ],
-            )
-          ],
-        ),
-      ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Cancel',
+                          style: GoogleFonts.prompt(
+                              color: Color.fromARGB(255, 12, 99, 212),
+                              fontWeight: FontWeight.w600))),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      child: Center(
+                        child: Text(
+                          'Confirm',
+                          style: GoogleFonts.prompt(color: Colors.white),
+                        ),
+                      ),
+                      height: 50,
+                      width: 120,
+                      decoration: decorator.copyWith(
+                          borderRadius: BorderRadius.circular(7),
+                          color: Color.fromARGB(255, 12, 99, 212)),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        );
+      }),
     );
   }
 }

@@ -23,6 +23,7 @@ class TaskModel extends HiveObject {
   final String? repeat;
   @HiveField(9)
   final bool? isComplete;
+  @HiveField(10)
   final double? hourlyRate;
 
   TaskModel(
