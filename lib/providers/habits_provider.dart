@@ -18,18 +18,34 @@ class HabitsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  int? dailyGoal = 1;
-  bool selector = true;
-  TimeOfDay? reminder = TimeOfDay.now();
+  int dailyGoal = 1;
+  bool repeat = true;
+  DateTime? reminder = DateTime.now();
   String? routine = 'Anytime';
-  void addHabitDetails(HabitsModel habit) {
-    dailyGoal = habit.dailyGoal;
-    reminder = habit.reminder;
-    notifyListeners();
-  }
 
   void selectRoutine(int routineIndex) {
     routine = routineList[routineIndex].routine;
+    notifyListeners();
+  }
+
+  void decreaseCount() {
+    dailyGoal -= 1;
+    notifyListeners();
+  }
+
+  void addCount() {
+    dailyGoal += 1;
+    notifyListeners();
+  }
+
+  void switchRepeat() {
+    repeat = !repeat;
+    notifyListeners();
+  }
+
+  void addHabitDetails(HabitsModel habit) {
+    reminder = habit.reminder!;
+    repeat = habit.repeat!;
     notifyListeners();
   }
 
@@ -47,5 +63,12 @@ class HabitsProvider with ChangeNotifier {
     _searchString = searchString;
     print(_searchString);
     notifyListeners();
+  }
+
+  void reset() {
+    reminder = DateTime.now();
+    repeat = true;
+    dailyGoal = 1;
+    routine = 'Anytime';
   }
 }

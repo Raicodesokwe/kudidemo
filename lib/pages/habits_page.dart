@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/models/habits_model.dart';
 import 'package:kudidemo/providers/habits_provider.dart';
+import 'package:kudidemo/utils/utils.dart';
 import 'package:kudidemo/widgets/circle_button.dart';
 import 'package:kudidemo/widgets/dailygoal_overlay.dart';
 import 'package:kudidemo/widgets/oval_container.dart';
@@ -18,7 +21,9 @@ import '../providers/color_provider.dart';
 import '../providers/theme_provider.dart';
 import '../widgets/back_arrow.dart';
 import '../widgets/color_overlay.dart';
+import '../widgets/neon_button.dart';
 import '../widgets/text_field.dart';
+import 'homepage.dart';
 
 class HabitsPage extends StatefulWidget {
   HabitsPage({Key? key}) : super(key: key);
@@ -32,8 +37,9 @@ class _HabitsPageState extends State<HabitsPage>
   late String habitsName;
   late String routine;
   late Color color;
+  late bool repeat;
   late int count;
-  late TimeOfDay selectedTime;
+  late DateTime selectedTime;
   TextEditingController habitsNameController = TextEditingController();
 
   final _habitsForm = GlobalKey<FormState>();
@@ -75,9 +81,30 @@ class _HabitsPageState extends State<HabitsPage>
   @override
   Widget build(BuildContext context) {
     color = Provider.of<ColorProvider>(context).selectedColor!;
-    count = Provider.of<HabitsProvider>(context).dailyGoal!;
+    count = Provider.of<HabitsProvider>(context).dailyGoal;
     selectedTime = Provider.of<HabitsProvider>(context).reminder!;
     routine = Provider.of<HabitsProvider>(context).routine!;
+    repeat = Provider.of<HabitsProvider>(context).repeat;
+
+    Future saveForm() async {
+      final isValid = _habitsForm.currentState!.validate();
+      if (isValid) {
+        final habit = HabitsModel(
+          id: Random().nextInt(10000),
+          name: habitsNameController.text,
+          color: color.value,
+          reminder: selectedTime,
+          repeat: repeat,
+        );
+        final habitProvider =
+            Provider.of<HabitsProvider>(context, listen: false);
+        habitProvider.addHabits(habit).then((value) => habitProvider.reset());
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (c) => HomePage()), (route) => false);
+      }
+    }
+
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -134,6 +161,11 @@ class _HabitsPageState extends State<HabitsPage>
               SizedBox(
                 height: size.height * 0.03,
               ),
+              GestureDetector(
+                  onTap: () {
+                    print('dis ist $routine');
+                  },
+                  child: Container(height: 50, width: 50, color: Colors.blue)),
               CustomTextField(
                   controller: habitsNameController,
                   emptytext: 'habit name is required',
@@ -179,9 +211,7 @@ class _HabitsPageState extends State<HabitsPage>
                         onTap: () {
                           showDialog(
                             context: context,
-                            builder: (_) => DailyGoalOverlay(
-                              count: count,
-                            ),
+                            builder: (_) => DailyGoalOverlay(),
                           );
                         },
                         child: OvalContainer(text: 'Daily goal')),
@@ -216,7 +246,11 @@ class _HabitsPageState extends State<HabitsPage>
               SizedBox(
                 height: size.height * 0.2,
               ),
-              CircleButton()
+              GestureDetector(
+                  onTap: () => saveForm(),
+                  child: habitsNameController.text.isNotEmpty
+                      ? NeonButton()
+                      : CircleButton())
             ],
           ),
         ),

@@ -5,9 +5,9 @@ class HabitsModel {
   final String? name;
   final int? color;
   final int? dailyGoal;
-  final String? repeat;
+  final bool? repeat;
   final String? routine;
-  final TimeOfDay? reminder;
+  final DateTime? reminder;
   final List? days;
 
   HabitsModel(

@@ -9,7 +9,7 @@ import '../providers/habits_provider.dart';
 import '../utils/utils.dart';
 
 class RepeatOverlay extends StatefulWidget {
-  TimeOfDay selectedTime;
+  DateTime selectedTime;
   RepeatOverlay({Key? key, required this.selectedTime}) : super(key: key);
 
   @override
@@ -40,7 +40,25 @@ class _RepeatOverlayState extends State<RepeatOverlay>
     controller.forward();
   }
 
-  _selectTime() async {
+  // _selectTime() async {
+  //   final timeOfDay = await showTimePicker(
+  //       builder: (BuildContext context, Widget? child) {
+  //         return Theme(
+  //           data: ThemeData(fontFamily: 'grifterbold'),
+  //           child: child!,
+  //         );
+  //       },
+  //       context: context,
+  //       initialTime: TimeOfDay.fromDateTime(widget.selectedTime));
+  //   if (timeOfDay == null) return null;
+
+  //   final date = DateTime(widget.selectedTime.year, widget.selectedTime.month,
+  //       widget.selectedTime.day);
+  //   final time = Duration(hours: timeOfDay.hour, minutes: timeOfDay.minute);
+  //   return date.add(time);
+  // }
+  Future<DateTime?> pickDateTime(DateTime initialDate,
+      {DateTime? firstDate}) async {
     final timeOfDay = await showTimePicker(
         builder: (BuildContext context, Widget? child) {
           return Theme(
@@ -49,10 +67,21 @@ class _RepeatOverlayState extends State<RepeatOverlay>
           );
         },
         context: context,
-        initialTime: widget.selectedTime);
+        initialTime: TimeOfDay.fromDateTime(initialDate));
     if (timeOfDay == null) return null;
+    final date = DateTime(initialDate.year, initialDate.month, initialDate.day);
+    final time = Duration(hours: timeOfDay.hour, minutes: timeOfDay.minute);
+    return date.add(time);
+  }
 
-    setState(() => widget.selectedTime = timeOfDay);
+  Future pickToDateTime() async {
+    final date = await pickDateTime(
+      widget.selectedTime,
+      firstDate: widget.selectedTime,
+    );
+    if (date == null) return;
+
+    setState(() => widget.selectedTime = date);
   }
 
   @override
@@ -81,6 +110,8 @@ class _RepeatOverlayState extends State<RepeatOverlay>
     return ScaleTransition(
       scale: scaleAnimation,
       child: Consumer<HabitsProvider>(builder: (context, notifier, child) {
+        final habit =
+            HabitsModel(repeat: notifier.repeat, reminder: widget.selectedTime);
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -98,12 +129,10 @@ class _RepeatOverlayState extends State<RepeatOverlay>
               ),
               GestureDetector(
                 onTap: () {
-                  setState(() {
-                    notifier.selector = !notifier.selector;
-                  });
+                  notifier.switchRepeat();
                 },
                 child: Checkbox(
-                    value: notifier.selector,
+                    value: notifier.repeat,
                     checkColor: Colors.white,
                     activeColor: Colors.green,
                     side: MaterialStateBorderSide.resolveWith(
@@ -112,7 +141,7 @@ class _RepeatOverlayState extends State<RepeatOverlay>
                     ),
                     onChanged: (bool? value) {
                       setState(() {
-                        notifier.selector = value!;
+                        notifier.repeat = value!;
                       });
                     }),
               )
@@ -199,48 +228,38 @@ class _RepeatOverlayState extends State<RepeatOverlay>
                 children: List.generate(weekDays.length, (index) {
                   final dayName = weekDays[index];
 
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        Provider.of<HabitsProvider>(context, listen: false)
-                            .selectDay(index);
-                        print('day is ${dayName.day}');
-                        print('bool is ${dayName.daySelected}');
-                        dayName.daySelected = !dayName.daySelected;
-                      });
-                    },
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: Container(
-                          height: 50,
-                          width: 50,
-                          child: Center(
-                            child: Text(
-                              dayName.day,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: Theme.of(context)
-                                      .textTheme
-                                      .bodyText2!
-                                      .fontFamily,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyText2!
-                                      .color),
-                            ),
+                  return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        child: Center(
+                          child: Text(
+                            dayName.day,
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .fontFamily,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .color),
                           ),
-                          decoration: decorator.copyWith(
-                              shape: BoxShape.circle,
-                              color: notifier.selector
-                                  ? Colors.green
-                                  : Theme.of(context).backgroundColor),
-                        )),
-                  );
+                        ),
+                        decoration: decorator.copyWith(
+                            shape: BoxShape.circle,
+                            color: notifier.repeat
+                                ? Colors.green
+                                : Theme.of(context).backgroundColor),
+                      ));
                 }),
               ),
               SizedBox(
                 height: 20,
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -256,7 +275,13 @@ class _RepeatOverlayState extends State<RepeatOverlay>
                     style: GoogleFonts.prompt(
                         fontSize: 10,
                         color: Theme.of(context).textTheme.bodyText2!.color),
-                  )
+                  ),
+                  Text(
+                    Utils.toTime(widget.selectedTime),
+                    style: GoogleFonts.prompt(
+                        fontSize: 10,
+                        color: Theme.of(context).textTheme.bodyText2!.color),
+                  ),
                 ],
               ),
               SizedBox(
@@ -264,7 +289,8 @@ class _RepeatOverlayState extends State<RepeatOverlay>
               ),
               GestureDetector(
                 onTap: () {
-                  _selectTime();
+                  // _selectTime();
+                  pickToDateTime();
                 },
                 child: Container(
                   width: size.width * 0.6,
@@ -298,7 +324,10 @@ class _RepeatOverlayState extends State<RepeatOverlay>
                               color: Color.fromARGB(255, 12, 99, 212),
                               fontWeight: FontWeight.w600))),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      notifier.addHabitDetails(habit);
+                      Navigator.of(context).pop();
+                    },
                     child: Container(
                       child: Center(
                         child: Text(

@@ -74,9 +74,7 @@ class _RoutineOverlayState extends State<RoutineOverlay>
             final routineName = routineList[index];
             return GestureDetector(
               onTap: () {
-                setState(() {
-                  routineProvider.selectRoutine(index);
-                });
+                routineProvider.selectRoutine(index);
 
                 print('hii ni ${routineProvider.routine}');
               },
@@ -89,8 +87,12 @@ class _RoutineOverlayState extends State<RoutineOverlay>
                       child: Text(
                         routineName.routine,
                         style: GoogleFonts.prompt(
-                            color: Colors.black45,
-                            fontSize: 10,
+                            color: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .color!
+                                .withOpacity(0.5),
+                            fontSize: 12,
                             fontWeight: FontWeight.w600),
                       ),
                     ),

@@ -299,8 +299,9 @@ class _HomePageState extends State<HomePage> {
                                   return ThemeOverlay();
                                 });
                           },
-                          child: Image.asset(
-                            'assets/images/sun.png',
+                          child: SvgPicture.asset(
+                            'assets/images/theme.svg',
+                            height: size.height * 0.05,
                             color: Theme.of(context).textTheme.bodyText2!.color,
                           )),
                     ],
@@ -490,8 +491,13 @@ class _HomePageState extends State<HomePage> {
                                       child: Text(
                                         '${DateFormat('Hm').format(now)}',
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w300,
-                                            color: Colors.black54),
+                                          fontWeight: FontWeight.w300,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2!
+                                              .color!
+                                              .withOpacity(0.5),
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
@@ -502,6 +508,11 @@ class _HomePageState extends State<HomePage> {
                                       width: size.width * 0.65,
                                       child: Text(
                                         'None at the moment',
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2!
+                                                .color),
                                       ),
                                       decoration: decorator.copyWith(
                                           color:
@@ -528,7 +539,9 @@ class _HomePageState extends State<HomePage> {
                                             final theTime = taskItem[index]
                                                 .from!
                                                 .subtract(Duration(minutes: 5));
-                                            if (taskItem[index].reminder == 5) {
+                                            if (taskItem[index].reminder == 5 &&
+                                                taskItem[index].isComplete ==
+                                                    false) {
                                               NotifyService
                                                   .showScheduledNotification(
                                                       id: taskItem[index].id,
@@ -538,8 +551,10 @@ class _HomePageState extends State<HomePage> {
                                                       title:
                                                           taskItem[index].name);
                                             } else if (taskItem[index]
-                                                    .reminder ==
-                                                10) {
+                                                        .reminder ==
+                                                    10 &&
+                                                taskItem[index].isComplete ==
+                                                    false) {
                                               NotifyService
                                                   .showScheduledNotification(
                                                       id: taskItem[index].id,
@@ -555,8 +570,10 @@ class _HomePageState extends State<HomePage> {
                                                       title:
                                                           taskItem[index].name);
                                             } else if (taskItem[index]
-                                                    .reminder ==
-                                                15) {
+                                                        .reminder ==
+                                                    15 &&
+                                                taskItem[index].isComplete ==
+                                                    false) {
                                               NotifyService
                                                   .showScheduledNotification(
                                                       id: taskItem[index].id,
@@ -572,8 +589,10 @@ class _HomePageState extends State<HomePage> {
                                                       title:
                                                           taskItem[index].name);
                                             } else if (taskItem[index]
-                                                    .reminder ==
-                                                20) {
+                                                        .reminder ==
+                                                    20 &&
+                                                taskItem[index].isComplete ==
+                                                    false) {
                                               NotifyService
                                                   .showScheduledNotification(
                                                       id: taskItem[index].id,
@@ -589,7 +608,9 @@ class _HomePageState extends State<HomePage> {
                                                       title:
                                                           taskItem[index].name);
                                             } else if (taskItem[index].repeat ==
-                                                'None') {
+                                                    'None' &&
+                                                taskItem[index].isComplete ==
+                                                    false) {
                                               NotifyService.showScheduledNotification(
                                                   id: taskItem[index].id,
                                                   scheduledDate:
@@ -605,7 +626,9 @@ class _HomePageState extends State<HomePage> {
                                                       taskItem[index].to!),
                                                   title: taskItem[index].name);
                                             } else if (taskItem[index].repeat ==
-                                                'Daily') {
+                                                    'Daily' &&
+                                                taskItem[index].isComplete ==
+                                                    false) {
                                               NotifyService
                                                   .showDailyScheduledNotification(
                                                       id: taskItem[index].id,
@@ -616,7 +639,9 @@ class _HomePageState extends State<HomePage> {
                                                       title:
                                                           taskItem[index].name);
                                             } else if (taskItem[index].repeat ==
-                                                'Weekly') {
+                                                    'Weekly' &&
+                                                taskItem[index].isComplete ==
+                                                    false) {
                                               NotifyService
                                                   .showWeeklyScheduledNotification(
                                                       id: taskItem[index].id,

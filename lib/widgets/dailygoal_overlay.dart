@@ -5,8 +5,9 @@ import 'package:kudidemo/providers/habits_provider.dart';
 import 'package:provider/provider.dart';
 
 class DailyGoalOverlay extends StatefulWidget {
-  int count;
-  DailyGoalOverlay({Key? key, required this.count}) : super(key: key);
+  DailyGoalOverlay({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<DailyGoalOverlay> createState() => _DailyGoalOverlayState();
@@ -16,7 +17,7 @@ class _DailyGoalOverlayState extends State<DailyGoalOverlay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
-
+  int? count;
   @override
   void initState() {
     super.initState();
@@ -37,20 +38,18 @@ class _DailyGoalOverlayState extends State<DailyGoalOverlay>
   Widget build(BuildContext context) {
     void addCount() {
       setState(() {
-        widget.count++;
+        Provider.of<HabitsProvider>(context, listen: false).addCount();
       });
     }
 
     void reduceCount() {
-      if (widget.count > 1) {
+      if (count! > 1) {
         setState(() {
-          widget.count--;
+          Provider.of<HabitsProvider>(context, listen: false).decreaseCount();
         });
       }
     }
 
-    final habit = HabitsModel(dailyGoal: widget.count);
-    Provider.of<HabitsProvider>(context).addHabitDetails(habit);
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -104,12 +103,15 @@ class _DailyGoalOverlayState extends State<DailyGoalOverlay>
                 SizedBox(
                   width: 15,
                 ),
-                Text(
-                  widget.count.toString(),
-                  style: TextStyle(
-                      fontSize: 25,
-                      color: Theme.of(context).textTheme.bodyText2!.color),
-                ),
+                Consumer<HabitsProvider>(builder: (context, notifier, child) {
+                  count = notifier.dailyGoal;
+                  return Text(
+                    notifier.dailyGoal.toString(),
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Theme.of(context).textTheme.bodyText2!.color),
+                  );
+                }),
                 SizedBox(
                   width: 15,
                 ),

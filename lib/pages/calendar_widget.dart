@@ -121,7 +121,8 @@ class CalendarWidget extends StatelessWidget {
                               fontFamily: 'grifterBold',
                               fontSize: 22,
                               fontStyle: FontStyle.normal,
-                              color: Colors.black,
+                              color:
+                                  Theme.of(context).textTheme.bodyText2!.color,
                               fontWeight: FontWeight.w900)),
                       monthViewSettings: MonthViewSettings(
                           appointmentDisplayMode:
