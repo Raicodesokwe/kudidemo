@@ -11,12 +11,14 @@ class TaskWidget extends StatelessWidget {
     required this.decorator,
     required this.image,
     required this.task,
+    this.count,
   }) : super(key: key);
 
   final Size size;
   final BoxDecoration decorator;
   final String image;
   final String task;
+  final String? count;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,11 @@ class TaskWidget extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: size.height * 0.03,
+              height: size.height * 0.015,
+            ),
+            Text(
+              count ?? '',
+              style: GoogleFonts.prompt(),
             ),
             Text(task,
                 style: GoogleFonts.prompt(

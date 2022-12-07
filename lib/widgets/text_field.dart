@@ -58,7 +58,12 @@ class CustomTextField extends StatelessWidget {
           decoration: InputDecoration(
               prefixIcon: prefixIcon,
               hintText: hintText,
-              hintStyle: GoogleFonts.prompt(),
+              hintStyle: GoogleFonts.prompt(
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyText2!
+                      .color!
+                      .withOpacity(0.5)),
               border: InputBorder.none),
         ));
   }

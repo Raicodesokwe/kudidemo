@@ -281,8 +281,13 @@ class _HomePageState extends State<HomePage> {
                               width: 50,
                               decoration: BoxDecoration(
                                 color: notifier.color,
-                                border:
-                                    Border.all(color: Colors.black54, width: 4),
+                                border: Border.all(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2!
+                                        .color!
+                                        .withOpacity(0.5),
+                                    width: 4),
                                 shape: BoxShape.circle,
                               ),
                               child: Center(

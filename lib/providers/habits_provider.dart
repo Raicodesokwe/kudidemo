@@ -22,6 +22,7 @@ class HabitsProvider with ChangeNotifier {
   bool repeat = true;
   DateTime? reminder = DateTime.now();
   String? routine = 'Anytime';
+  bool? complete = false;
 
   void selectRoutine(int routineIndex) {
     routine = routineList[routineIndex].routine;

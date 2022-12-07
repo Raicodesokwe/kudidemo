@@ -175,34 +175,30 @@ class TaskStats extends StatelessWidget {
         final listLength = notifier.tasks;
         return SafeArea(
           child: Scaffold(
-              floatingActionButton: listLength.length <= 0
-                  ? Theme(
-                      data: Theme.of(context).copyWith(
-                          floatingActionButtonTheme:
-                              FloatingActionButtonThemeData(
-                                  extendedSizeConstraints:
-                                      BoxConstraints.tightFor(
-                        height: size.height * 0.07,
-                        width: size.width * 0.45,
-                      ))),
-                      child: FloatingActionButton.extended(
-                          backgroundColor: Colors.green,
-                          elevation: 7,
-                          icon: Icon(
-                            Icons.add,
-                            color: Theme.of(context).textTheme.bodyText2!.color,
-                          ),
-                          onPressed: () {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => TaskView()));
-                          },
-                          label: Text(
-                            'Add new task',
-                            style: Theme.of(context).textTheme.bodyText2,
-                          )),
-                    )
-                  : Container(),
+              floatingActionButton: Theme(
+                data: Theme.of(context).copyWith(
+                    floatingActionButtonTheme: FloatingActionButtonThemeData(
+                        extendedSizeConstraints: BoxConstraints.tightFor(
+                  height: size.height * 0.07,
+                  width: size.width * 0.45,
+                ))),
+                child: FloatingActionButton.extended(
+                    backgroundColor: Colors.green,
+                    elevation: 7,
+                    icon: Icon(
+                      Icons.add,
+                      color: Theme.of(context).textTheme.bodyText2!.color,
+                    ),
+                    onPressed: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => TaskView()));
+                    },
+                    label: Text(
+                      'Add new task',
+                      style: Theme.of(context).textTheme.bodyText2,
+                    )),
+              ),
               body: listLength.length <= 0
                   ? Center(
                       child: Column(
@@ -247,7 +243,7 @@ class TaskStats extends StatelessWidget {
                             decoration: decorator.copyWith(
                                 color: Theme.of(context).backgroundColor,
                                 borderRadius: BorderRadius.circular(7)),
-                            height: size.height * 0.7,
+                            height: size.height * 0.6,
                             child: SfCartesianChart(
                               margin: EdgeInsets.all(10),
                               borderWidth: 0,
@@ -292,6 +288,60 @@ class TaskStats extends StatelessWidget {
                               ],
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                                height: 60,
+                                width: 60,
+                                decoration: decorator.copyWith(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Theme.of(context).backgroundColor),
+                                child: Center(
+                                    child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      gradient: LinearGradient(
+                                          colors: [Colors.green, Colors.blue])),
+                                ))),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text('Complete tasks')
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                                height: 60,
+                                width: 60,
+                                decoration: decorator.copyWith(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Theme.of(context).backgroundColor),
+                                child: Center(
+                                    child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      gradient: LinearGradient(
+                                          colors: [Colors.red, Colors.blue])),
+                                ))),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text('Incomplete tasks')
+                          ],
                         ),
                       ],
                     )),

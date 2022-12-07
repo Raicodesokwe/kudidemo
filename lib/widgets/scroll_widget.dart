@@ -5,6 +5,7 @@ import 'package:kudidemo/pages/group_task.dart';
 import 'package:kudidemo/pages/landing_screen.dart';
 import 'package:kudidemo/pages/splash_screen.dart';
 import 'package:kudidemo/pages/timer_widget.dart';
+import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/services/auth_service.dart';
 import 'package:kudidemo/widgets/task_widget.dart';
 import 'package:provider/provider.dart';
@@ -53,12 +54,20 @@ class ScrollWidget extends StatelessWidget {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => TaskView()));
             },
-            child: TaskWidget(
-              size: size,
-              decorator: decorator,
-              task: 'Task',
-              image: "assets/images/tasks.png",
-            ),
+            child: Consumer<TaskProvider>(builder: (context, notifier, child) {
+              final listLength = notifier.tasks.length;
+              return TaskWidget(
+                size: size,
+                decorator: decorator,
+                task: 'Task',
+                count: listLength <= 0
+                    ? ''
+                    : listLength == 1
+                        ? '$listLength task'
+                        : '$listLength tasks',
+                image: "assets/images/tasks.png",
+              );
+            }),
           ),
           SizedBox(
             width: size.width * 0.04,

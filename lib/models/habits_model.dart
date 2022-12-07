@@ -9,6 +9,7 @@ class HabitsModel {
   final String? routine;
   final DateTime? reminder;
   final List? days;
+  final bool? complete;
 
   HabitsModel(
       {this.color,
@@ -18,5 +19,6 @@ class HabitsModel {
       this.repeat,
       this.reminder,
       this.days,
+      this.complete,
       this.routine});
 }
