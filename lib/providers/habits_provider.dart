@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:hive/hive.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,16 +14,43 @@ class HabitsProvider with ChangeNotifier {
     return [..._habits];
   }
 
+  final String habitHiveBox = 'habits-box';
   Future<void> addHabits(HabitsModel habit) async {
-    _habits.add(habit);
+    Box<HabitsModel> box = await Hive.openBox<HabitsModel>(habitHiveBox);
+    await box.put(habit.id, habit);
+    _habits = box.values.toList();
+    notifyListeners();
+  }
+
+  Future<void> getHabits() async {
+    Box<HabitsModel> box = await Hive.openBox<HabitsModel>(habitHiveBox);
+    _habits = box.values.toList();
+    notifyListeners();
+  }
+
+  Future<void> removeHabit(HabitsModel habit) async {
+    Box<HabitsModel> box = await Hive.openBox<HabitsModel>(habitHiveBox);
+    await box.delete(habit.key);
+    _habits = box.values.toList();
+    notifyListeners();
+  }
+
+  Future<void> changeHabit(HabitsModel habit) async {
+    Box<HabitsModel> box = await Hive.openBox<HabitsModel>(habitHiveBox);
+
+    await box.put(habit.id, habit);
+    _habits = box.values.toList();
+
     notifyListeners();
   }
 
   int dailyGoal = 1;
   bool repeat = true;
-  DateTime? reminder = DateTime.now();
-  String? routine = 'Anytime';
-  bool? complete = false;
+  DateTime reminder = DateTime.now();
+  String routine = 'Anytime';
+  bool complete = false;
+  List days = [];
+  DateTime today = DateTime.now();
 
   void selectRoutine(int routineIndex) {
     routine = routineList[routineIndex].routine;
@@ -71,5 +99,6 @@ class HabitsProvider with ChangeNotifier {
     repeat = true;
     dailyGoal = 1;
     routine = 'Anytime';
+    days = [];
   }
 }

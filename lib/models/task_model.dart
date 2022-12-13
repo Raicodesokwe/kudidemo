@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:kudidemo/models/billable_model.dart';
 part 'task_model.g.dart';
 
 @HiveType(typeId: 0)
@@ -25,6 +26,8 @@ class TaskModel extends HiveObject {
   final bool? isComplete;
   @HiveField(10)
   final double? hourlyRate;
+  @HiveField(11)
+  final List<BillableModel>? billList;
 
   TaskModel(
       {this.id,
@@ -37,5 +40,6 @@ class TaskModel extends HiveObject {
       this.repeat,
       this.subtask,
       this.hourlyRate,
-      this.isComplete});
+      this.isComplete,
+      this.billList});
 }

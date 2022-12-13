@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kudidemo/models/habits_model.dart';
 
 import 'package:kudidemo/pages/chat_page.dart';
 import 'package:kudidemo/pages/group_task.dart';
@@ -39,6 +40,7 @@ void main() async {
   ]);
   await Hive.initFlutter();
   Hive.registerAdapter(TaskModelAdapter());
+  Hive.registerAdapter(HabitsModelAdapter());
   runApp(const MyApp());
 }
 

@@ -529,7 +529,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 builder: (context, notifier, ch) {
                                   final taskItem = notifier.tasks;
-                                  if (notifier.tasks.length <= 0) {
+                                  if (notifier.tasks.isEmpty) {
                                     return ch!;
                                   }
 

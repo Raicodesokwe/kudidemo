@@ -138,7 +138,7 @@ class _PomodoroWidgetState extends State<PomodoroWidget>
             title: 'Task finished',
             body: widget.task ?? '');
       }
-
+      final saa = DateTime.now();
       return Column(
         children: [
           SizedBox(
@@ -147,6 +147,10 @@ class _PomodoroWidgetState extends State<PomodoroWidget>
           Center(
             child: GestureDetector(
               onTap: () {
+                setState(() {
+                  print('minini ${saa.hour}:${saa.minute}:${saa.second}');
+                });
+
                 print('malcolm in the $value');
               },
               child: Container(
