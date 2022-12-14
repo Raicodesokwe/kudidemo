@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kudidemo/models/billable_model.dart';
+
 import 'package:kudidemo/models/reminder_model.dart';
 import 'package:kudidemo/models/repeat_model.dart';
 import 'package:kudidemo/models/task_model.dart';
@@ -91,6 +93,13 @@ class TaskProvider with ChangeNotifier {
   bool? complete = false;
   void completeStatus() {
     complete = !complete!;
+    notifyListeners();
+  }
+
+  List<BillableModel> bills = [];
+
+  void addBillableList(BillableModel bill) {
+    bills.add(bill);
     notifyListeners();
   }
 

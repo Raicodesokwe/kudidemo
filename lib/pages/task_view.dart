@@ -176,7 +176,8 @@ class _TaskViewState extends State<TaskView>
             reminder: reminder,
             repeat: repeat,
             hourlyRate: hourlyRate,
-            isComplete: false);
+            isComplete: false,
+            billList: []);
         final taskProvider = Provider.of<TaskProvider>(context, listen: false);
         taskProvider.addTask(task).then((value) => taskProvider.reset());
 

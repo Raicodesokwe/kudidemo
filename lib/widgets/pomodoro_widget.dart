@@ -184,7 +184,11 @@ class _PomodoroWidgetState extends State<PomodoroWidget>
                             Icon(
                               FontAwesomeIcons.clock,
                               size: 15,
-                              color: Colors.black54,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .color!
+                                  .withOpacity(0.5),
                             ),
                             SizedBox(
                               width: 5,

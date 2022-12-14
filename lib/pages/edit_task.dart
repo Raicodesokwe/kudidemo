@@ -173,7 +173,8 @@ class _EditTaskState extends State<EditTask>
             reminder: reminder,
             repeat: repeat,
             hourlyRate: hourlyRate == 0 ? widget.task!.hourlyRate : hourlyRate,
-            isComplete: widget.task!.isComplete!);
+            isComplete: widget.task!.isComplete!,
+            billList: []);
         final taskProvider = Provider.of<TaskProvider>(context, listen: false);
         taskProvider.changeTask(task).then((value) => taskProvider.reset());
 

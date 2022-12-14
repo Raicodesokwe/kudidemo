@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/models/task_model.dart';
 import 'package:kudidemo/widgets/billable_widget.dart';
 
 import 'package:kudidemo/widgets/pomodoro_widget.dart';
@@ -10,10 +11,11 @@ import 'package:kudidemo/widgets/pomodoro_widget.dart';
 import '../widgets/back_arrow.dart';
 
 class TimerWidget extends StatelessWidget {
+  final TaskModel? taskItem;
   final String? task;
   final Color? color;
   final double? hourlyRate;
-  TimerWidget({Key? key, this.task, this.color, this.hourlyRate})
+  TimerWidget({Key? key, this.taskItem, this.task, this.color, this.hourlyRate})
       : super(key: key);
 
   @override
@@ -53,7 +55,7 @@ class TimerWidget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TabBar(
-                      labelColor: Colors.black,
+                      labelColor: Theme.of(context).textTheme.bodyText2!.color,
                       labelStyle: Theme.of(context).textTheme.bodyText2,
                       indicator: BoxDecoration(
                         color: Theme.of(context).backgroundColor,
@@ -93,6 +95,7 @@ class TimerWidget extends StatelessWidget {
                   task: task,
                 ),
                 BillableWidget(
+                  taskItem: taskItem,
                   hourlyRate: hourlyRate,
                   color: color,
                   task: task,
