@@ -57,8 +57,8 @@ class _TaskViewState extends State<TaskView>
     return false;
   }
 
-  late AnimationController controller;
-  late Animation<double> fadeAnimation;
+  late AnimationController _animationController;
+  late Animation<Offset> _pageOffsetAnimation;
 
   @override
   void initState() {
@@ -69,22 +69,25 @@ class _TaskViewState extends State<TaskView>
       // toDate = now.add(Duration(hours: 1));
     }
 
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 950));
-    fadeAnimation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
+    _animationController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 1000));
+    _animationController.forward(); // TODO: implement initState
+    super.initState();
 
-    controller.addListener(() {
-      setState(() {});
-    });
-
-    controller.forward();
+    _pageOffsetAnimation = Tween<Offset>(
+      begin: Offset(0, 5),
+      end: Offset(0, 0),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.fastOutSlowIn,
+    ));
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    controller.dispose();
+    _animationController.dispose();
   }
 
   @override
@@ -192,177 +195,182 @@ class _TaskViewState extends State<TaskView>
       body: Form(
         key: _taskForm,
         child: FadeTransition(
-          opacity: fadeAnimation,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (!isKeyboard)
-                BackArrow(
-                  decorator: decorator,
+          opacity: _animationController,
+          child: SlideTransition(
+            position: _pageOffsetAnimation,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (!isKeyboard)
+                  BackArrow(
+                    decorator: decorator,
+                  ),
+                if (!isKeyboard)
+                  Center(
+                    child: SizedBox(
+                        width: size.width * 0.4,
+                        child: Lottie.asset('assets/images/task.json')),
+                  ),
+                SizedBox(
+                  height: size.height * 0.03,
                 ),
-              if (!isKeyboard)
-                Center(
-                  child: SizedBox(
-                      width: size.width * 0.4,
-                      child: Lottie.asset('assets/images/task.json')),
+                if (!isKeyboard)
+                  Text('Task',
+                      style: TextStyle(
+                          color: Theme.of(context).backgroundColor,
+                          fontSize: 50,
+                          shadows: const [
+                            Shadow(
+                                color: Color.fromARGB(255, 92, 202, 96),
+                                blurRadius: 8),
+                            Shadow(
+                                color: Color.fromARGB(255, 92, 202, 96),
+                                blurRadius: 10),
+                            Shadow(
+                                color: Color.fromARGB(255, 92, 202, 96),
+                                blurRadius: 12),
+                          ])),
+                SizedBox(
+                  height: size.height * 0.03,
                 ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              if (!isKeyboard)
-                Text('Task',
-                    style: TextStyle(
-                        color: Theme.of(context).backgroundColor,
-                        fontSize: 50,
-                        shadows: const [
-                          Shadow(
-                              color: Color.fromARGB(255, 92, 202, 96),
-                              blurRadius: 8),
-                          Shadow(
-                              color: Color.fromARGB(255, 92, 202, 96),
-                              blurRadius: 10),
-                          Shadow(
-                              color: Color.fromARGB(255, 92, 202, 96),
-                              blurRadius: 12),
-                        ])),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              CustomTextField(
-                  controller: taskNameController,
-                  emptytext: 'task name is required',
-                  hintText: 'Task name'),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        FocusScope.of(context).unfocus();
-                        selectColorDialog(context);
-                      },
-                      child: Container(
-                          padding: const EdgeInsets.all(7),
+                CustomTextField(
+                    controller: taskNameController,
+                    emptytext: 'task name is required',
+                    hintText: 'Task name'),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+                          selectColorDialog(context);
+                        },
+                        child: Container(
+                            padding: const EdgeInsets.all(7),
+                            child: Center(
+                                child: Container(
+                              height: 30,
+                              width: 30,
+                              decoration: BoxDecoration(
+                                  color: color, shape: BoxShape.circle),
+                            )),
+                            decoration: decorator.copyWith(
+                                color: Theme.of(context).backgroundColor,
+                                borderRadius: BorderRadius.circular(30))),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+                          createAlertDialog(context);
+                        },
+                        child: Container(
+                          height: 35,
+                          width: 35,
                           child: Center(
-                              child: Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                                color: color, shape: BoxShape.circle),
-                          )),
+                              child: Icon(Icons.calendar_month,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .color)),
                           decoration: decorator.copyWith(
                               color: Theme.of(context).backgroundColor,
-                              borderRadius: BorderRadius.circular(30))),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        FocusScope.of(context).unfocus();
-                        createAlertDialog(context);
-                      },
-                      child: Container(
-                        height: 35,
-                        width: 35,
-                        child: Center(
-                            child: Icon(Icons.calendar_month,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2!
-                                    .color)),
-                        decoration: decorator.copyWith(
-                            color: Theme.of(context).backgroundColor,
-                            borderRadius: BorderRadius.circular(5)),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        FocusScope.of(context).unfocus();
-                        showDialog(
-                            context: context,
-                            barrierDismissible: true,
-                            builder: (context) {
-                              return SubtaskOverlay();
-                            });
-                      },
-                      child: Container(
-                        height: 35,
-                        width: 35,
-                        decoration: decorator.copyWith(
-                            color: Theme.of(context).backgroundColor,
-                            shape: BoxShape.circle),
-                        child: Icon(
-                          FontAwesomeIcons.codeBranch,
-                          color: Theme.of(context).textTheme.bodyText2!.color,
-                          size: 15,
+                              borderRadius: BorderRadius.circular(5)),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        FocusScope.of(context).unfocus();
-                        showDialog(
-                            context: context,
-                            barrierDismissible: true,
-                            builder: (context) {
-                              return NotesOverlay();
-                            });
-                      },
-                      child: Container(
-                        height: 35,
-                        width: 35,
-                        child: Center(
-                            child: Icon(Icons.note_alt,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2!
-                                    .color)),
-                        decoration: decorator.copyWith(
-                            color: Theme.of(context).backgroundColor,
-                            borderRadius: BorderRadius.circular(5)),
+                      GestureDetector(
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+                          showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (context) {
+                                return SubtaskOverlay();
+                              });
+                        },
+                        child: Container(
+                          height: 35,
+                          width: 35,
+                          decoration: decorator.copyWith(
+                              color: Theme.of(context).backgroundColor,
+                              shape: BoxShape.circle),
+                          child: Icon(
+                            FontAwesomeIcons.codeBranch,
+                            color: Theme.of(context).textTheme.bodyText2!.color,
+                            size: 15,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              GestureDetector(
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                  showDialog(
-                      context: context,
-                      barrierDismissible: true,
-                      builder: (context) {
-                        return BillingOverlay();
-                      });
-                },
-                child: Center(
-                  child: Container(
-                    height: 35,
-                    width: 35,
-                    child: Center(
-                        child: Icon(FontAwesomeIcons.dollarSign,
-                            color:
-                                Theme.of(context).textTheme.bodyText2!.color)),
-                    decoration: decorator.copyWith(
-                        color: Theme.of(context).backgroundColor,
-                        borderRadius: BorderRadius.circular(5)),
+                      GestureDetector(
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+                          showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (context) {
+                                return NotesOverlay();
+                              });
+                        },
+                        child: Container(
+                          height: 35,
+                          width: 35,
+                          child: Center(
+                              child: Icon(Icons.note_alt,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .color)),
+                          decoration: decorator.copyWith(
+                              color: Theme.of(context).backgroundColor,
+                              borderRadius: BorderRadius.circular(5)),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: size.height * 0.13,
-              ),
-              GestureDetector(
-                  onTap: () => saveForm(),
-                  child: taskNameController.text.isNotEmpty
-                      ? NeonButton()
-                      : CircleButton())
-            ],
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (context) {
+                          return BillingOverlay();
+                        });
+                  },
+                  child: Center(
+                    child: Container(
+                      height: 35,
+                      width: 35,
+                      child: Center(
+                          child: Icon(FontAwesomeIcons.dollarSign,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .color)),
+                      decoration: decorator.copyWith(
+                          color: Theme.of(context).backgroundColor,
+                          borderRadius: BorderRadius.circular(5)),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.13,
+                ),
+                GestureDetector(
+                    onTap: () => saveForm(),
+                    child: taskNameController.text.isNotEmpty
+                        ? NeonButton()
+                        : CircleButton())
+              ],
+            ),
           ),
         ),
       ),

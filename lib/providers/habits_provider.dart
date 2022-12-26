@@ -3,46 +3,16 @@ import 'package:hive/hive.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kudidemo/models/expense_model.dart';
-import 'package:kudidemo/models/habits_model.dart';
+
 import 'package:kudidemo/models/routine_model.dart';
 import 'package:kudidemo/models/week_model.dart';
+import 'package:kudidemo/utils/date_time.dart';
 
 class HabitsProvider with ChangeNotifier {
-  List<HabitsModel> _habits = [];
-  List<HabitsModel> get habits {
-    return [..._habits];
-  }
-
-  final String habitHiveBox = 'habits-box';
-  Future<void> addHabits(HabitsModel habit) async {
-    Box<HabitsModel> box = await Hive.openBox<HabitsModel>(habitHiveBox);
-    await box.put(habit.id, habit);
-    _habits = box.values.toList();
-    notifyListeners();
-  }
-
-  Future<void> getHabits() async {
-    Box<HabitsModel> box = await Hive.openBox<HabitsModel>(habitHiveBox);
-    _habits = box.values.toList();
-    notifyListeners();
-  }
-
-  Future<void> removeHabit(HabitsModel habit) async {
-    Box<HabitsModel> box = await Hive.openBox<HabitsModel>(habitHiveBox);
-    await box.delete(habit.key);
-    _habits = box.values.toList();
-    notifyListeners();
-  }
-
-  Future<void> changeHabit(HabitsModel habit) async {
-    Box<HabitsModel> box = await Hive.openBox<HabitsModel>(habitHiveBox);
-
-    await box.put(habit.id, habit);
-    _habits = box.values.toList();
-
-    notifyListeners();
-  }
+  // List _habits = [];
+  // List get habits {
+  //   return [..._habits];
+  // }
 
   int dailyGoal = 1;
   bool repeat = true;
@@ -72,25 +42,8 @@ class HabitsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void addHabitDetails(HabitsModel habit) {
-    reminder = habit.reminder!;
-    repeat = habit.repeat!;
-    notifyListeners();
-  }
-
   void selectDay(int dayIndex) {
     weekDays[dayIndex].daySelected = true;
-    notifyListeners();
-  }
-
-  String _searchString = "";
-  UnmodifiableListView<ExpenseModel> get expenses => _searchString.isEmpty
-      ? UnmodifiableListView(expenseList)
-      : UnmodifiableListView(expenseList.where(
-          (element) => element.name.toLowerCase().contains(_searchString)));
-  void changeSearchString(String searchString) {
-    _searchString = searchString;
-    print(_searchString);
     notifyListeners();
   }
 
@@ -101,4 +54,70 @@ class HabitsProvider with ChangeNotifier {
     routine = 'Anytime';
     days = [];
   }
+
+  // Map<DateTime, int> heatMapDataSet = {};
+  // final _myBox = Hive.box("Habit_Database");
+  // void createDefaultData() {
+  //   _habits = [];
+  //   _myBox.put("START_DATE", todaysDateFormatted());
+  //   notifyListeners();
+  // }
+
+  // void loadData() {
+  //   if (_myBox.get(todaysDateFormatted()) == null) {
+  //     _habits = _myBox.get("CURRENT_HABIT_LIST");
+  //     for (int i = 0; i < habits.length; i++) {
+  //       habits[i][6] = false;
+  //     }
+  //   } else {
+  //     _habits = _myBox.get(todaysDateFormatted());
+  //   }
+  //   notifyListeners();
+  // }
+
+  // void updateDatabase() {
+  //   _myBox.put(todaysDateFormatted(), habits);
+  //   _myBox.put("CURRENT_HABIT_LIST", habits);
+  //   calculateHabitPercentages();
+  //   loadHeatMap();
+  //   notifyListeners();
+  // }
+
+  // void calculateHabitPercentages() {
+  //   int countCompleted = 0;
+  //   for (int i = 0; i < habits.length; i++) {
+  //     if (habits[i][6] == true) {
+  //       countCompleted++;
+  //     }
+  //   }
+  //   String percent = habits.isEmpty
+  //       ? "0.0"
+  //       : (countCompleted / habits.length).toStringAsFixed(1);
+
+  //   _myBox.put("PERCENTAGE_SUMMARY_${todaysDateFormatted()}", percent);
+  //   notifyListeners();
+  // }
+
+  // void loadHeatMap() {
+  //   DateTime startDate = createDateTimeObject(_myBox.get("START_DATE"));
+  //   int daysInBetween = DateTime.now().difference(startDate).inDays;
+  //   for (int i = 0; i < daysInBetween + 1; i++) {
+  //     String yyyymmdd =
+  //         convertDateTimeToString(startDate.add(Duration(days: i)));
+
+  //     double strengthAsPercent =
+  //         double.parse(_myBox.get("PERCENTAGE_SUMMARY_$yyyymmdd") ?? "0.0");
+
+  //     int year = startDate.add(Duration(days: i)).year;
+  //     int month = startDate.add(Duration(days: i)).month;
+  //     int day = startDate.add(Duration(days: i)).day;
+
+  //     final percentForEachDay = <DateTime, int>{
+  //       DateTime(year, month, day): (10 * strengthAsPercent).toInt()
+  //     };
+  //     heatMapDataSet.addEntries(percentForEachDay.entries);
+  //     print(heatMapDataSet);
+  //   }
+  //   notifyListeners();
+  // }
 }

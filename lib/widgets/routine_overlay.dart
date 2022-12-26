@@ -4,8 +4,6 @@ import 'package:kudidemo/models/routine_model.dart';
 import 'package:kudidemo/providers/habits_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../models/habits_model.dart';
-
 class RoutineOverlay extends StatefulWidget {
   final String routine;
   const RoutineOverlay({Key? key, required this.routine}) : super(key: key);
@@ -50,7 +48,7 @@ class _RoutineOverlayState extends State<RoutineOverlay>
       )
     ]);
     Size size = MediaQuery.of(context).size;
-    final habit = HabitsModel(routine: widget.routine);
+    // final habit = HabitsModel(routine: widget.routine);
     return ScaleTransition(
       scale: scaleAnimation,
       child: AlertDialog(

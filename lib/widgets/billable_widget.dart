@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/models/task_model.dart';
+import 'package:kudidemo/pages/edit_task.dart';
 import 'package:kudidemo/providers/bilable_provider.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/utils/utils.dart';
@@ -70,6 +71,8 @@ class _BillableWidgetState extends State<BillableWidget> {
     super.dispose();
   }
 
+  DateTime startDate = DateTime.now();
+  bool isTapped = false;
   @override
   Widget build(BuildContext context) {
     final decorator = BoxDecoration(boxShadow: [
@@ -93,12 +96,16 @@ class _BillableWidgetState extends State<BillableWidget> {
 
     return SingleChildScrollView(
       child: Consumer<TaskProvider>(builder: (context, notifier, child) {
-        notifier.bills = widget.taskItem!.billList ?? [];
-        DateTime startDate = DateTime.now();
-        DateTime? endDate;
+        // if (widget.taskItem != null) {
+        //   notifier.bills = widget.taskItem!.billList ?? [];
+        // }
+        widget.taskItem != null
+            ? notifier.bills = widget.taskItem!.billList!
+            : [];
+        final endDate = startDate.add(duration);
         final billItem = BillableModel(
             id: Random().nextInt(10000),
-            amount: 100.00,
+            amount: widget.hourlyRate ?? 0.0,
             start: startDate,
             end: endDate);
 
@@ -272,36 +279,56 @@ class _BillableWidgetState extends State<BillableWidget> {
               height: size.height * 0.02,
             ),
             GestureDetector(
-              onTap: () {
-                if (widget.hourlyRate == null || widget.task == '') {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => TaskView()));
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      backgroundColor:
-                          Theme.of(context).textTheme.bodyText2!.color,
-                      content: Text(
-                        'Add task name and hourly rate',
-                        style: TextStyle(
-                            fontFamily: Theme.of(context)
-                                .textTheme
-                                .bodyText2!
-                                .fontFamily!),
-                      )));
-                } else {
-                  setState(() {
-                    if (!isStarted) {
-                      isStarted = true;
-                      startTimer();
-                    } else {
-                      _timer.cancel();
+              onTap: isTapped
+                  ? () {}
+                  : () {
+                      if (widget.taskItem == null) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => TaskView()));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor:
+                                Theme.of(context).textTheme.bodyText2!.color,
+                            content: Text(
+                              'Add task name and hourly rate',
+                              style: TextStyle(
+                                  fontFamily: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .fontFamily!),
+                            )));
+                      } else if (widget.taskItem != null &&
+                          widget.hourlyRate == 0.0) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => EditTask(
+                                  task: widget.taskItem,
+                                )));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor:
+                                Theme.of(context).textTheme.bodyText2!.color,
+                            content: Text(
+                              'Add task name and hourly rate',
+                              style: TextStyle(
+                                  fontFamily: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .fontFamily!),
+                            )));
+                      } else {
+                        setState(() {
+                          if (!isStarted) {
+                            isStarted = true;
+                            isTapped = true;
+                            startTimer();
+                            startDate = DateTime.now();
+                            print('the start is ${startDate}');
+                          } else {
+                            _timer.cancel();
 
-                      isStarted = false;
-                    }
-                    startDate = DateTime.now();
-                    print('the start is $startDate');
-                  });
-                }
-              },
+                            isStarted = false;
+                          }
+                        });
+                      }
+                    },
               child: Container(
                 height: 70,
                 width: 70,
@@ -319,33 +346,37 @@ class _BillableWidgetState extends State<BillableWidget> {
               height: size.height * 0.02,
             ),
             GestureDetector(
-                onTap: () {
-                  setState(() {
-                    stopTimer();
-                    isStarted = false;
-                  });
-                  endDate = startDate.add(duration);
-                  print('the end is $endDate');
-                  notifier.addBillableList(billItem);
-                  final taskIssue = TaskModel(
-                      id: widget.taskItem!.id,
-                      name: widget.taskItem!.name,
-                      from: widget.taskItem!.from,
-                      to: widget.taskItem!.to,
-                      subtask: widget.taskItem!.subtask,
-                      notes: widget.taskItem!.notes,
-                      color: widget.taskItem!.color,
-                      reminder: widget.taskItem!.reminder,
-                      repeat: widget.taskItem!.repeat,
-                      hourlyRate: widget.taskItem!.hourlyRate,
-                      isComplete: widget.taskItem!.isComplete!,
-                      billList: notifier.bills);
-                  final taskProvider =
-                      Provider.of<TaskProvider>(context, listen: false);
-                  taskProvider
-                      .changeTask(taskIssue)
-                      .then((value) => taskProvider.reset());
-                },
+                onTap: widget.taskItem == null ||
+                        widget.task == '' ||
+                        widget.hourlyRate == 0.0
+                    ? () {}
+                    : () {
+                        setState(() {
+                          stopTimer();
+                          isStarted = false;
+                          isTapped = false;
+                        });
+
+                        notifier.addBillableList(billItem);
+                        final taskIssue = TaskModel(
+                            id: widget.taskItem!.id,
+                            name: widget.taskItem!.name,
+                            from: widget.taskItem!.from,
+                            to: widget.taskItem!.to,
+                            subtask: widget.taskItem!.subtask,
+                            notes: widget.taskItem!.notes,
+                            color: widget.taskItem!.color,
+                            reminder: widget.taskItem!.reminder,
+                            repeat: widget.taskItem!.repeat,
+                            hourlyRate: widget.taskItem!.hourlyRate,
+                            isComplete: widget.taskItem!.isComplete!,
+                            billList: notifier.bills);
+                        final taskProvider =
+                            Provider.of<TaskProvider>(context, listen: false);
+                        taskProvider
+                            .changeTask(taskIssue)
+                            .then((value) => taskProvider.reset());
+                      },
                 child: Container(
                   decoration: decorator.copyWith(
                       borderRadius: BorderRadius.circular(12),
@@ -362,7 +393,7 @@ class _BillableWidgetState extends State<BillableWidget> {
             SizedBox(
               height: 24,
             ),
-            widget.taskItem!.billList!.isEmpty
+            widget.taskItem == null || notifier.bills.isEmpty
                 ? Container()
                 : Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -371,14 +402,17 @@ class _BillableWidgetState extends State<BillableWidget> {
                         Row(
                           children: [
                             Text('Amount'),
-                            Spacer(),
+                            SizedBox(
+                              width: size.width * 0.3,
+                            ),
                             Text('From'),
                             SizedBox(
-                              width: 15,
+                              width: size.width * 0.15,
                             ),
                             Text('To')
                           ],
                         ),
+                        Divider(),
                         ListView.builder(
                             itemCount: widget.taskItem!.billList!.length,
                             shrinkWrap: true,
@@ -388,30 +422,33 @@ class _BillableWidgetState extends State<BillableWidget> {
                                   widget.taskItem!.billList![index];
                               final styleIssue = GoogleFonts.prompt(
                                   fontWeight: FontWeight.w300, fontSize: 10);
-                              return Row(
-                                children: [
-                                  Text(billIssue.amount.toString()),
-                                  Spacer(),
-                                  Text(
-                                    Utils.toDate(
-                                      billIssue.start!,
+                              final dur =
+                                  billIssue.end!.difference(billIssue.start!);
+                              final money =
+                                  (dur.inSeconds / 3600) * billIssue.amount!;
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Row(
+                                  children: [
+                                    Text('\$${money.toStringAsFixed(2)}'),
+                                    Spacer(),
+                                    Text(
+                                      '${Utils.toDate(
+                                        billIssue.start!,
+                                      )}\n${Utils.toTime(billIssue.start!)}',
+                                      style: styleIssue,
                                     ),
-                                    style: styleIssue,
-                                  ),
-                                  Text(Utils.toTime(billIssue.start!),
-                                      style: styleIssue),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                  Text(
-                                    Utils.toDate(billIssue.end!),
-                                    style: styleIssue,
-                                  ),
-                                  Text(
-                                    Utils.toTime(billIssue.end!),
-                                    style: styleIssue,
-                                  ),
-                                ],
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text(
+                                      '${Utils.toDate(
+                                        billIssue.end!,
+                                      )}\n${Utils.toTime(billIssue.end!)}',
+                                      style: styleIssue,
+                                    ),
+                                  ],
+                                ),
                               );
                             }),
                       ],

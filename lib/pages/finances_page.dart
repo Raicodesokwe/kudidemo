@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/models/expense_model.dart';
 import 'package:kudidemo/pages/expense_page.dart';
+import 'package:kudidemo/providers/expense_provider.dart';
 import 'package:kudidemo/providers/habits_provider.dart';
 
 import 'package:kudidemo/widgets/circle_button.dart';
@@ -222,7 +223,7 @@ class _FinancesPageState extends State<FinancesPage>
                                           child: TextFormField(
                                             controller: _controller,
                                             onChanged: ((value) {
-                                              Provider.of<HabitsProvider>(
+                                              Provider.of<ExpenseProvider>(
                                                       context,
                                                       listen: false)
                                                   .changeSearchString(value);
@@ -265,7 +266,7 @@ class _FinancesPageState extends State<FinancesPage>
                                       SizedBox(
                                         height: 20,
                                       ),
-                                      Consumer<HabitsProvider>(builder:
+                                      Consumer<ExpenseProvider>(builder:
                                           (context, expenseList, child) {
                                         return ListView.builder(
                                           physics:

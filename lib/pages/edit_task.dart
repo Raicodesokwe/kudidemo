@@ -164,14 +164,14 @@ class _EditTaskState extends State<EditTask>
       if (isValid) {
         final task = TaskModel(
             id: widget.task!.id!,
-            name: name,
-            from: fromDate,
-            to: toDate,
+            name: name == '' ? widget.task!.name : name,
+            from: widget.task!.from,
+            to: widget.task!.to,
             subtask: subtask == '' ? widget.task!.subtask : subtask,
             notes: notes == '' ? widget.task!.notes : notes,
-            color: color.value,
-            reminder: reminder,
-            repeat: repeat,
+            color: widget.task!.color,
+            reminder: widget.task!.reminder,
+            repeat: widget.task!.repeat,
             hourlyRate: hourlyRate == 0 ? widget.task!.hourlyRate : hourlyRate,
             isComplete: widget.task!.isComplete!,
             billList: []);
@@ -362,12 +362,10 @@ class _EditTaskState extends State<EditTask>
                 height: size.height * 0.13,
               ),
               GestureDetector(
-                  onTap: name != ''
-                      ? () {
-                          saveForm();
-                        }
-                      : () {},
-                  child: name != '' ? NeonButton() : CircleButton())
+                  onTap: () {
+                    saveForm();
+                  },
+                  child: NeonButton())
             ],
           ),
         ),

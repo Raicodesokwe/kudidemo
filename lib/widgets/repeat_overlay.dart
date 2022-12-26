@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kudidemo/models/habits_model.dart';
+
 import 'package:kudidemo/models/week_model.dart';
 import 'package:kudidemo/widgets/date_circle.dart';
 import 'package:provider/provider.dart';
@@ -110,8 +110,8 @@ class _RepeatOverlayState extends State<RepeatOverlay>
     return ScaleTransition(
       scale: scaleAnimation,
       child: Consumer<HabitsProvider>(builder: (context, notifier, child) {
-        final habit =
-            HabitsModel(repeat: notifier.repeat, reminder: widget.selectedTime);
+        // final habit =
+        //     HabitsModel(repeat: notifier.repeat, reminder: widget.selectedTime);
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -325,7 +325,7 @@ class _RepeatOverlayState extends State<RepeatOverlay>
                               fontWeight: FontWeight.w600))),
                   GestureDetector(
                     onTap: () {
-                      notifier.addHabitDetails(habit);
+                      // notifier.addHabitDetails(habit);
                       Navigator.of(context).pop();
                     },
                     child: Container(
