@@ -21,8 +21,10 @@ import '../widgets/routine_overlay.dart';
 import '../widgets/text_field.dart';
 
 class EditHabit extends StatefulWidget {
-  final dynamic habit;
-  EditHabit({Key? key, required this.habit}) : super(key: key);
+  final String habitName;
+  final void Function()? onSave;
+  EditHabit({Key? key, required this.habitName, required this.onSave})
+      : super(key: key);
 
   @override
   State<EditHabit> createState() => _EditHabitState();
@@ -44,6 +46,7 @@ class _EditHabitState extends State<EditHabit>
   late DateTime selectedTime;
   late List days;
   String name = '';
+
   checkFields() {
     final form = _editHabitsForm.currentState;
     if (form!.validate()) {
@@ -78,6 +81,7 @@ class _EditHabitState extends State<EditHabit>
   TextEditingController habitsNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final editNameProvider = Provider.of<HabitsProvider>(context);
     color = Provider.of<ColorProvider>(context).selectedColor!;
     count = Provider.of<HabitsProvider>(context).dailyGoal;
     selectedTime = Provider.of<HabitsProvider>(context).reminder;
@@ -85,31 +89,19 @@ class _EditHabitState extends State<EditHabit>
     repeat = Provider.of<HabitsProvider>(context).repeat;
     days = Provider.of<HabitsProvider>(context).days;
     complete = Provider.of<HabitsProvider>(context).complete;
+
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
-    Future saveForm() async {
-      final isValid = _editHabitsForm.currentState!.validate();
-      if (isValid) {
-        final habit = [
-          widget.habit![0],
-          name == '' ? widget.habit![1] : name,
-          widget.habit![2],
-          widget.habit![3],
-          widget.habit![4],
-          widget.habit![5],
-          widget.habit![6],
-          widget.habit![7],
-          widget.habit![8],
-        ];
-        final habitProvider =
-            Provider.of<HabitsProvider>(context, listen: false);
-        setState(() {
-          db.habits.add(habit);
-        });
-        db.updateDatabase();
-        habitProvider.reset();
-        habitsNameController.clear();
-      }
-    }
+    // Future saveForm() async {
+    //   final isValid = _editHabitsForm.currentState!.validate();
+    //   if (isValid && widget.name != '') {
+    //     final habitProvider =
+    //         Provider.of<HabitsProvider>(context, listen: false);
+
+    //     db.updateDatabase();
+    //     habitProvider.reset();
+    //     Navigator.of(context).pop();
+    //   }
+    // }
 
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
@@ -177,9 +169,12 @@ class _EditHabitState extends State<EditHabit>
                 //     )),
                 EditTextField(
                     onChanged: (value) {
-                      name = value;
+                      setState(() {
+                        name = value;
+                        editNameProvider.editName = name;
+                      });
                     },
-                    initialValue: widget.habit![1],
+                    initialValue: widget.habitName,
                     emptytext: 'task name is empty'),
                 SizedBox(
                   height: size.height * 0.03,
@@ -190,21 +185,21 @@ class _EditHabitState extends State<EditHabit>
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          Platform.isIOS
-                              ? showCupertinoDialog(
-                                  context: context,
-                                  builder: (_) => ColorOverlay(
-                                    color: color,
-                                  ),
-                                )
-                              : showDialog(
-                                  context: context,
-                                  builder: (_) => ColorOverlay(
-                                    color: color,
-                                  ),
-                                );
-                        },
+                        // onTap: () {
+                        //   Platform.isIOS
+                        //       ? showCupertinoDialog(
+                        //           context: context,
+                        //           builder: (_) => ColorOverlay(
+                        //             color: color,
+                        //           ),
+                        //         )
+                        //       : showDialog(
+                        //           context: context,
+                        //           builder: (_) => ColorOverlay(
+                        //             color: color,
+                        //           ),
+                        //         );
+                        // },
                         child: Container(
                             padding: const EdgeInsets.all(7),
                             child: Center(
@@ -219,22 +214,22 @@ class _EditHabitState extends State<EditHabit>
                                 borderRadius: BorderRadius.circular(30))),
                       ),
                       GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (_) => DailyGoalOverlay(),
-                            );
-                          },
+                          // onTap: () {
+                          //   showDialog(
+                          //     context: context,
+                          //     builder: (_) => DailyGoalOverlay(),
+                          //   );
+                          // },
                           child: OvalContainer(text: 'Daily goal')),
                       GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (_) => RepeatOverlay(
-                              selectedTime: selectedTime,
-                            ),
-                          );
-                        },
+                        // onTap: () {
+                        //   showDialog(
+                        //     context: context,
+                        //     builder: (_) => RepeatOverlay(
+                        //       selectedTime: selectedTime,
+                        //     ),
+                        //   );
+                        // },
                         child: OvalIconContainer(
                           text: 'Repeat',
                           icon: Icons.repeat_on_sharp,
@@ -242,14 +237,14 @@ class _EditHabitState extends State<EditHabit>
                         ),
                       ),
                       GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (_) => RoutineOverlay(
-                                routine: routine,
-                              ),
-                            );
-                          },
+                          // onTap: () {
+                          //   showDialog(
+                          //     context: context,
+                          //     builder: (_) => RoutineOverlay(
+                          //       routine: routine,
+                          //     ),
+                          //   );
+                          // },
                           child: OvalContainer(text: 'Routine'))
                     ],
                   ),
@@ -257,7 +252,7 @@ class _EditHabitState extends State<EditHabit>
                 SizedBox(
                   height: size.height * 0.2,
                 ),
-                GestureDetector(onTap: () => saveForm(), child: NeonButton()),
+                GestureDetector(onTap: widget.onSave, child: NeonButton()),
               ],
             ),
           )),

@@ -112,6 +112,7 @@ class _RepeatOverlayState extends State<RepeatOverlay>
       child: Consumer<HabitsProvider>(builder: (context, notifier, child) {
         // final habit =
         //     HabitsModel(repeat: notifier.repeat, reminder: widget.selectedTime);
+
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -326,6 +327,8 @@ class _RepeatOverlayState extends State<RepeatOverlay>
                   GestureDetector(
                     onTap: () {
                       // notifier.addHabitDetails(habit);
+                      notifier.reminder = widget.selectedTime;
+                      print('de time de ${notifier.reminder}');
                       Navigator.of(context).pop();
                     },
                     child: Container(

@@ -4,14 +4,19 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kudidemo/data/pdf_doc.dart';
 import 'package:kudidemo/models/task_model.dart';
 import 'package:kudidemo/pages/edit_task.dart';
 import 'package:kudidemo/providers/bilable_provider.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/utils/utils.dart';
 import 'package:kudidemo/widgets/billing_overlay.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:kudidemo/widgets/text_field.dart';
+import 'package:lottie/lottie.dart';
+import 'package:open_file/open_file.dart';
+import 'dart:ui' as ui;
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 
 import '../models/billable_model.dart';
 import '../pages/task_view.dart';
@@ -31,7 +36,7 @@ class BillableWidget extends StatefulWidget {
 
 class _BillableWidgetState extends State<BillableWidget> {
   Duration duration = Duration();
-
+  TextEditingController recipientController = TextEditingController();
   bool isStarted = false;
 
   late Timer _timer;
@@ -93,7 +98,8 @@ class _BillableWidgetState extends State<BillableWidget> {
     final hours = twoDigits(duration.inHours);
     final minutes = twoDigits(duration.inMinutes.remainder(60));
     final seconds = twoDigits(duration.inSeconds.remainder(60));
-
+    GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey();
+    double sum = 0;
     return SingleChildScrollView(
       child: Consumer<TaskProvider>(builder: (context, notifier, child) {
         // if (widget.taskItem != null) {
@@ -111,9 +117,149 @@ class _BillableWidgetState extends State<BillableWidget> {
 
         return Column(
           children: [
-            SizedBox(
-              height: 20,
+            Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          backgroundColor: Theme.of(context).backgroundColor,
+                          insetPadding: EdgeInsets.symmetric(horizontal: 0),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0)),
+                          title: Text(
+                            'Sign invoice',
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                          content: SizedBox(
+                            width: size.width * 0.95,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SfSignaturePad(
+                                    key: _signaturePadKey,
+                                    backgroundColor:
+                                        widget.color!.withOpacity(0.2),
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.01,
+                                  ),
+                                  Text(
+                                    'Recipient:',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.01,
+                                  ),
+                                  CustomTextField(
+                                      controller: recipientController,
+                                      emptytext: 'Add email or name',
+                                      hintText: 'Add email or name'),
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        TextButton(
+                                            onPressed: () {
+                                              _signaturePadKey.currentState!
+                                                  .clear();
+                                            },
+                                            child: Text('Clear',
+                                                style: TextStyle(
+                                                    fontFamily:
+                                                        Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText2!
+                                                            .fontFamily,
+                                                    color: Color.fromARGB(
+                                                        255, 12, 99, 212),
+                                                    fontWeight:
+                                                        FontWeight.w600))),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            showDialog(
+                                                context: context,
+                                                barrierDismissible: false,
+                                                builder: (context) => Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    ));
+                                            final image = await _signaturePadKey
+                                                .currentState
+                                                ?.toImage();
+                                            final imageSignature = await image!
+                                                .toByteData(
+                                                    format:
+                                                        ui.ImageByteFormat.png);
+
+                                            final file =
+                                                await PdfDoc.generatePdf(
+                                                    bill: widget
+                                                        .taskItem!.billList!,
+                                                    taskName: widget.task!,
+                                                    total:
+                                                        sum.toStringAsFixed(2),
+                                                    imageSignature:
+                                                        imageSignature!,
+                                                    recipientName:
+                                                        recipientController
+                                                            .text);
+
+                                            Navigator.of(context).pop();
+                                            await OpenFile.open(file.path);
+                                          },
+                                          child: Container(
+                                            child: Center(
+                                              child: Text(
+                                                'Confirm',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily:
+                                                        Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText2!
+                                                            .fontFamily),
+                                              ),
+                                            ),
+                                            height: 50,
+                                            width: 120,
+                                            decoration: decorator.copyWith(
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
+                                                color: Color.fromARGB(
+                                                    255, 12, 99, 212)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 14,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      });
+                },
+                child: SizedBox(
+                    height: size.height * 0.08,
+                    child: Lottie.asset('assets/images/download.json')),
+              ),
             ),
+
             Center(
               child: GestureDetector(
                 onTap: () {},
@@ -129,8 +275,7 @@ class _BillableWidgetState extends State<BillableWidget> {
                           color: Colors.black,
                         )),
                         decoration: BoxDecoration(
-                            color: Colors.greenAccent.shade100,
-                            shape: BoxShape.circle),
+                            color: Color(0xFFB9F6CA), shape: BoxShape.circle),
                       ),
                       SizedBox(
                         width: 20,
@@ -424,8 +569,19 @@ class _BillableWidgetState extends State<BillableWidget> {
                                   fontWeight: FontWeight.w300, fontSize: 10);
                               final dur =
                                   billIssue.end!.difference(billIssue.start!);
+
                               final money =
                                   (dur.inSeconds / 3600) * billIssue.amount!;
+
+                              sum = widget.taskItem!.billList!.fold(
+                                  0,
+                                  (prev, element) =>
+                                      prev +
+                                      ((element.end!.difference(element.start!))
+                                                  .inSeconds /
+                                              3600) *
+                                          element.amount!);
+
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 8),
                                 child: Row(
@@ -451,6 +607,9 @@ class _BillableWidgetState extends State<BillableWidget> {
                                 ),
                               );
                             }),
+                        !isTapped
+                            ? Text("Total: \$${sum.toStringAsFixed(2)}")
+                            : Container()
                       ],
                     ),
                   )

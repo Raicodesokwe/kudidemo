@@ -16,6 +16,7 @@ class HabitsProvider with ChangeNotifier {
 
   int dailyGoal = 1;
   bool repeat = true;
+  String editName = '';
   DateTime reminder = DateTime.now();
   String routine = 'Anytime';
   bool complete = false;
@@ -53,6 +54,8 @@ class HabitsProvider with ChangeNotifier {
     dailyGoal = 1;
     routine = 'Anytime';
     days = [];
+    editName = '';
+    notifyListeners();
   }
 
   // Map<DateTime, int> heatMapDataSet = {};
