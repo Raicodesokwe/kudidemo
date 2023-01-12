@@ -188,36 +188,40 @@ class _BillableWidgetState extends State<BillableWidget> {
                                                         FontWeight.w600))),
                                         GestureDetector(
                                           onTap: () async {
-                                            showDialog(
-                                                context: context,
-                                                barrierDismissible: false,
-                                                builder: (context) => Center(
-                                                      child:
-                                                          CircularProgressIndicator(),
-                                                    ));
-                                            final image = await _signaturePadKey
-                                                .currentState
-                                                ?.toImage();
-                                            final imageSignature = await image!
-                                                .toByteData(
-                                                    format:
-                                                        ui.ImageByteFormat.png);
+                                            if (recipientController
+                                                .text.isNotEmpty) {
+                                              showDialog(
+                                                  context: context,
+                                                  barrierDismissible: false,
+                                                  builder: (context) => Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      ));
+                                              final image =
+                                                  await _signaturePadKey
+                                                      .currentState
+                                                      ?.toImage();
+                                              final imageSignature =
+                                                  await image!.toByteData(
+                                                      format: ui
+                                                          .ImageByteFormat.png);
 
-                                            final file =
-                                                await PdfDoc.generatePdf(
-                                                    bill: widget
-                                                        .taskItem!.billList!,
-                                                    taskName: widget.task!,
-                                                    total:
-                                                        sum.toStringAsFixed(2),
-                                                    imageSignature:
-                                                        imageSignature!,
-                                                    recipientName:
-                                                        recipientController
-                                                            .text);
+                                              final file =
+                                                  await PdfDoc.generatePdf(
+                                                      bill: widget
+                                                          .taskItem!.billList!,
+                                                      taskName: widget.task!,
+                                                      total: sum
+                                                          .toStringAsFixed(2),
+                                                      imageSignature:
+                                                          imageSignature!,
+                                                      recipientName:
+                                                          recipientController
+                                                              .text);
 
-                                            Navigator.of(context).pop();
-                                            await OpenFile.open(file.path);
+                                              Navigator.of(context).pop();
+                                              await OpenFile.open(file.path);
+                                            }
                                           },
                                           child: Container(
                                             child: Center(

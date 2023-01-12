@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kudidemo/models/expense_item.dart';
+import 'package:kudidemo/utils/utils.dart';
 import 'package:kudidemo/widgets/text_field.dart';
 import 'package:provider/provider.dart';
 
+import '../models/task_model.dart';
+import '../pages/expense_page.dart';
 import '../providers/expense_provider.dart';
+import '../providers/task_provider.dart';
+import '../providers/theme_provider.dart';
 
-class ExpenseNotes extends StatefulWidget {
-  const ExpenseNotes({Key? key}) : super(key: key);
-
+class AddExpenseOverlay extends StatefulWidget {
+  AddExpenseOverlay({Key? key});
   @override
-  State<ExpenseNotes> createState() => _ExpenseNotesState();
+  State<StatefulWidget> createState() => AddExpenseOverlayState();
 }
 
-class _ExpenseNotesState extends State<ExpenseNotes>
+class AddExpenseOverlayState extends State<AddExpenseOverlay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
-  TextEditingController notesController = TextEditingController();
+  TextEditingController expenseController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -36,8 +39,6 @@ class _ExpenseNotesState extends State<ExpenseNotes>
 
   @override
   Widget build(BuildContext context) {
-    final expense = ExpenseItem(notes: notesController.text);
-    final expenseProvider = Provider.of<ExpenseProvider>(context);
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -51,7 +52,9 @@ class _ExpenseNotesState extends State<ExpenseNotes>
         blurRadius: 15,
       )
     ]);
+
     Size size = MediaQuery.of(context).size;
+
     return Center(
       child: Material(
         color: Colors.transparent,
@@ -70,10 +73,14 @@ class _ExpenseNotesState extends State<ExpenseNotes>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    Text('Add expense'),
+                    SizedBox(
+                      height: 5,
+                    ),
                     CustomTextField(
-                        controller: notesController,
-                        emptytext: 'Additional notes',
-                        hintText: 'Additional notes'),
+                        controller: expenseController,
+                        emptytext: 'Add expense',
+                        hintText: 'Add expense'),
                     SizedBox(
                       height: size.height * 0.05,
                     ),
@@ -89,10 +96,17 @@ class _ExpenseNotesState extends State<ExpenseNotes>
                                     color: Color.fromARGB(255, 12, 99, 212),
                                     fontWeight: FontWeight.w600))),
                         GestureDetector(
-                          onTap: () {
-                            expenseProvider.addExpenseNotes(expense);
-                            Navigator.of(context).pop();
-                          },
+                          onTap: expenseController.text.isNotEmpty
+                              ? () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => ExpensePage(
+                                            expenseImage:
+                                                'assets/images/plus.png',
+                                            expenseName: expenseController.text,
+                                            tileColor: Colors.orangeAccent,
+                                          )));
+                                }
+                              : () {},
                           child: Container(
                             child: Center(
                               child: Text(

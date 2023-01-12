@@ -11,6 +11,7 @@ class ExpenseProvider extends ChangeNotifier {
     date = expense.date;
   }
 
+  String currency = "\$";
   String _searchString = "";
   UnmodifiableListView<ExpenseModel> get expenses => _searchString.isEmpty
       ? UnmodifiableListView(expenseList)
@@ -20,5 +21,20 @@ class ExpenseProvider extends ChangeNotifier {
     _searchString = searchString;
     print(_searchString);
     notifyListeners();
+  }
+
+  String? expenseNotes = '';
+  void addExpenseNotes(ExpenseItem expense) {
+    expenseNotes = expense.notes;
+    notifyListeners();
+  }
+
+  List<ExpenseItem> _expenseitems = [];
+  List<ExpenseItem> get expenseitems {
+    return [..._expenseitems];
+  }
+
+  void addExpense(ExpenseItem expense) {
+    _expenseitems.add(expense);
   }
 }

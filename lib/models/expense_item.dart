@@ -1,5 +1,17 @@
+import 'dart:io';
+
 class ExpenseItem {
-  final String? expenseName;
+  final String? currency;
+  final String? category;
+  final double? amount;
   final DateTime? date;
-  ExpenseItem({this.date, this.expenseName});
+  final String? notes;
+  final File? image;
+  ExpenseItem(
+      {this.currency,
+      this.category,
+      this.amount,
+      this.date,
+      this.notes,
+      this.image});
 }

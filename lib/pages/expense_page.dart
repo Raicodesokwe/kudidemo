@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kudidemo/models/expense_item.dart';
 import 'package:kudidemo/providers/expense_provider.dart';
 import 'package:kudidemo/utils/utils.dart';
 import 'package:kudidemo/widgets/expense_notes.dart';
@@ -80,6 +81,16 @@ class _ExpensePageState extends State<ExpensePage> {
 
   @override
   Widget build(BuildContext context) {
+    final expenseProvider = Provider.of<ExpenseProvider>(context);
+    final expense = ExpenseItem(
+        currency: expenseProvider.currency,
+        amount:
+            controller.text.isNotEmpty ? double.parse(controller.text) : 0.0,
+        category: widget.expenseName,
+        date: selectedDate,
+        notes: expenseProvider.expenseNotes);
+
+    expenseProvider.addExpense(expense);
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -514,7 +525,8 @@ class _ExpensePageState extends State<ExpensePage> {
                                               )),
                                           GestureDetector(
                                               onTap: () {
-                                                Navigator.of(context).pop();
+                                                print(
+                                                    'das amount dey ${expenseProvider.expenseNotes}');
                                               },
                                               child: Container(
                                                 height: 70,

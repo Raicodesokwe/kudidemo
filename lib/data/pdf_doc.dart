@@ -41,15 +41,15 @@ class PdfDoc {
     PdfPageTemplateElement header = PdfPageTemplateElement(
         Rect.fromLTWH(0, 0, document.pageSettings.size.width, 70));
 
-    header.graphics.drawRectangle(
-        brush: PdfSolidBrush(PdfColor(80, 130, 210)),
-        bounds: Rect.fromLTWH(0, 0, document.pageSettings.size.width, 60));
+    // header.graphics.drawRectangle(
+    //     brush: PdfSolidBrush(PdfColor(80, 130, 210)),
+    //     bounds: Rect.fromLTWH(0, 0, document.pageSettings.size.width, 60));
     final imageSignature = await rootBundle.load('assets/images/plogo.png');
     final PdfBitmap image = PdfBitmap(imageSignature.buffer.asUint8List());
     header.graphics.drawImage(image, Rect.fromLTWH(10, 10, 40, 40));
     header.graphics.drawString('${taskName.toUpperCase()} INVOICE',
         PdfStandardFont(PdfFontFamily.helvetica, 25, style: PdfFontStyle.bold),
-        brush: PdfBrushes.white,
+        brush: PdfBrushes.black,
         bounds:
             Rect.fromLTWH(100, 10, document.pageSettings.size.width - 300, 40));
     header.graphics.drawRectangle(

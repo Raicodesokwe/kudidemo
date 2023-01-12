@@ -6,6 +6,7 @@ import 'package:kudidemo/models/expense_model.dart';
 import 'package:kudidemo/pages/expense_page.dart';
 import 'package:kudidemo/providers/expense_provider.dart';
 import 'package:kudidemo/providers/habits_provider.dart';
+import 'package:kudidemo/widgets/add_expense_overlay.dart';
 
 import 'package:kudidemo/widgets/circle_button.dart';
 import 'package:kudidemo/widgets/oval_icon_container.dart';
@@ -89,7 +90,7 @@ class _FinancesPageState extends State<FinancesPage>
       )
     ]);
     Size size = MediaQuery.of(context).size;
-
+    final expenseProvider = Provider.of<ExpenseProvider>(context);
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       body: Form(
@@ -139,7 +140,8 @@ class _FinancesPageState extends State<FinancesPage>
                       showCurrencyName: true,
                       showCurrencyCode: true,
                       onSelect: (Currency curr) {
-                        print('Select currency: ${curr.name}');
+                        print('Select currency: ${curr.symbol}');
+                        expenseProvider.currency = curr.symbol;
                         setState(() {
                           currency = curr.name;
                         });
@@ -247,20 +249,29 @@ class _FinancesPageState extends State<FinancesPage>
                                         height: 20,
                                       ),
                                       Center(
-                                        child: Container(
-                                          child: Center(
-                                            child: Text('Add custom'),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return AddExpenseOverlay();
+                                                });
+                                          },
+                                          child: Container(
+                                            child: Center(
+                                              child: Text('Add custom'),
+                                            ),
+                                            height: 50,
+                                            width: size.width * 0.4,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    width: 2,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText2!
+                                                        .color!),
+                                                color: Colors.greenAccent),
                                           ),
-                                          height: 50,
-                                          width: size.width * 0.4,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  width: 2,
-                                                  color: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText2!
-                                                      .color!),
-                                              color: Colors.greenAccent),
                                         ),
                                       ),
                                       SizedBox(
