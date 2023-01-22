@@ -11,6 +11,7 @@ import 'package:kudidemo/providers/bilable_provider.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:kudidemo/utils/utils.dart';
 import 'package:kudidemo/widgets/billing_overlay.dart';
+import 'package:kudidemo/widgets/circle_animation.dart';
 import 'package:kudidemo/widgets/text_field.dart';
 import 'package:lottie/lottie.dart';
 import 'package:open_file/open_file.dart';
@@ -258,9 +259,10 @@ class _BillableWidgetState extends State<BillableWidget> {
                         );
                       });
                 },
-                child: SizedBox(
-                    height: size.height * 0.08,
-                    child: Lottie.asset('assets/images/download.json')),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: CircleAnimation(),
+                ),
               ),
             ),
 

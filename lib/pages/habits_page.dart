@@ -155,33 +155,37 @@ class _HabitsPageState extends State<HabitsPage>
 
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: !inputWidget
-            ? Theme(
-                data: Theme.of(context).copyWith(
-                    floatingActionButtonTheme: FloatingActionButtonThemeData(
-                        extendedSizeConstraints: BoxConstraints.tightFor(
-                  height: size.height * 0.07,
-                  width: size.width * 0.45,
-                ))),
-                child: FloatingActionButton.extended(
-                    backgroundColor: Colors.green,
-                    elevation: 7,
-                    icon: Icon(
-                      Icons.add,
-                      color: Theme.of(context).textTheme.bodyText2!.color,
-                    ),
-                    onPressed: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      setState(() {
-                        inputWidget = true;
-                      });
-                    },
-                    label: Text(
-                      'Add new task',
-                      style: Theme.of(context).textTheme.bodyText2,
-                    )),
-              )
-            : Container(),
+        floatingActionButton: db.habits.isEmpty
+            ? Container()
+            : !inputWidget
+                ? Theme(
+                    data: Theme.of(context).copyWith(
+                        floatingActionButtonTheme:
+                            FloatingActionButtonThemeData(
+                                extendedSizeConstraints:
+                                    BoxConstraints.tightFor(
+                      height: size.height * 0.07,
+                      width: size.width * 0.45,
+                    ))),
+                    child: FloatingActionButton.extended(
+                        backgroundColor: Colors.green,
+                        elevation: 7,
+                        icon: Icon(
+                          Icons.add,
+                          color: Theme.of(context).textTheme.bodyText2!.color,
+                        ),
+                        onPressed: () {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          setState(() {
+                            inputWidget = true;
+                          });
+                        },
+                        label: Text(
+                          'Add new task',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        )),
+                  )
+                : Container(),
         body: Form(
           key: _habitsForm,
           child: FadeTransition(
