@@ -84,6 +84,7 @@ class _ExpensePageState extends State<ExpensePage> {
   Widget build(BuildContext context) {
     final expenseProvider = Provider.of<ExpenseProvider>(context);
     final expense = ExpenseItem(
+        status: 'expense',
         currency: expenseProvider.currency,
         amount:
             controller.text.isNotEmpty ? double.parse(controller.text) : 0.0,

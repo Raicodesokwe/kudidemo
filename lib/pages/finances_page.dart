@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,6 +8,8 @@ import 'package:kudidemo/pages/expense_income.dart';
 
 import 'package:kudidemo/pages/savings_page.dart';
 import 'package:kudidemo/pages/trends_page.dart';
+
+import '../widgets/add_icon.dart';
 
 class FinancesPage extends StatefulWidget {
   FinancesPage({Key? key}) : super(key: key);
@@ -21,6 +24,10 @@ class _FinancesPageState extends State<FinancesPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> items = [
+      // AddIcon(
+      //   selectedTab: selectedTab,
+      //   selected: selectedTab == 0,
+      // ),
       Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -107,33 +114,49 @@ class _FinancesPageState extends State<FinancesPage> {
     return SafeArea(
       child: Scaffold(
           extendBody: true,
-          bottomNavigationBar: Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(
-                  items.length,
-                  (index) => GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedTab = index;
-                        });
-                      },
-                      child: items[index])),
+          bottomNavigationBar: AnimatedSwitcher(
+            key: ValueKey<int>(selectedTab),
+            duration: Duration(milliseconds: 450),
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(
+                    items.length,
+                    (index) => GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedTab = index;
+                          });
+                        },
+                        child: items[index])),
+              ),
+              padding: const EdgeInsets.all(12),
+              margin: EdgeInsets.only(left: 24, right: 24, bottom: 24),
+              decoration: decorator.copyWith(
+                  color: Theme.of(context).backgroundColor,
+                  borderRadius: BorderRadius.circular(24)),
             ),
-            padding: const EdgeInsets.all(12),
-            margin: EdgeInsets.only(left: 24, right: 24, bottom: 24),
-            decoration: decorator.copyWith(
-                color: Theme.of(context).backgroundColor,
-                borderRadius: BorderRadius.circular(24)),
           ),
-          body: IndexedStack(
-            index: selectedTab,
-            children: [
-              ExpenseIncome(),
-              BudgetPage(),
-              SavingsPage(),
-              TrendsPage()
-            ],
+          body: PageTransitionSwitcher(
+            duration: Duration(seconds: 1),
+            transitionBuilder: (child, animation, secondaryAnimation) {
+              return FadeThroughTransition(
+                fillColor: Theme.of(context).scaffoldBackgroundColor,
+                animation: animation,
+                secondaryAnimation: secondaryAnimation,
+                child: child,
+              );
+            },
+            child: IndexedStack(
+              index: selectedTab,
+              key: ValueKey<int>(selectedTab),
+              children: [
+                ExpenseIncome(),
+                BudgetPage(),
+                SavingsPage(),
+                TrendsPage()
+              ],
+            ),
           )),
     );
   }

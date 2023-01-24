@@ -16,11 +16,6 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int _currentIndex = 0;
-  List<ValueKey<int>> _keys = [
-    ValueKey<int>(0),
-    ValueKey<int>(1),
-    ValueKey<int>(2),
-  ];
 
   @override
   Widget build(BuildContext context) {
