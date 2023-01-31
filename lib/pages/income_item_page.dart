@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kudidemo/models/expense_item.dart';
@@ -15,11 +15,11 @@ import 'package:provider/provider.dart';
 
 import '../widgets/confirm_overlay.dart';
 
-class ExpensePage extends StatefulWidget {
+class IncomeItemPage extends StatefulWidget {
   final String expenseName;
   final String expenseImage;
   final Color tileColor;
-  const ExpensePage(
+  const IncomeItemPage(
       {Key? key,
       required this.expenseName,
       required this.tileColor,
@@ -27,10 +27,10 @@ class ExpensePage extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<ExpensePage> createState() => _ExpensePageState();
+  State<IncomeItemPage> createState() => _IncomeItemPageState();
 }
 
-class _ExpensePageState extends State<ExpensePage> {
+class _IncomeItemPageState extends State<IncomeItemPage> {
   final TextEditingController controller = TextEditingController();
   File? imgFile;
   String? url;
@@ -119,10 +119,10 @@ class _ExpensePageState extends State<ExpensePage> {
                       ),
                       Image.asset(widget.expenseImage),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(7),
                         child: SizedBox(
                           height: 70,
                           child: Center(
@@ -171,7 +171,9 @@ class _ExpensePageState extends State<ExpensePage> {
                             widget.expenseName,
                             style: TextStyle(fontSize: 25),
                           ),
-                          Image.asset(widget.expenseImage),
+                          Image.asset(
+                            widget.expenseImage,
+                          ),
                           Padding(
                             padding: const EdgeInsets.all(20),
                             child: Container(
@@ -452,19 +454,19 @@ class _ExpensePageState extends State<ExpensePage> {
                           builder: (BuildContext context) {
                             return ConfirmOverlay(
                               decorator: decorator,
-                              title: 'expense',
+                              title: 'income',
                               selectedDate: selectedDate,
                               onTap: () {
                                 expenseProvider.inputWidget = false;
                                 final expense = ExpenseItem(
-                                    status: 'expense',
+                                    status: 'income',
                                     amount: expenseProvider.amount,
                                     category: widget.expenseName,
                                     date: selectedDate,
                                     notes: expenseProvider.expenseNotes);
                                 expenseProvider.addExpense(expense);
                                 print(
-                                    'das amount dey ${expenseProvider.amount}');
+                                    'das amount dey ${expenseProvider.expenseNotes}');
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
                                         builder: (c) => FinancesPage()),

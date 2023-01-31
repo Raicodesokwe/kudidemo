@@ -10,13 +10,14 @@ import '../providers/expense_provider.dart';
 import '../providers/task_provider.dart';
 import '../providers/theme_provider.dart';
 
-class AddExpenseOverlay extends StatefulWidget {
-  AddExpenseOverlay({Key? key});
+class AddExpenseIncomeOverlay extends StatefulWidget {
+  final String title;
+  AddExpenseIncomeOverlay({Key? key, required this.title});
   @override
-  State<StatefulWidget> createState() => AddExpenseOverlayState();
+  State<StatefulWidget> createState() => AddExpenseIncomeOverlayState();
 }
 
-class AddExpenseOverlayState extends State<AddExpenseOverlay>
+class AddExpenseIncomeOverlayState extends State<AddExpenseIncomeOverlay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
@@ -73,14 +74,14 @@ class AddExpenseOverlayState extends State<AddExpenseOverlay>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Add expense'),
+                    Text('Add ${widget.title}'),
                     SizedBox(
                       height: 5,
                     ),
                     CustomTextField(
                         controller: expenseController,
-                        emptytext: 'Add expense',
-                        hintText: 'Add expense'),
+                        emptytext: 'Add ${widget.title}',
+                        hintText: 'Add ${widget.title}'),
                     SizedBox(
                       height: size.height * 0.05,
                     ),

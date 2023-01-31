@@ -7,6 +7,7 @@ import 'package:kudidemo/models/expense_model.dart';
 import 'package:kudidemo/pages/expense_page.dart';
 import 'package:kudidemo/providers/expense_provider.dart';
 import 'package:kudidemo/providers/habits_provider.dart';
+import 'package:kudidemo/utils/utils.dart';
 import 'package:kudidemo/widgets/add_expense_overlay.dart';
 
 import 'package:kudidemo/widgets/circle_button.dart';
@@ -14,6 +15,7 @@ import 'package:kudidemo/widgets/income_box.dart';
 import 'package:kudidemo/widgets/oval_icon_container.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../providers/theme_provider.dart';
 import '../widgets/back_arrow.dart';
@@ -54,7 +56,7 @@ class _ExpenseIncomeState extends State<ExpenseIncome> {
   }
 
   final _controller = TextEditingController();
-
+  final _kCurrency = "currency_preference";
   @override
   Widget build(BuildContext context) {
     final decorator = BoxDecoration(boxShadow: [
@@ -174,7 +176,7 @@ class _ExpenseIncomeState extends State<ExpenseIncome> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         if (currency == 'Select currency') {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               backgroundColor:
@@ -188,6 +190,8 @@ class _ExpenseIncomeState extends State<ExpenseIncome> {
                                         .fontFamily!),
                               )));
                         } else {
+                          var prefs = await SharedPreferences.getInstance();
+                          prefs.setString(_kCurrency, currency.trim());
                           showModalBottomSheet(
                               isScrollControlled: true,
                               shape: RoundedRectangleBorder(
@@ -211,7 +215,7 @@ class _ExpenseIncomeState extends State<ExpenseIncome> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         if (currency == 'Select currency') {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               backgroundColor:
@@ -225,6 +229,8 @@ class _ExpenseIncomeState extends State<ExpenseIncome> {
                                         .fontFamily!),
                               )));
                         } else {
+                          var prefs = await SharedPreferences.getInstance();
+                          prefs.setString(_kCurrency, currency.trim());
                           showModalBottomSheet(
                               isScrollControlled: true,
                               shape: RoundedRectangleBorder(
@@ -254,20 +260,229 @@ class _ExpenseIncomeState extends State<ExpenseIncome> {
           ),
         ),
         builder: (context, notifier, child) {
-          if (notifier.expenseitems.isEmpty) {
+          final expenseList = notifier.expenseitems
+              .where((element) => element.status == 'expense');
+          double expenseAmount = expenseList.fold(
+              0, (previousValue, element) => previousValue + element.amount!);
+          final incomeList = notifier.expenseitems
+              .where((element) => element.status == 'income');
+          double incomeAmount = incomeList.fold(
+              0, (previousValue, element) => previousValue + element.amount!);
+          final balanceAmount = incomeAmount - expenseAmount;
+          if (notifier.expenseitems.isEmpty || notifier.inputWidget) {
             return child!;
           }
-          return Center(
-            child: ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: notifier.expenseitems.length,
-                itemBuilder: ((context, index) {
-                  return Text(
-                    'bana',
-                    style: TextStyle(color: Colors.red),
-                  );
-                })),
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                Center(
+                    child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(FontAwesomeIcons.moneyBill)),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          Text('Balance')
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            notifier.currency,
+                            style: TextStyle(fontSize: 25),
+                          ),
+                          SizedBox(
+                            width: 3,
+                          ),
+                          Text(
+                            balanceAmount.toString(),
+                            style: TextStyle(fontSize: 25),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 13,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 5),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text('Here is your balance'),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(FontAwesomeIcons.moneyBillTransfer)),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Expense'),
+                              Row(
+                                children: [
+                                  Text(notifier.currency),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text('$expenseAmount'),
+                                ],
+                              )
+                            ],
+                          ),
+                          Spacer(),
+                          Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(FontAwesomeIcons.moneyBillTrendUp)),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Income'),
+                              Row(
+                                children: [
+                                  Text(notifier.currency),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text('$incomeAmount'),
+                                ],
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  width: double.infinity,
+                  decoration: decorator.copyWith(
+                      border: Border.all(width: 2),
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.greenAccent),
+                )),
+                SizedBox(
+                  height: 35,
+                ),
+                Text(
+                  'Recent expenses and income',
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: notifier.expenseitems.length,
+                    itemBuilder: ((context, index) {
+                      final listItem = notifier.expenseitems[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: decorator.copyWith(
+                                color: Theme.of(context).backgroundColor,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 45,
+                                  width: 45,
+                                  child: Icon(listItem.status == 'income'
+                                      ? FontAwesomeIcons.moneyBillTrendUp
+                                      : FontAwesomeIcons.moneyBillTransfer),
+                                  decoration: BoxDecoration(
+                                      color: Colors.greenAccent,
+                                      border: Border.all(width: 2),
+                                      shape: BoxShape.circle),
+                                ),
+                                SizedBox(
+                                  width: 7,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      listItem.category!,
+                                    ),
+                                    SizedBox(
+                                      height: 7,
+                                    ),
+                                    Text(
+                                      Utils.toDate(listItem.date!),
+                                      style: GoogleFonts.prompt(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w300),
+                                    ),
+                                    SizedBox(
+                                      height: 7,
+                                    ),
+                                    Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            color: listItem.status == 'expense'
+                                                ? Colors.redAccent
+                                                : Colors.lightGreenAccent),
+                                        child: Text(listItem.status!))
+                                  ],
+                                ),
+                                Spacer(),
+                                Row(
+                                  children: [
+                                    listItem.status == 'expense'
+                                        ? Text('-${listItem.amount}')
+                                        : Text('${listItem.amount}'),
+                                    SizedBox(
+                                      width: 7,
+                                    ),
+                                    Text(notifier.currency)
+                                  ],
+                                )
+                              ],
+                            )),
+                      );
+                    }))
+              ],
+            ),
           );
         });
   }

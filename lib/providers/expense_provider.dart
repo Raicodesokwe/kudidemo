@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:kudidemo/models/expense_item.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/expense_model.dart';
 
@@ -11,7 +12,17 @@ class ExpenseProvider extends ChangeNotifier {
     date = expense.date;
   }
 
-  String currency = "\$";
+  final _kCurrency = "currency_preference";
+  ExpenseProvider() {
+    loadCurrency();
+  }
+  String currency = '';
+  loadCurrency() {
+    SharedPreferences.getInstance().then((prefs) {
+      currency = prefs.getString(_kCurrency) ?? "\$";
+    });
+  }
+
   String _searchString = "";
   UnmodifiableListView<ExpenseModel> get expenses => _searchString.isEmpty
       ? UnmodifiableListView(expenseList)
@@ -29,6 +40,8 @@ class ExpenseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool inputWidget = false;
+  double amount = 0.0;
   List<ExpenseItem> _expenseitems = [];
   List<ExpenseItem> get expenseitems {
     return [..._expenseitems];

@@ -8,7 +8,9 @@ import 'package:kudidemo/pages/expense_income.dart';
 
 import 'package:kudidemo/pages/savings_page.dart';
 import 'package:kudidemo/pages/trends_page.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/expense_provider.dart';
 import '../widgets/add_icon.dart';
 
 class FinancesPage extends StatefulWidget {
@@ -23,6 +25,13 @@ class _FinancesPageState extends State<FinancesPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> pages = [
+      ExpenseIncome(),
+      BudgetPage(),
+      SavingsPage(),
+      TrendsPage()
+    ];
+    int pageIndex = 0;
     List<Widget> items = [
       // AddIcon(
       //   selectedTab: selectedTab,
@@ -110,9 +119,36 @@ class _FinancesPageState extends State<FinancesPage> {
         blurRadius: 15,
       )
     ]);
-
+    Size size = MediaQuery.of(context).size;
+    final expenseProvider =
+        Provider.of<ExpenseProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
+          floatingActionButton: expenseProvider.expenseitems.isEmpty
+              ? Container()
+              : Theme(
+                  data: Theme.of(context).copyWith(
+                      floatingActionButtonTheme: FloatingActionButtonThemeData(
+                          extendedSizeConstraints: BoxConstraints.tightFor(
+                    height: size.height * 0.07,
+                    width: size.width * 0.45,
+                  ))),
+                  child: FloatingActionButton.extended(
+                      backgroundColor: Colors.green,
+                      elevation: 7,
+                      icon: Icon(
+                        Icons.add,
+                        color: Theme.of(context).textTheme.bodyText2!.color,
+                      ),
+                      onPressed: () {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        expenseProvider.inputWidget = true;
+                      },
+                      label: Text(
+                        selectedTab == 0 ? 'Add new' : 'brrr',
+                        style: Theme.of(context).textTheme.bodyText2,
+                      )),
+                ),
           extendBody: true,
           bottomNavigationBar: AnimatedSwitcher(
             key: ValueKey<int>(selectedTab),
@@ -150,12 +186,9 @@ class _FinancesPageState extends State<FinancesPage> {
             child: IndexedStack(
               index: selectedTab,
               key: ValueKey<int>(selectedTab),
-              children: [
-                ExpenseIncome(),
-                BudgetPage(),
-                SavingsPage(),
-                TrendsPage()
-              ],
+              children: List.generate(pages.length, (index) {
+                return pages[index];
+              }),
             ),
           )),
     );

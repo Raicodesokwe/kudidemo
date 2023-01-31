@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/models/income_model.dart';
+import 'package:kudidemo/pages/income_item_page.dart';
 import 'package:provider/provider.dart';
 
 import '../pages/expense_page.dart';
@@ -37,7 +38,9 @@ class IncomeBox extends StatelessWidget {
                   showDialog(
                       context: context,
                       builder: (ctx) {
-                        return AddExpenseOverlay();
+                        return AddExpenseIncomeOverlay(
+                          title: 'income',
+                        );
                       });
                 },
                 child: Container(
@@ -69,7 +72,7 @@ class IncomeBox extends StatelessWidget {
                     ListTile(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ExpensePage(
+                            builder: (context) => IncomeItemPage(
                                   expenseImage: expenseItem.image,
                                   expenseName: expenseItem.name,
                                   tileColor: expenseItem.color,

@@ -60,7 +60,9 @@ class ExpenseBox extends StatelessWidget {
                   showDialog(
                       context: context,
                       builder: (ctx) {
-                        return AddExpenseOverlay();
+                        return AddExpenseIncomeOverlay(
+                          title: 'expense',
+                        );
                       });
                 },
                 child: Container(
