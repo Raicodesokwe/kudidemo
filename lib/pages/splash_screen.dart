@@ -2,7 +2,7 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kudidemo/navbar/navbar.dart';
-import 'package:kudidemo/pages/landing_screen.dart';
+import 'package:kudidemo/pages/auth/landing_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SplashScreen extends StatelessWidget {

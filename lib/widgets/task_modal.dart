@@ -5,13 +5,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/pages/day_rating.dart';
-import 'package:kudidemo/pages/finances_page.dart';
+import 'package:kudidemo/pages/finances/finances_page.dart';
 import 'package:kudidemo/pages/group_task.dart';
-import 'package:kudidemo/pages/habits_page.dart';
+import 'package:kudidemo/pages/habits/habits_page.dart';
 import 'package:kudidemo/pages/journal_page.dart';
-import 'package:kudidemo/pages/task_view.dart';
+
 import 'package:kudidemo/services/auth_service.dart';
 
+import '../pages/habits/habits_page.dart';
+import '../pages/tasks/task_view.dart';
 import 'image_modal.dart';
 
 class TaskModal extends StatelessWidget {

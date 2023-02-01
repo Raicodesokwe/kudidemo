@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kudidemo/models/chart_model.dart';
-import 'package:kudidemo/pages/task_view.dart';
+
+import 'package:kudidemo/pages/tasks/task_view.dart';
 import 'package:kudidemo/providers/task_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';

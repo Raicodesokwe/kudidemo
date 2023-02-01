@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../navbar/navbar.dart';
-import '../pages/name_pic.dart';
+import '../pages/auth/name_pic.dart';
 
 class GoogleWidget extends StatelessWidget {
   final String sign;

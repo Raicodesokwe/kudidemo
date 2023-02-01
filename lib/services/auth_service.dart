@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kudidemo/pages/landing_screen.dart';
-import 'package:kudidemo/pages/name_pic.dart';
-import 'package:kudidemo/pages/signin.dart';
+import 'package:kudidemo/pages/auth/landing_screen.dart';
+import 'package:kudidemo/pages/auth/name_pic.dart';
+import 'package:kudidemo/pages/login/signin.dart';
 
 import '../navbar/navbar.dart';
 import '../pages/splash_screen.dart';

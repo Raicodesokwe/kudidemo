@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:kudidemo/models/billable_model.dart';
 
 import 'package:kudidemo/pages/chat_page.dart';
-import 'package:kudidemo/pages/finances_page.dart';
+import 'package:kudidemo/pages/finances/finances_page.dart';
+import 'package:kudidemo/pages/finances/finances_page.dart';
 import 'package:kudidemo/pages/group_task.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';

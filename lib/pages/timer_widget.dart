@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/models/task_model.dart';
-import 'package:kudidemo/widgets/billable_widget.dart';
+import 'package:kudidemo/widgets/timer/billable_widget.dart';
 
-import 'package:kudidemo/widgets/pomodoro_widget.dart';
+import 'package:kudidemo/widgets/timer/pomodoro_widget.dart';
 
 import '../widgets/back_arrow.dart';
 

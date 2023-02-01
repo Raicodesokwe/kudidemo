@@ -3,14 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/utils/utils.dart';
-import 'package:kudidemo/widgets/date_task_modal.dart';
+import 'package:kudidemo/widgets/tasks/date_task_modal.dart';
 import 'package:provider/provider.dart';
 
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../providers/task_provider.dart';
 import '../widgets/back_arrow.dart';
-import '../widgets/task_data_source.dart';
+import '../widgets/tasks/task_data_source.dart';
 
 class CalendarWidget extends StatelessWidget {
   CalendarWidget({Key? key}) : super(key: key);

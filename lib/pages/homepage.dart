@@ -12,7 +12,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:kudidemo/pages/calendar_widget.dart';
 import 'package:kudidemo/pages/display_notification.dart';
-import 'package:kudidemo/pages/edit_task.dart';
+import 'package:kudidemo/pages/habits/edit_task.dart';
 
 import 'package:kudidemo/pages/timer_widget.dart';
 import 'package:kudidemo/providers/pic_provider.dart';
@@ -21,7 +21,7 @@ import 'package:kudidemo/services/notification_service.dart';
 
 import 'package:kudidemo/utils/utils.dart';
 import 'package:kudidemo/widgets/icon_circle.dart';
-import 'package:kudidemo/widgets/task_list.dart';
+import 'package:kudidemo/widgets/tasks/task_list.dart';
 
 import 'package:kudidemo/widgets/theme_overlay.dart';
 import 'package:provider/provider.dart';
@@ -29,12 +29,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../models/task_model.dart';
 import '../providers/task_provider.dart';
-import '../widgets/date_container.dart';
+import '../widgets/tasks/date_container.dart';
 import '../widgets/image_modal.dart';
 import '../widgets/scroll_widget.dart';
 import '../widgets/task_modal.dart';
-import 'finances_page.dart';
-import 'habits_page.dart';
+import 'finances/finances_page.dart';
+import 'habits/habits_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

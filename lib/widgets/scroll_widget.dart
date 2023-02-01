@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:kudidemo/data/habit_database.dart';
 import 'package:kudidemo/pages/day_rating.dart';
 import 'package:kudidemo/pages/group_task.dart';
-import 'package:kudidemo/pages/landing_screen.dart';
+import 'package:kudidemo/pages/auth/landing_screen.dart';
 import 'package:kudidemo/pages/splash_screen.dart';
 import 'package:kudidemo/pages/timer_widget.dart';
 import 'package:kudidemo/providers/task_provider.dart';
@@ -12,10 +12,10 @@ import 'package:kudidemo/services/auth_service.dart';
 import 'package:kudidemo/widgets/task_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../pages/finances_page.dart';
-import '../pages/habits_page.dart';
-import '../pages/journal_page.dart';
-import '../pages/task_view.dart';
+import '../pages/finances/finances_page.dart';
+import '../pages/habits/habits_page.dart';
+
+import '../pages/tasks/task_view.dart';
 import '../providers/theme_provider.dart';
 
 class ScrollWidget extends StatefulWidget {
