@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:kudidemo/pages/budget_page.dart';
+import 'package:kudidemo/pages/finances/budget_page.dart';
 import 'package:kudidemo/pages/finances/expense_income.dart';
 
-import 'package:kudidemo/pages/savings_page.dart';
-import 'package:kudidemo/pages/trends_page.dart';
-import 'package:kudidemo/widgets/new_expense_income.dart';
+import 'package:kudidemo/pages/finances/savings_page.dart';
+import 'package:kudidemo/pages/finances/trends_page.dart';
+import 'package:kudidemo/widgets/finances/new_expense_income.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/expense_provider.dart';

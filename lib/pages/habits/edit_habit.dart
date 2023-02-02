@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
@@ -10,15 +7,11 @@ import '../../data/habit_database.dart';
 import '../../providers/color_provider.dart';
 import '../../providers/habits_provider.dart';
 import '../../widgets/back_arrow.dart';
-import '../../widgets/color_overlay.dart';
-import '../../widgets/habits/dailygoal_overlay.dart';
+
 import '../../widgets/edit_text_field.dart';
 import '../../widgets/neon_button.dart';
 import '../../widgets/oval_container.dart';
 import '../../widgets/oval_icon_container.dart';
-import '../../widgets/repeat_overlay.dart';
-import '../../widgets/routine_overlay.dart';
-import '../../widgets/text_field.dart';
 
 class EditHabit extends StatefulWidget {
   final String habitName;
@@ -91,17 +84,6 @@ class _EditHabitState extends State<EditHabit>
     complete = Provider.of<HabitsProvider>(context).complete;
 
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
-    // Future saveForm() async {
-    //   final isValid = _editHabitsForm.currentState!.validate();
-    //   if (isValid && widget.name != '') {
-    //     final habitProvider =
-    //         Provider.of<HabitsProvider>(context, listen: false);
-
-    //     db.updateDatabase();
-    //     habitProvider.reset();
-    //     Navigator.of(context).pop();
-    //   }
-    // }
 
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
@@ -157,16 +139,6 @@ class _EditHabitState extends State<EditHabit>
                 SizedBox(
                   height: size.height * 0.03,
                 ),
-                // GestureDetector(
-                //     onTap: () {
-                //       // print('lengt dey ${days[0]}');
-                //       print('lengt dey ${days.length}');
-                //     },
-                //     child: Container(
-                //       height: 40,
-                //       width: 40,
-                //       color: Colors.blue,
-                //     )),
                 EditTextField(
                     onChanged: (value) {
                       setState(() {
@@ -185,21 +157,6 @@ class _EditHabitState extends State<EditHabit>
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       GestureDetector(
-                        // onTap: () {
-                        //   Platform.isIOS
-                        //       ? showCupertinoDialog(
-                        //           context: context,
-                        //           builder: (_) => ColorOverlay(
-                        //             color: color,
-                        //           ),
-                        //         )
-                        //       : showDialog(
-                        //           context: context,
-                        //           builder: (_) => ColorOverlay(
-                        //             color: color,
-                        //           ),
-                        //         );
-                        // },
                         child: Container(
                             padding: const EdgeInsets.all(7),
                             child: Center(

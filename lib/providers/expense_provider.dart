@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:kudidemo/models/expense_item.dart';
@@ -34,6 +35,7 @@ class ExpenseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  File? imgFile = File('');
   String? expenseNotes = '';
   void addExpenseNotes(ExpenseItem expense) {
     expenseNotes = expense.notes;
@@ -49,5 +51,11 @@ class ExpenseProvider extends ChangeNotifier {
 
   void addExpense(ExpenseItem expense) {
     _expenseitems.add(expense);
+  }
+
+  void reset() {
+    imgFile = File('');
+    amount = 0.0;
+    expenseNotes = '';
   }
 }

@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kudidemo/models/billable_model.dart';
+import 'package:kudidemo/models/expense_item.dart';
 
 import 'package:kudidemo/pages/chat_page.dart';
 import 'package:kudidemo/pages/finances/finances_page.dart';
@@ -44,6 +45,7 @@ void main() async {
   Hive.registerAdapter(TaskModelAdapter());
 
   Hive.registerAdapter(BillableModelAdapter());
+  Hive.registerAdapter(ExpenseItemAdapter());
   await Hive.openBox("Habit_Database");
   runApp(const MyApp());
 }

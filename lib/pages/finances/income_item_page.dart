@@ -86,7 +86,9 @@ class _IncomeItemPageState extends State<IncomeItemPage> {
   Widget build(BuildContext context) {
     final expenseProvider =
         Provider.of<ExpenseProvider>(context, listen: false);
-
+    if (_pickedImg != null) {
+      expenseProvider.imgFile = _pickedImg;
+    }
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -459,6 +461,7 @@ class _IncomeItemPageState extends State<IncomeItemPage> {
                               onTap: () {
                                 expenseProvider.inputWidget = false;
                                 final expense = ExpenseItem(
+                                    image: expenseProvider.imgFile,
                                     status: 'income',
                                     amount: expenseProvider.amount,
                                     category: widget.expenseName,
@@ -466,11 +469,14 @@ class _IncomeItemPageState extends State<IncomeItemPage> {
                                     notes: expenseProvider.expenseNotes);
                                 expenseProvider.addExpense(expense);
                                 print(
-                                    'das amount dey ${expenseProvider.expenseNotes}');
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (c) => FinancesPage()),
-                                    (route) => false);
+                                    'das amount dey ${expenseProvider.imgFile!.path}');
+                                expenseProvider.reset();
+                                Navigator.of(context)
+                                    .pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (c) => FinancesPage()),
+                                        (route) => false)
+                                    .then((value) => expenseProvider.reset());
                               },
                             );
                           });

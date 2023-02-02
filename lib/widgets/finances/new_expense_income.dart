@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'finances/expense_box.dart';
-import 'finances/income_box.dart';
+import 'expense_box.dart';
+import 'income_box.dart';
 
 class NewExpenseIncomeOverlay extends StatefulWidget {
   NewExpenseIncomeOverlay({
@@ -95,13 +96,28 @@ class NewExpenseIncomeOverlayState extends State<NewExpenseIncomeOverlay>
                         decoration: decorator.copyWith(
                             borderRadius: BorderRadius.circular(20.0),
                             color: Theme.of(context).backgroundColor),
-                        child: Center(
-                          child: Text(
-                            "Expense",
-                            style: GoogleFonts.prompt(
-                              fontWeight: FontWeight.w600,
-                              color:
-                                  Theme.of(context).textTheme.bodyText2!.color,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.redAccent.withOpacity(0.3)),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: Center(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.moneyBillTransfer,
+                                  size: 20,
+                                ),
+                                SizedBox(
+                                  width: 17,
+                                ),
+                                Text(
+                                  "Expense",
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -131,13 +147,28 @@ class NewExpenseIncomeOverlayState extends State<NewExpenseIncomeOverlay>
                         decoration: decorator.copyWith(
                             borderRadius: BorderRadius.circular(20.0),
                             color: Theme.of(context).backgroundColor),
-                        child: Center(
-                          child: Text(
-                            "Income",
-                            style: GoogleFonts.prompt(
-                              fontWeight: FontWeight.w600,
-                              color:
-                                  Theme.of(context).textTheme.bodyText2!.color,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.lightGreenAccent.withOpacity(0.3)),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: Center(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.moneyBillTrendUp,
+                                  size: 20,
+                                ),
+                                SizedBox(
+                                  width: 17,
+                                ),
+                                Text(
+                                  "Income",
+                                ),
+                              ],
                             ),
                           ),
                         ),

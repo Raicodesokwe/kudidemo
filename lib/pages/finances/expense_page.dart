@@ -86,7 +86,9 @@ class _ExpensePageState extends State<ExpensePage> {
   Widget build(BuildContext context) {
     final expenseProvider =
         Provider.of<ExpenseProvider>(context, listen: false);
-
+    if (_pickedImg != null) {
+      expenseProvider.imgFile = _pickedImg;
+    }
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -458,6 +460,7 @@ class _ExpensePageState extends State<ExpensePage> {
                                 expenseProvider.inputWidget = false;
                                 final expense = ExpenseItem(
                                     status: 'expense',
+                                    image: expenseProvider.imgFile,
                                     amount: expenseProvider.amount,
                                     category: widget.expenseName,
                                     date: selectedDate,
@@ -465,6 +468,7 @@ class _ExpensePageState extends State<ExpensePage> {
                                 expenseProvider.addExpense(expense);
                                 print(
                                     'das amount dey ${expenseProvider.amount}');
+                                expenseProvider.reset();
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
                                         builder: (c) => FinancesPage()),
