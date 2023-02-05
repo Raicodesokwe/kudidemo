@@ -121,8 +121,7 @@ class _FinancesPageState extends State<FinancesPage> {
       )
     ]);
     Size size = MediaQuery.of(context).size;
-    final expenseProvider =
-        Provider.of<ExpenseProvider>(context, listen: false);
+    final expenseProvider = Provider.of<ExpenseProvider>(context, listen: true);
     return SafeArea(
       child: Scaffold(
           floatingActionButton: expenseProvider.expenseitems.isEmpty

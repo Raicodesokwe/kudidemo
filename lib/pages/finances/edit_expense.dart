@@ -17,23 +17,24 @@ import 'package:provider/provider.dart';
 
 import '../../widgets/finances/confirm_overlay.dart';
 
-class ExpensePage extends StatefulWidget {
-  final String expenseName;
-  final String expenseImage;
-  final Color tileColor;
-  const ExpensePage(
-      {Key? key,
-      required this.expenseName,
-      required this.tileColor,
-      required this.expenseImage})
+class EditExpensePage extends StatefulWidget {
+  final ExpenseItem expenseItem;
+  const EditExpensePage({Key? key, required this.expenseItem})
       : super(key: key);
 
   @override
-  State<ExpensePage> createState() => _ExpensePageState();
+  State<EditExpensePage> createState() => _EditExpensePageState();
 }
 
-class _ExpensePageState extends State<ExpensePage> {
-  final TextEditingController controller = TextEditingController();
+class _EditExpensePageState extends State<EditExpensePage> {
+  TextEditingController controller = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.text = widget.expenseItem.amount.toString();
+  }
+
   File? imgFile;
   String? url;
   void imagePickFunktion(File img) {
@@ -115,15 +116,15 @@ class _ExpensePageState extends State<ExpensePage> {
                 ? Container(
                     height: size.height * 0.3,
                     width: double.infinity,
-                    color: widget.tileColor,
+                    color: Colors.greenAccent,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          widget.expenseName,
+                          widget.expenseItem.category!,
                           style: TextStyle(fontSize: 25),
                         ),
-                        Image.asset(widget.expenseImage),
+                        Icon(FontAwesomeIcons.moneyBillTransfer),
                         SizedBox(
                           height: 20,
                         ),
@@ -174,10 +175,9 @@ class _ExpensePageState extends State<ExpensePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              widget.expenseName,
+                              widget.expenseItem.category!,
                               style: TextStyle(fontSize: 25),
                             ),
-                            Image.asset(widget.expenseImage),
                             Padding(
                               padding: const EdgeInsets.all(20),
                               child: Container(
@@ -468,18 +468,20 @@ class _ExpensePageState extends State<ExpensePage> {
                                 onTap: () {
                                   expenseProvider.inputWidget = false;
                                   final expense = ExpenseItem(
-                                      id: Random().nextInt(1000000),
-                                      status: 'expense',
+                                      id: widget.expenseItem.id,
+                                      status: widget.expenseItem.status,
                                       image: _pickedImg != null
                                           ? expenseProvider.imgFile!
                                               .readAsBytesSync()
-                                          : emptyFile,
+                                          : widget.expenseItem.image,
                                       amount: expenseProvider.amount,
-                                      category: widget.expenseName,
+                                      category: widget.expenseItem.category,
                                       date: selectedDate,
-                                      notes: expenseProvider.expenseNotes);
+                                      notes: expenseProvider.expenseNotes == ''
+                                          ? widget.expenseItem.notes
+                                          : expenseProvider.expenseNotes);
                                   expenseProvider
-                                      .addExpense(expense)
+                                      .changeExpense(expense)
                                       .then((value) {
                                     print(
                                         'das amount dey ${expenseProvider.amount}');

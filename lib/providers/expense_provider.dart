@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 import 'package:kudidemo/models/expense_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,6 +43,7 @@ class ExpenseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  final String expenseIncomeHiveBox = 'expense-box';
   bool inputWidget = false;
   double amount = 0.0;
   List<ExpenseItem> _expenseitems = [];
@@ -49,8 +51,37 @@ class ExpenseProvider extends ChangeNotifier {
     return [..._expenseitems];
   }
 
-  void addExpense(ExpenseItem expense) {
-    _expenseitems.add(expense);
+  Future<void> addExpense(ExpenseItem expense) async {
+    Box<ExpenseItem> box =
+        await Hive.openBox<ExpenseItem>(expenseIncomeHiveBox);
+    await box.put(expense.id, expense);
+    _expenseitems = box.values.toList();
+    notifyListeners();
+  }
+
+  Future<void> getExpenses() async {
+    Box<ExpenseItem> box =
+        await Hive.openBox<ExpenseItem>(expenseIncomeHiveBox);
+    _expenseitems = box.values.toList();
+    notifyListeners();
+  }
+
+  Future<void> removeExpense(ExpenseItem expense) async {
+    Box<ExpenseItem> box =
+        await Hive.openBox<ExpenseItem>(expenseIncomeHiveBox);
+    await box.delete(expense.key);
+    _expenseitems = box.values.toList();
+    notifyListeners();
+  }
+
+  Future<void> changeExpense(ExpenseItem expense) async {
+    Box<ExpenseItem> box =
+        await Hive.openBox<ExpenseItem>(expenseIncomeHiveBox);
+
+    await box.put(expense.id, expense);
+    _expenseitems = box.values.toList();
+
+    notifyListeners();
   }
 
   void reset() {

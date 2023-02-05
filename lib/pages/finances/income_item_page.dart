@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
@@ -11,6 +13,7 @@ import 'package:kudidemo/utils/utils.dart';
 import 'package:kudidemo/widgets/finances/expense_notes.dart';
 import 'package:kudidemo/widgets/icon_circle.dart';
 import 'package:kudidemo/widgets/finances/keypad_circle.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../widgets/finances/confirm_overlay.dart';
@@ -82,6 +85,15 @@ class _IncomeItemPageState extends State<IncomeItemPage> {
     setState(() => selectedDate = date);
   }
 
+  Future<File> saveFile() async {
+    final path = await getApplicationDocumentsDirectory();
+    final fileName = path.path + '';
+    final file = File(fileName).create(recursive: true);
+
+    return file;
+  }
+
+  Uint8List? emptyFile;
   @override
   Widget build(BuildContext context) {
     final expenseProvider =
@@ -461,22 +473,27 @@ class _IncomeItemPageState extends State<IncomeItemPage> {
                               onTap: () {
                                 expenseProvider.inputWidget = false;
                                 final expense = ExpenseItem(
-                                    image: expenseProvider.imgFile,
+                                    id: Random().nextInt(1000000),
+                                    image: _pickedImg != null
+                                        ? expenseProvider.imgFile!
+                                            .readAsBytesSync()
+                                        : emptyFile,
                                     status: 'income',
                                     amount: expenseProvider.amount,
                                     category: widget.expenseName,
                                     date: selectedDate,
                                     notes: expenseProvider.expenseNotes);
-                                expenseProvider.addExpense(expense);
-                                print(
-                                    'das amount dey ${expenseProvider.imgFile!.path}');
-                                expenseProvider.reset();
-                                Navigator.of(context)
-                                    .pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                            builder: (c) => FinancesPage()),
-                                        (route) => false)
-                                    .then((value) => expenseProvider.reset());
+                                expenseProvider
+                                    .addExpense(expense)
+                                    .then((value) {
+                                  print(
+                                      'das amount dey ${expenseProvider.imgFile!.path}');
+                                  expenseProvider.reset();
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (c) => FinancesPage()),
+                                      (route) => false);
+                                });
                               },
                             );
                           });

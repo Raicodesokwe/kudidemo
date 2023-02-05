@@ -17,21 +17,22 @@ class ExpenseItemAdapter extends TypeAdapter<ExpenseItem> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ExpenseItem(
-      category: fields[0] as String?,
+      category: fields[6] as String?,
       status: fields[4] as String?,
       amount: fields[1] as double?,
       date: fields[2] as DateTime?,
       notes: fields[3] as String?,
-      image: fields[5] as File?,
+      id: fields[0] as int?,
+      image: fields[5] as Uint8List?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ExpenseItem obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
-      ..write(obj.category)
+      ..write(obj.id)
       ..writeByte(1)
       ..write(obj.amount)
       ..writeByte(2)
@@ -41,7 +42,9 @@ class ExpenseItemAdapter extends TypeAdapter<ExpenseItem> {
       ..writeByte(4)
       ..write(obj.status)
       ..writeByte(5)
-      ..write(obj.image);
+      ..write(obj.image)
+      ..writeByte(6)
+      ..write(obj.category);
   }
 
   @override

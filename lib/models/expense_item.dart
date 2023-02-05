@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:hive/hive.dart';
 part 'expense_item.g.dart';
@@ -6,7 +7,8 @@ part 'expense_item.g.dart';
 @HiveType(typeId: 4)
 class ExpenseItem extends HiveObject {
   @HiveField(0)
-  final String? category;
+  final int? id;
+
   @HiveField(1)
   final double? amount;
   @HiveField(2)
@@ -16,12 +18,15 @@ class ExpenseItem extends HiveObject {
   @HiveField(4)
   final String? status;
   @HiveField(5)
-  final File? image;
+  final Uint8List? image;
+  @HiveField(6)
+  final String? category;
   ExpenseItem(
       {this.category,
       this.status,
       this.amount,
       this.date,
       this.notes,
+      this.id,
       this.image});
 }
