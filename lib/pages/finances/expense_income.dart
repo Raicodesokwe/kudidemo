@@ -80,6 +80,7 @@ class _ExpenseIncomeState extends State<ExpenseIncome> {
       onWillPop: () {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => BottomNavBar()));
+        expenseProvider.filtered = false;
         return Future.value(false);
       },
       child: FutureBuilder(
@@ -298,7 +299,8 @@ class _ExpenseIncomeState extends State<ExpenseIncome> {
                           previousValue + element.amount!);
                   final balanceAmount = incomeAmount - expenseAmount;
 
-                  if (notifier.expenseitems.isEmpty) {
+                  if (notifier.expenseitems.isEmpty &&
+                      notifier.filtered == false) {
                     return child!;
                   }
 

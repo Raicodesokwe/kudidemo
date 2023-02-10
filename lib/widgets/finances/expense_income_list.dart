@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:kudidemo/widgets/finances/filter_date.dart';
+import 'package:lottie/lottie.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../navbar/navbar.dart';
@@ -33,8 +36,10 @@ class ExpenseIncomeList extends StatefulWidget {
 }
 
 class _ExpenseIncomeListState extends State<ExpenseIncomeList> {
+  bool filterSelected = false;
   String currency = 'Select currency';
   final _kCurrency = "currency_preference";
+
   @override
   Widget build(BuildContext context) {
     void setCurr() async {
@@ -54,6 +59,7 @@ class _ExpenseIncomeListState extends State<ExpenseIncomeList> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    widget.notifier.filtered = false;
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => BottomNavBar()));
                   },
@@ -71,6 +77,30 @@ class _ExpenseIncomeListState extends State<ExpenseIncomeList> {
                   ),
                 ),
                 Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return FilterDate(
+                            notifier: widget.notifier,
+                          );
+                        });
+                  },
+                  child: Container(
+                    height: 45,
+                    width: 45,
+                    child: Center(
+                      child: Icon(FontAwesomeIcons.calendarCheck),
+                    ),
+                    decoration: widget.decorator.copyWith(
+                        color: Theme.of(context).backgroundColor,
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
                 Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
@@ -255,94 +285,108 @@ class _ExpenseIncomeListState extends State<ExpenseIncomeList> {
             SizedBox(
               height: 10,
             ),
-            ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: widget.notifier.expenseitems.length,
-                itemBuilder: ((context, index) {
-                  final listItem = widget.notifier.expenseitems[index];
+            widget.notifier.expenseitems.isEmpty && widget.notifier.filtered
+                ? Center(
+                    child: Column(
+                      children: [
+                        Lottie.asset('assets/images/empty.json'),
+                        Text('Oops,it\'s empty',
+                            style: GoogleFonts.prompt(
+                                fontWeight: FontWeight.w600,
+                                color: Color.fromARGB(255, 9, 131, 13)))
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: widget.notifier.expenseitems.length,
+                    itemBuilder: ((context, index) {
+                      final listItem = widget.notifier.expenseitems[index];
 
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ViewDetails(
-                                  expenseItem: listItem,
-                                )));
-                      },
-                      child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: widget.decorator.copyWith(
-                              color: Theme.of(context).backgroundColor,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 45,
-                                width: 45,
-                                child: Icon(listItem.status == 'income'
-                                    ? FontAwesomeIcons.moneyBillTrendUp
-                                    : FontAwesomeIcons.moneyBillTransfer),
-                                decoration: BoxDecoration(
-                                    color: Colors.greenAccent,
-                                    border: Border.all(width: 2),
-                                    shape: BoxShape.circle),
-                              ),
-                              SizedBox(
-                                width: 7,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ViewDetails(
+                                      expenseItem: listItem,
+                                    )));
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: widget.decorator.copyWith(
+                                  color: Theme.of(context).backgroundColor,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Row(
                                 children: [
-                                  Text(
-                                    listItem.category!,
-                                  ),
-                                  SizedBox(
-                                    height: 7,
-                                  ),
-                                  Text(
-                                    Utils.toDate(listItem.date!),
-                                    style: GoogleFonts.prompt(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w300),
-                                  ),
-                                  SizedBox(
-                                    height: 7,
-                                  ),
                                   Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          color: listItem.status == 'expense'
-                                              ? Colors.redAccent
-                                                  .withOpacity(0.3)
-                                              : Colors.lightGreenAccent
-                                                  .withOpacity(0.3)),
-                                      child: Text(listItem.status!))
-                                ],
-                              ),
-                              Spacer(),
-                              Row(
-                                children: [
-                                  listItem.status == 'expense'
-                                      ? Text(
-                                          '-${widget.numberFormat.format(listItem.amount)}')
-                                      : Text(
-                                          '${widget.numberFormat.format(listItem.amount)}'),
+                                    height: 45,
+                                    width: 45,
+                                    child: Icon(listItem.status == 'income'
+                                        ? FontAwesomeIcons.moneyBillTrendUp
+                                        : FontAwesomeIcons.moneyBillTransfer),
+                                    decoration: BoxDecoration(
+                                        color: Colors.greenAccent,
+                                        border: Border.all(width: 2),
+                                        shape: BoxShape.circle),
+                                  ),
                                   SizedBox(
                                     width: 7,
                                   ),
-                                  Text(widget.notifier.currency)
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        listItem.category!,
+                                      ),
+                                      SizedBox(
+                                        height: 7,
+                                      ),
+                                      Text(
+                                        Utils.toDate(listItem.date!),
+                                        style: GoogleFonts.prompt(
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w300),
+                                      ),
+                                      SizedBox(
+                                        height: 7,
+                                      ),
+                                      Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 5),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color:
+                                                  listItem.status == 'expense'
+                                                      ? Colors.redAccent
+                                                          .withOpacity(0.3)
+                                                      : Colors.lightGreenAccent
+                                                          .withOpacity(0.3)),
+                                          child: Text(listItem.status!))
+                                    ],
+                                  ),
+                                  Spacer(),
+                                  Row(
+                                    children: [
+                                      listItem.status == 'expense'
+                                          ? Text(
+                                              '-${widget.numberFormat.format(listItem.amount)}')
+                                          : Text(
+                                              '${widget.numberFormat.format(listItem.amount)}'),
+                                      SizedBox(
+                                        width: 7,
+                                      ),
+                                      Text(widget.notifier.currency)
+                                    ],
+                                  )
                                 ],
-                              )
-                            ],
-                          )),
-                    ),
-                  );
-                })),
+                              )),
+                        ),
+                      );
+                    })),
             SizedBox(
               height: 70,
             )

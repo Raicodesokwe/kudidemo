@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kudidemo/pages/group_task.dart';
 import 'package:kudidemo/services/notification_service.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../providers/theme_provider.dart';
 import '../theme/concavedecoration.dart';
@@ -60,6 +61,7 @@ class _ChatPageState extends State<ChatPage> {
   late bool isMe;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     final decorator = BoxDecoration(boxShadow: [
       BoxShadow(
           color: Theme.of(context).cardColor,
@@ -112,8 +114,12 @@ class _ChatPageState extends State<ChatPage> {
                 ],
               ),
             ),
-            decoration:
-                decorator.copyWith(color: Theme.of(context).backgroundColor),
+            decoration: decorator.copyWith(
+                border: Border.all(
+                    width: 2,
+                    color: Theme.of(context).textTheme.bodyText2!.color!),
+                color: Theme.of(context).backgroundColor,
+                borderRadius: BorderRadius.circular(10)),
           ),
         ),
         Expanded(
@@ -121,7 +127,69 @@ class _ChatPageState extends State<ChatPage> {
             stream: _chatStream,
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return Center(
+                    child: Shimmer.fromColors(
+                  baseColor: Colors.green.withOpacity(0.3),
+                  highlightColor: Colors.green.withOpacity(0.1),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          height: 70,
+                          width: size.width * 0.4,
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          height: 70,
+                          width: size.width * 0.4,
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Container(
+                          height: 70,
+                          width: size.width * 0.4,
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Container(
+                          height: 70,
+                          width: size.width * 0.4,
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ));
               }
               return ListView(
                   reverse: true,
@@ -146,7 +214,10 @@ class _ChatPageState extends State<ChatPage> {
                                     left: 16, right: 16, top: 2, bottom: 8),
                                 decoration: decorator.copyWith(
                                     color: isMe
-                                        ? Colors.black
+                                        ? Theme.of(context)
+                                            .textTheme
+                                            .bodyText2!
+                                            .color!
                                         : Theme.of(context).backgroundColor,
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(12),
@@ -166,8 +237,14 @@ class _ChatPageState extends State<ChatPage> {
                                       data['username'],
                                       style: GoogleFonts.prompt(
                                           color: isMe
-                                              ? Colors.white70
-                                              : Colors.black54),
+                                              ? Theme.of(context)
+                                                  .backgroundColor
+                                                  .withOpacity(0.5)
+                                              : Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2!
+                                                  .color!
+                                                  .withOpacity(0.5)),
                                     ),
                                     SizedBox(
                                       height: 5,
@@ -176,8 +253,12 @@ class _ChatPageState extends State<ChatPage> {
                                       data['text'],
                                       style: TextStyle(
                                           color: isMe
-                                              ? Colors.white
-                                              : Colors.black),
+                                              ? Theme.of(context)
+                                                  .backgroundColor
+                                              : Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2!
+                                                  .color!),
                                     ),
                                   ],
                                 )),
@@ -228,7 +309,7 @@ class _ChatPageState extends State<ChatPage> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     decoration: decorator.copyWith(
-                        color: Colors.grey[300],
+                        color: Theme.of(context).backgroundColor,
                         borderRadius: BorderRadius.circular(10.0)),
                     child: TextField(
                       onChanged: (value) {
@@ -237,10 +318,18 @@ class _ChatPageState extends State<ChatPage> {
                         });
                       },
                       controller: _messageController,
-                      cursorColor: Colors.black45,
+                      style: GoogleFonts.prompt(
+                          color: Theme.of(context).textTheme.bodyText2!.color!),
+                      cursorColor:
+                          Theme.of(context).textTheme.bodyText2!.color!,
                       decoration: InputDecoration(
                           hintText: 'Send a message . . .',
-                          hintStyle: GoogleFonts.prompt(),
+                          hintStyle: GoogleFonts.prompt(
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .color!
+                                  .withOpacity(0.5)),
                           border: InputBorder.none),
                     )),
               ),

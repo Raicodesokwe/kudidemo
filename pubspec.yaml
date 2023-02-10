@@ -57,6 +57,7 @@ dependencies:
   google_sign_in:
   image_picker:
   shimmer:
+  
   firebase_storage:
   firebase_messaging:
   hive:

@@ -124,7 +124,8 @@ class _FinancesPageState extends State<FinancesPage> {
     final expenseProvider = Provider.of<ExpenseProvider>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-          floatingActionButton: expenseProvider.expenseitems.isEmpty
+          floatingActionButton: expenseProvider.expenseitems.isEmpty &&
+                  !expenseProvider.filtered
               ? Container()
               : Theme(
                   data: Theme.of(context).copyWith(
@@ -143,11 +144,13 @@ class _FinancesPageState extends State<FinancesPage> {
                       onPressed: () {
                         FocusScope.of(context).requestFocus(FocusNode());
                         expenseProvider.inputWidget = true;
+
                         showDialog(
-                            context: context,
-                            builder: (context) {
-                              return NewExpenseIncomeOverlay();
-                            });
+                                context: context,
+                                builder: (context) {
+                                  return NewExpenseIncomeOverlay();
+                                })
+                            .then((value) => expenseProvider.filtered = false);
                       },
                       label: Text(
                         selectedTab == 0 ? 'Add new' : 'brrr',

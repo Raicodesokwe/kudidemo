@@ -59,10 +59,20 @@ class ExpenseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  DateTime? fromDate = DateTime.now();
+  DateTime? toDate = DateTime.now();
+
+  bool filtered = false;
   Future<void> getExpenses() async {
     Box<ExpenseItem> box =
         await Hive.openBox<ExpenseItem>(expenseIncomeHiveBox);
-    _expenseitems = box.values.toList();
+    _expenseitems = !filtered
+        ? box.values.toList()
+        : box.values
+            .where((element) =>
+                element.date!.isAfter(fromDate!) &&
+                element.date!.isBefore(toDate!))
+            .toList();
     notifyListeners();
   }
 
