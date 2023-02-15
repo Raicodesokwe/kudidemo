@@ -164,11 +164,19 @@ class _ExpenseIncomeListState extends State<ExpenseIncomeList> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(FontAwesomeIcons.moneyBill)),
+                          child: Icon(
+                            FontAwesomeIcons.moneyBill,
+                            color: Colors.black,
+                          )),
                       SizedBox(
                         width: 7,
                       ),
-                      Text('Balance')
+                      Text(
+                        'Balance',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      )
                     ],
                   ),
                   SizedBox(
@@ -181,7 +189,10 @@ class _ExpenseIncomeListState extends State<ExpenseIncomeList> {
                         constraints: BoxConstraints(maxWidth: 200),
                         child: Text(
                           widget.notifier.currency,
-                          style: TextStyle(fontSize: 25),
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -189,7 +200,10 @@ class _ExpenseIncomeListState extends State<ExpenseIncomeList> {
                       ),
                       Text(
                         widget.numberFormat.format(widget.balanceAmount),
-                        style: TextStyle(fontSize: 25),
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black,
+                        ),
                       )
                     ],
                   ),
@@ -201,7 +215,12 @@ class _ExpenseIncomeListState extends State<ExpenseIncomeList> {
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                    child: Text('Here is your balance'),
+                    child: Text(
+                      'Here is your balance',
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 15,
@@ -215,24 +234,42 @@ class _ExpenseIncomeListState extends State<ExpenseIncomeList> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(FontAwesomeIcons.moneyBillTransfer)),
+                          child: Icon(
+                            FontAwesomeIcons.moneyBillTransfer,
+                            color: Colors.black,
+                          )),
                       SizedBox(
                         width: 7,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Expense'),
+                          Text(
+                            'Expense',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
                           Row(
                             children: [
                               Container(
                                   constraints: BoxConstraints(maxWidth: 50),
-                                  child: Text(widget.notifier.currency)),
+                                  child: Text(
+                                    widget.notifier.currency,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  )),
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(widget.numberFormat
-                                  .format(widget.expenseAmount)),
+                              Text(
+                                widget.numberFormat
+                                    .format(widget.expenseAmount),
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
                             ],
                           )
                         ],
@@ -244,24 +281,41 @@ class _ExpenseIncomeListState extends State<ExpenseIncomeList> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(FontAwesomeIcons.moneyBillTrendUp)),
+                          child: Icon(
+                            FontAwesomeIcons.moneyBillTrendUp,
+                            color: Colors.black,
+                          )),
                       SizedBox(
                         width: 7,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Income'),
+                          Text(
+                            'Income',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
                           Row(
                             children: [
                               Container(
                                   constraints: BoxConstraints(maxWidth: 50),
-                                  child: Text(widget.notifier.currency)),
+                                  child: Text(
+                                    widget.notifier.currency,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  )),
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(widget.numberFormat
-                                  .format(widget.incomeAmount)),
+                              Text(
+                                widget.numberFormat.format(widget.incomeAmount),
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
                             ],
                           )
                         ],
@@ -323,9 +377,12 @@ class _ExpenseIncomeListState extends State<ExpenseIncomeList> {
                                   Container(
                                     height: 45,
                                     width: 45,
-                                    child: Icon(listItem.status == 'income'
-                                        ? FontAwesomeIcons.moneyBillTrendUp
-                                        : FontAwesomeIcons.moneyBillTransfer),
+                                    child: Icon(
+                                      listItem.status == 'income'
+                                          ? FontAwesomeIcons.moneyBillTrendUp
+                                          : FontAwesomeIcons.moneyBillTransfer,
+                                      color: Colors.black,
+                                    ),
                                     decoration: BoxDecoration(
                                         color: Colors.greenAccent,
                                         border: Border.all(width: 2),

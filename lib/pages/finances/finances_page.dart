@@ -8,7 +8,9 @@ import 'package:kudidemo/pages/finances/expense_income.dart';
 
 import 'package:kudidemo/pages/finances/savings_page.dart';
 import 'package:kudidemo/pages/finances/trends_page.dart';
+import 'package:kudidemo/widgets/finances/add_budget.dart';
 import 'package:kudidemo/widgets/finances/new_expense_income.dart';
+import 'package:kudidemo/widgets/text_field.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/expense_provider.dart';
@@ -46,12 +48,16 @@ class _FinancesPageState extends State<FinancesPage> {
               width: 36,
               child: Icon(
                 FontAwesomeIcons.wallet,
-                color: selectedTab == 0 ? Colors.green : Colors.black,
+                color: selectedTab == 0
+                    ? Colors.green
+                    : Theme.of(context).textTheme.bodyText2!.color,
               )),
           Text(
             'Add',
             style: TextStyle(
-                color: selectedTab == 0 ? Colors.green : Colors.black),
+                color: selectedTab == 0
+                    ? Colors.green
+                    : Theme.of(context).textTheme.bodyText2!.color),
           )
         ],
       ),
@@ -63,12 +69,16 @@ class _FinancesPageState extends State<FinancesPage> {
               width: 36,
               child: Icon(
                 FontAwesomeIcons.moneyCheck,
-                color: selectedTab == 1 ? Colors.green : Colors.black,
+                color: selectedTab == 1
+                    ? Colors.green
+                    : Theme.of(context).textTheme.bodyText2!.color,
               )),
           Text(
             'Budget',
             style: TextStyle(
-                color: selectedTab == 1 ? Colors.green : Colors.black),
+                color: selectedTab == 1
+                    ? Colors.green
+                    : Theme.of(context).textTheme.bodyText2!.color),
           )
         ],
       ),
@@ -80,12 +90,16 @@ class _FinancesPageState extends State<FinancesPage> {
               width: 36,
               child: Icon(
                 FontAwesomeIcons.piggyBank,
-                color: selectedTab == 2 ? Colors.green : Colors.black,
+                color: selectedTab == 2
+                    ? Colors.green
+                    : Theme.of(context).textTheme.bodyText2!.color,
               )),
           Text(
             'Savings',
             style: TextStyle(
-                color: selectedTab == 2 ? Colors.green : Colors.black),
+                color: selectedTab == 2
+                    ? Colors.green
+                    : Theme.of(context).textTheme.bodyText2!.color),
           )
         ],
       ),
@@ -97,12 +111,16 @@ class _FinancesPageState extends State<FinancesPage> {
               width: 36,
               child: Icon(
                 FontAwesomeIcons.chartLine,
-                color: selectedTab == 3 ? Colors.green : Colors.black,
+                color: selectedTab == 3
+                    ? Colors.green
+                    : Theme.of(context).textTheme.bodyText2!.color,
               )),
           Text(
             'Trend',
             style: TextStyle(
-                color: selectedTab == 3 ? Colors.green : Colors.black),
+                color: selectedTab == 3
+                    ? Colors.green
+                    : Theme.of(context).textTheme.bodyText2!.color),
           )
         ],
       ),
@@ -139,22 +157,46 @@ class _FinancesPageState extends State<FinancesPage> {
                       elevation: 7,
                       icon: Icon(
                         Icons.add,
-                        color: Theme.of(context).textTheme.bodyText2!.color,
+                        color: Colors.black,
                       ),
-                      onPressed: () {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        expenseProvider.inputWidget = true;
+                      onPressed: selectedTab == 0
+                          ? () {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              expenseProvider.inputWidget = true;
 
-                        showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return NewExpenseIncomeOverlay();
-                                })
-                            .then((value) => expenseProvider.filtered = false);
-                      },
+                              showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return NewExpenseIncomeOverlay();
+                                      })
+                                  .then((value) =>
+                                      expenseProvider.filtered = false);
+                            }
+                          : selectedTab == 1
+                              ? () {
+                                  showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor:
+                                          Theme.of(context).backgroundColor,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      context: context,
+                                      builder: (context) {
+                                        return AddBudget();
+                                      });
+                                }
+                              : () {},
                       label: Text(
-                        selectedTab == 0 ? 'Add new' : 'brrr',
-                        style: Theme.of(context).textTheme.bodyText2,
+                        selectedTab == 0
+                            ? 'Add new'
+                            : selectedTab == 1
+                                ? 'Add budget'
+                                : 'brrr',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(color: Colors.black),
                       )),
                 ),
           extendBody: true,

@@ -13,6 +13,7 @@ import 'package:kudidemo/pages/group_task.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kudidemo/pages/homepage.dart';
 import 'package:kudidemo/providers/bilable_provider.dart';
+import 'package:kudidemo/providers/budget_provider.dart';
 import 'package:kudidemo/providers/color_provider.dart';
 import 'package:kudidemo/providers/expense_provider.dart';
 import 'package:kudidemo/providers/google_signin.dart';
@@ -85,6 +86,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => BillableProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => BudgetProvider(),
         ),
       ],
       child: Consumer<ThemeProvider>(
