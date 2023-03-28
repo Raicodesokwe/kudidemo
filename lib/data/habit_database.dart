@@ -3,6 +3,36 @@ import 'package:hive/hive.dart';
 import '../utils/date_time.dart';
 
 final _myBox = Hive.box("Habit_Database");
+//create add habit
+//while adding habit,we can update today's habit list entry and the universal habit list accounting for the added habit
+//something like this
+//  Future<void> addTask(TaskModel task) async {
+//     Box<TaskModel> box = await Hive.openBox<TaskModel>(taskHiveBox);
+//    await box.put(todaysDateFormatted(), habits);
+//     await box.put(task.id, task);
+//     // _tasks.add(task);
+//     _tasks = box.values.toList();
+
+//     notifyListeners();
+//   }
+//we'll then get the habit list with getdata
+//  Future<void> getTasks() async {
+//     Box<TaskModel> box = await Hive.openBox<TaskModel>(taskHiveBox);
+// if (box.get(todaysDateFormatted()) == null) {
+//       //if it's a new day since today's date is null,we get the current habit list from the database
+//       habits = box.get("CURRENT_HABIT_LIST");
+//       //we get the values of key CURRENT_HABIT_LIST and store them in the habits list variable
+//       for (int i = 0; i < habits.length; i++) {
+//         //for every habit from this CURRENT_HABIT_LIST the completed property turns to false if it's a new day thus todaysdateformatted is null
+//         habits[i][6] = false;
+//       }
+//     } else {
+//       //if it's not a new day thus todaydateformatted is not null, we then get the already existing habit list
+//       habits = box.get(todaysDateFormatted());
+//     }
+//     _tasks = box.values.toList();
+//     notifyListeners();
+//   }
 
 class HabitDatabase {
   List habits = [];

@@ -75,11 +75,14 @@ class _HabitsPageState extends State<HabitsPage>
   @override
   void initState() {
     super.initState();
+    //when we open the screen, we first check if the current habit list is null and if it is, we create the default data by adding today's date to mybox
     if (_myBox.get("CURRENT_HABIT_LIST") == null) {
       db.createDefaultData();
     } else {
+      //if current habit list is not null, we load the habit list since today's date is not null
       db.loadData();
     }
+    //after we call createdefaultdata or loaddata,we call updatedatabase where we update today's habit list entry and update the universal habit list incase there is a new habit or a habit is deleted or edited
     db.updateDatabase();
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 950));
@@ -128,8 +131,11 @@ class _HabitsPageState extends State<HabitsPage>
             Provider.of<HabitsProvider>(context, listen: false);
         setState(() {
           db.habits.add(habit);
+          //we add a habit to the habit list here
           inputWidget = false;
         });
+        //we then call update database to update the current habit list inxase it's changed and in this case we've added a new habit
+        //we also update today's entry
         db.updateDatabase();
         habitProvider.reset();
         habitsNameController.clear();
