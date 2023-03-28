@@ -48,6 +48,8 @@ void main() async {
   Hive.registerAdapter(BillableModelAdapter());
   Hive.registerAdapter(ExpenseItemAdapter());
   await Hive.openBox("Habit_Database");
+  //once a box is open, all its data is loaded from local storage in2 memory for immediate access
+  //we can then retrieve data synchronously without using async/await
   runApp(const MyApp());
 }
 

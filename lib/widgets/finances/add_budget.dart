@@ -10,8 +10,6 @@ import 'package:kudidemo/widgets/nextneon_button.dart';
 import 'package:provider/provider.dart';
 import '../text_field.dart';
 
-enum BudgetTypeEnum { Closed, Open }
-
 class AddBudget extends StatefulWidget {
   const AddBudget({Key? key}) : super(key: key);
 
@@ -20,8 +18,6 @@ class AddBudget extends StatefulWidget {
 }
 
 class _AddBudgetState extends State<AddBudget> {
-  BudgetTypeEnum? _budgetTypeEnum = BudgetTypeEnum.Closed;
-
   int _selectedIndex = 0;
   int _typeIndex = 0;
   final _newBudgetForm = GlobalKey<FormState>();
@@ -165,6 +161,7 @@ class _AddBudgetState extends State<AddBudget> {
                             onTap: () {
                               if (checkFields()) {
                                 budgetProvider.addBudgetItems(budgetItem);
+                                Navigator.of(context).pop();
                               }
                             },
                             child: NextneonBtn(size: size, label: 'Done'))

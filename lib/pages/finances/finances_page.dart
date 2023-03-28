@@ -143,7 +143,8 @@ class _FinancesPageState extends State<FinancesPage> {
     return SafeArea(
       child: Scaffold(
           floatingActionButton: expenseProvider.expenseitems.isEmpty &&
-                  !expenseProvider.filtered
+                  !expenseProvider.filtered &&
+                  selectedTab == 0
               ? Container()
               : Theme(
                   data: Theme.of(context).copyWith(

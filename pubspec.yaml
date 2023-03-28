@@ -38,6 +38,7 @@ dependencies:
   animated_splash_screen:
   intl:
   flutter_svg:
+  
   lottie:
   font_awesome_flutter:
   syncfusion_flutter_calendar: 19.4.50
