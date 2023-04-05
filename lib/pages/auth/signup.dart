@@ -12,8 +12,6 @@ import 'package:kudidemo/widgets/nextneon_button.dart';
 
 import 'package:kudidemo/widgets/auth/terms_privacypolicy.dart';
 
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../providers/theme_provider.dart';

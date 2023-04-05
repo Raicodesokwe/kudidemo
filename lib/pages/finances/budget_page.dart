@@ -88,128 +88,145 @@ class BudgetPage extends StatelessWidget {
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child:
-                  Consumer<BudgetProvider>(builder: (context, notifier, child) {
-                return Column(
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 3),
-                          color: Colors.greenAccent,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Text(
-                        'Budget items',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 30,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: notifier.budgetItems.length,
-                        itemBuilder: (context, index) {
-                          final budgetItem = notifier.budgetItems[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => BudgetView(
-                                          amount: budgetItem.amount!,
-                                        )));
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: decorator.copyWith(
-                                    color: Theme.of(context).backgroundColor,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Text(budgetItem.name!),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                                '${expenseProvider.currency} ${budgetItem.amount}')
-                                          ],
-                                        ),
-                                        Spacer(),
-                                        budgetItem.budgetType == 'Closed'
-                                            ? Icon(FontAwesomeIcons.doorClosed)
-                                            : Icon(FontAwesomeIcons.doorOpen)
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Add expenses to\nthis budget item',
-                                          style: GoogleFonts.prompt(),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Container(
-                                            padding: const EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                color: Colors.greenAccent,
-                                                border: Border.all()),
-                                            child: Icon(
-                                              Icons.add,
-                                              color: Colors.black,
-                                            )),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Container(
-                                      decoration: decorator.copyWith(
-                                        color:
-                                            Theme.of(context).backgroundColor,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      padding: const EdgeInsets.all(10),
-                                      child: LinearProgressIndicator(
-                                        minHeight: 10,
-                                        backgroundColor: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2!
-                                            .color,
-                                        valueColor:
-                                            new AlwaysStoppedAnimation<Color>(
-                                                Colors.greenAccent),
-                                        value: 0.2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+              child: FutureBuilder(
+                  future: Provider.of<BudgetProvider>(context).getBudgetItems(),
+                  builder: (context, snapshot) {
+                    return Consumer<BudgetProvider>(
+                        builder: (context, notifier, child) {
+                      if (notifier.budgetItems.isEmpty) {
+                        return child!;
+                      }
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                border: Border.all(width: 3),
+                                color: Colors.greenAccent,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Text(
+                              'Budget items',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 30,
                               ),
                             ),
-                          );
-                        }),
-                  ],
-                );
-              }),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: notifier.budgetItems.length,
+                              itemBuilder: (context, index) {
+                                final budgetItem = notifier.budgetItems[index];
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => BudgetView(
+                                                    amount: budgetItem.amount!,
+                                                  )));
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: decorator.copyWith(
+                                          color:
+                                              Theme.of(context).backgroundColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Text(budgetItem.name!),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                      '${expenseProvider.currency} ${budgetItem.amount}')
+                                                ],
+                                              ),
+                                              Spacer(),
+                                              budgetItem.budgetType == 'Closed'
+                                                  ? Icon(FontAwesomeIcons
+                                                      .doorClosed)
+                                                  : Icon(
+                                                      FontAwesomeIcons.doorOpen)
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Add expenses to\nthis budget item',
+                                                style: GoogleFonts.prompt(),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Container(
+                                                  padding:
+                                                      const EdgeInsets.all(8),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      color: Colors.greenAccent,
+                                                      border: Border.all()),
+                                                  child: Icon(
+                                                    Icons.add,
+                                                    color: Colors.black,
+                                                  )),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            decoration: decorator.copyWith(
+                                              color: Theme.of(context)
+                                                  .backgroundColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            padding: const EdgeInsets.all(10),
+                                            child: LinearProgressIndicator(
+                                              minHeight: 10,
+                                              backgroundColor: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2!
+                                                  .color,
+                                              valueColor:
+                                                  new AlwaysStoppedAnimation<
+                                                          Color>(
+                                                      Colors.greenAccent),
+                                              value: 0.2,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                        ],
+                      );
+                    });
+                  }),
             ),
           );
         });

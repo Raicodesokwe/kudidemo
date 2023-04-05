@@ -33,15 +33,25 @@ class _AddBudgetState extends State<AddBudget> {
   String? budgetName;
   String? selectedSchedule;
   double? amountName;
+  Future saveForm() async {
+    final isValid = _newBudgetForm.currentState!.validate();
+    if (isValid) {
+      final budgetItem = BudgetModel(
+          name: budgetName,
+          amount: amountName,
+          budgetType: typeList[_typeIndex].name,
+          budgetSchedule: scheduleList[_selectedIndex].name);
+      final budgetProvider =
+          Provider.of<BudgetProvider>(context, listen: false);
+      budgetProvider.addBudgetItems(budgetItem);
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final budgetProvider = Provider.of<BudgetProvider>(context, listen: false);
-    final budgetItem = BudgetModel(
-        name: budgetName,
-        amount: amountName,
-        budgetType: typeList[_typeIndex].name,
-        budgetSchedule: scheduleList[_selectedIndex].name);
+
     return Form(
       key: _newBudgetForm,
       child: Padding(
@@ -160,8 +170,7 @@ class _AddBudgetState extends State<AddBudget> {
                         ? GestureDetector(
                             onTap: () {
                               if (checkFields()) {
-                                budgetProvider.addBudgetItems(budgetItem);
-                                Navigator.of(context).pop();
+                                saveForm();
                               }
                             },
                             child: NextneonBtn(size: size, label: 'Done'))

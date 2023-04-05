@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:kudidemo/widgets/finances/budget_expense.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -46,7 +47,17 @@ class BudgetView extends StatelessWidget {
               Icons.add,
               color: Colors.black,
             ),
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  backgroundColor: Theme.of(context).backgroundColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  context: context,
+                  builder: (context) {
+                    return BudgetExpense();
+                  });
+            },
             label: Text(
               'Add expense',
               style: Theme.of(context)

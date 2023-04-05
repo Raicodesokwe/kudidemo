@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kudidemo/models/billable_model.dart';
+import 'package:kudidemo/models/budget_model.dart';
 import 'package:kudidemo/models/expense_item.dart';
 
 import 'package:kudidemo/pages/chat_page.dart';
@@ -44,6 +45,7 @@ void main() async {
   ]);
   await Hive.initFlutter();
   Hive.registerAdapter(TaskModelAdapter());
+  Hive.registerAdapter(BudgetModelAdapter());
 
   Hive.registerAdapter(BillableModelAdapter());
   Hive.registerAdapter(ExpenseItemAdapter());
